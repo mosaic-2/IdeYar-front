@@ -18,9 +18,9 @@ const BaseButtonWithIcon = ({
 }: Props) => {
   return (
     <Button sx={sx}>
-      {leftIcon && (
+      {rightIcon && (
         <SvgIcon
-          component={leftIcon}
+          component={rightIcon}
           viewBox="0 0 20 20"
           sx={{ marginLeft: 1 }}
         />
@@ -34,9 +34,9 @@ const BaseButtonWithIcon = ({
         />
       )}
       {children}
-      {rightIcon && (
+      {leftIcon && (
         <SvgIcon
-          component={rightIcon}
+          component={leftIcon}
           viewBox="0 0 20 20"
           sx={{ marginRight: 1 }}
         />
