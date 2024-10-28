@@ -1,7 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import {
   brand,
-  complementary,
   error,
   grayDarkMode,
   grayLightMode,
@@ -37,17 +36,6 @@ const ColorDisplay = () => {
       <Typography>brand</Typography>
       <Grid container spacing={1}>
         {Object.entries(brand).map(([key, color]) => (
-          <Grid item xs={1}>
-            <Box width="100%" height={100} bgcolor={color} />
-            <Typography>
-              {key} : {color}
-            </Typography>
-          </Grid>
-        ))}
-      </Grid>
-      <Typography>complementary</Typography>
-      <Grid container spacing={1}>
-        {Object.entries(complementary).map(([key, color]) => (
           <Grid item xs={1}>
             <Box width="100%" height={100} bgcolor={color} />
             <Typography>

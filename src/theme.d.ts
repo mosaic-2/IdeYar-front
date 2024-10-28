@@ -63,7 +63,13 @@ declare module "@mui/material/styles" {
       sGray: string;
     };
     button?: {
+      primaryFg: string;
+      primaryBg: string;
+      primaryBgHover: string;
+      primaryBgPressed: string;
       tGrayFg: string;
+      tGrayFgHover: string;
+      tGrayFgPressed: string;
       linkGrayFg: string;
       linkGrayFgHover: string;
       linkGrayFgPressed: string;
