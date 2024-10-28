@@ -2,7 +2,6 @@ import {
   Box,
   CssBaseline,
   Stack,
-  SvgIcon,
   useMediaQuery,
   useTheme,
 } from "@mui/material";

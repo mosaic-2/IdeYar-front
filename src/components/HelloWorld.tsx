@@ -1,4 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
+import SecondaryButton from "./buttons/SecondaryButton";
+import PrimaryButton from "./buttons/PrimaryButton";
+import MoonIcon from "../assets/Moon.svg?react";
 
 const HelloWorld = () => {
   return (
@@ -48,6 +51,21 @@ const HelloWorld = () => {
             مورد استفاده قرار گیرد.
           </Typography>
         </Box>
+        <Stack
+          direction="column"
+          spacing={2}
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <PrimaryButton text="دکمه اصلی" />
+          <PrimaryButton text="ایکن راست" rightIcon={MoonIcon} />
+          <PrimaryButton text="ایکن چپ" leftIcon={MoonIcon} />
+          <SecondaryButton text="دکمه ثانوی" />
+          <SecondaryButton text="ایکن راست" rightIcon={MoonIcon} />
+          <SecondaryButton text="ایکن چپ" leftIcon={MoonIcon} />
+        </Stack>
       </div>
     </Box>
   );
