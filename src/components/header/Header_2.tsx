@@ -39,6 +39,9 @@ const Header: React.FC = () => {
   // Toggle the visibility of the search box
   const toggleSearch = () => {
     setShowSearch((prev) => !prev);
+    if (!showSearch && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
   };
 
   // Close search box on pressing Escape key
@@ -53,13 +56,6 @@ const Header: React.FC = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [showSearch]);
-
-  // Auto-focus the search input when it appears
-  useEffect(() => {
-    if (showSearch && searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
   }, [showSearch]);
 
   return (
@@ -130,65 +126,6 @@ const Header: React.FC = () => {
               </Box>
             </Box>
 
-            {/* Center-Aligned Search Box */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flex: 1,
-                padding: "0 16px", // Adjust padding for spacing
-              }}
-            >
-              {showSearch && (
-                <Grow in={showSearch} timeout={500}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      width: "33.33%", // 1/3 of the page
-                      transition: "width 0.5s ease-in-out",
-                    }}
-                  >
-                    <TextField
-                      variant="outlined"
-                      placeholder="جستجو..."
-                      size="small"
-                      fullWidth
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                      inputRef={searchInputRef}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon />
-                          </InputAdornment>
-                        ),
-                        endAdornment: searchTerm ? (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={clearSearch}
-                              aria-label="clear search"
-                            >
-                              <CloseIcon />
-                            </IconButton>
-                          </InputAdornment>
-                        ) : null,
-                      }}
-                      sx={{
-                        borderRadius: 2,
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: 2,
-                        },
-                      }}
-                    />
-                    {/* <IconButton onClick={toggleSearch} sx={{ ml: 1 }}>
-                      <CloseIcon />
-                    </IconButton> */}
-                  </Box>
-                </Grow>
-              )}
-            </Box>
-
             {/* Right-Aligned Buttons */}
             <Box
               sx={{
@@ -201,11 +138,64 @@ const Header: React.FC = () => {
               }}
             >
               <Stack direction="row" alignItems="center" spacing={1}>
-                {!showSearch && (
-                  <IconButton onClick={toggleSearch} aria-label="search">
-                    <SearchIcon />
-                  </IconButton>
-                )}
+                {/* Search Box / Icon Section */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flex: 1,
+                    padding: "0 16px", // Adjust padding for spacing
+                  }}
+                >
+                  {showSearch ? (
+                    <Grow in={showSearch} timeout={500}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "auto", // Auto width for the search box
+                        }}
+                      >
+                        <TextField
+                          variant="outlined"
+                          placeholder="جستجو..."
+                          size="small"
+                          value={searchTerm}
+                          onChange={handleSearchChange}
+                          inputRef={searchInputRef}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                            endAdornment: searchTerm ? (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={clearSearch}
+                                  aria-label="clear search"
+                                >
+                                  <CloseIcon />
+                                </IconButton>
+                              </InputAdornment>
+                            ) : null,
+                          }}
+                          sx={{
+                            borderRadius: 2,
+                            "& .MuiOutlinedInput-root": {
+                              borderRadius: 2,
+                            },
+                          }}
+                        />
+                      </Box>
+                    </Grow>
+                  ) : (
+                    <IconButton onClick={toggleSearch} aria-label="search">
+                      <SearchIcon />
+                    </IconButton>
+                  )}
+                </Box>
                 <DarkModeButton />
                 {/* "ورود" Button */}
                 <CustomButton>
