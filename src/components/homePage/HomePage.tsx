@@ -73,14 +73,9 @@ const IdeaYarSection: React.FC = () => {
 const HomePage: React.FC = () => {
   return (
     <Container sx={{ mt: 4, mb: 4 }}>
-      {/* Hero Section */}
       <IdeaYarSection />
-
-      {/* Projects Slider */}
-
-      {/* Projects Slider */}
       <Box sx={{ mt: 8 }}>
-        <Typography variant="h4" align="center" gutterBottom sx={{mb: 3}}>
+        <Typography variant="h4" align="center" gutterBottom sx={{ mb: 3 }}>
           بهترین پروژه‌ها
         </Typography>
         <ProjectsSlider />

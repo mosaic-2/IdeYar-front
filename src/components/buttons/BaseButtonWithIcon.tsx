@@ -1,12 +1,25 @@
-import { Button, Chip, SvgIcon, SxProps, Theme } from "@mui/material";
+import {
+  Button,
+  Chip,
+  SvgIcon,
+  SvgIconTypeMap,
+  SxProps,
+  Theme,
+} from "@mui/material";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { FC, ReactNode, SVGProps } from "react";
 
 interface Props {
   children?: ReactNode;
   badge?: string;
-  leftIcon?: FC<SVGProps<SVGSVGElement>>;
-  rightIcon?: FC<SVGProps<SVGSVGElement>>;
+  leftIcon?:
+    | FC<SVGProps<SVGSVGElement>>
+    | OverridableComponent<SvgIconTypeMap<{}, "svg">>;
+  rightIcon?:
+    | FC<SVGProps<SVGSVGElement>>
+    | OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   sx: SxProps<Theme>;
+  viewBox?: string;
 }
 
 const BaseButtonWithIcon = ({
@@ -15,13 +28,14 @@ const BaseButtonWithIcon = ({
   leftIcon,
   rightIcon,
   sx,
+  viewBox,
 }: Props) => {
   return (
     <Button sx={sx}>
       {rightIcon && (
         <SvgIcon
           component={rightIcon}
-          viewBox="0 0 20 20"
+          viewBox={viewBox}
           sx={{ marginLeft: 1 }}
         />
       )}
@@ -37,7 +51,7 @@ const BaseButtonWithIcon = ({
       {leftIcon && (
         <SvgIcon
           component={leftIcon}
-          viewBox="0 0 20 20"
+          viewBox={viewBox}
           sx={{ marginRight: 1 }}
         />
       )}
