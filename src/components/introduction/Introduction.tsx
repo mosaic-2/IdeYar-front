@@ -1,10 +1,10 @@
-// src/components/IntroductionSection/IntroductionSection.tsx
 import React from "react";
 import { Container, Typography, Grid, Box } from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import PeopleIcon from "@mui/icons-material/People"; // New icon for additional section
+import LandingImage2 from "../../assets/landing_2.svg?react";
+import LandingImage3 from "../../assets/landing_3.svg?react";
 
-// Default image URLs (Replace these with actual image paths or URLs as needed)
 const defaultImages = [
   "https://source.unsplash.com/random/400x300?creative",
   "https://source.unsplash.com/random/400x300?goal",
@@ -17,14 +17,14 @@ const sections = [
     description:
       "هدف ایده یار ایجاد بستری امن و قابل اعتماد برای خلاقان و حامیان است تا با همکاری یکدیگر پروژه‌های نوآورانه را به واقعیت تبدیل کنند.",
     icon: <EmojiEventsIcon color="primary" sx={{ fontSize: 40 }} />,
-    image: defaultImages[1],
+    image: <LandingImage2 width={400} />,
   },
   {
     title: "جامعه ما",
     description:
       "ما به دنبال ایجاد یک جامعه پویا و مشارکتی هستیم که در آن خلاقان و حامیان با یکدیگر همکاری کنند تا ایده‌های جدید به زندگی بیایند.",
     icon: <PeopleIcon color="primary" sx={{ fontSize: 40 }} />,
-    image: defaultImages[2],
+    image: <LandingImage3 width={400} />,
   },
   // Add more sections as needed
 ];
@@ -59,37 +59,7 @@ const IntroductionSection: React.FC = () => {
                 gap: 2,
               }}
             >
-              {/* Image or Placeholder */}
-              <Box
-                sx={{
-                  width: { xs: "100%", md: "40%" },
-                  height: "200px",
-                  backgroundColor: "#e0e0e0",
-                  borderRadius: "16px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  overflow: "hidden",
-                }}
-              >
-                {section.image ? (
-                  <img
-                    src={section.image}
-                    alt={section.title}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                ) : (
-                  <Typography variant="h6" color="#666">
-                    تصویر در دسترس نیست
-                  </Typography>
-                )}
-              </Box>
-
-              {/* Text Section */}
+              {section.image}
               <Box
                 sx={{
                   width: { xs: "100%", md: "60%" },

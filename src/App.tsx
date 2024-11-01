@@ -16,7 +16,7 @@ import "./LanguageConfig/i18n";
 import LoginPage from "./components/LoginPage/LoginPage";
 
 function App() {
-  setupUserInfo();
+  // setupUserInfo();
   const theme = getTheme();
   return (
     <ThemeProvider theme={theme}>
