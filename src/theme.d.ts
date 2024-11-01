@@ -57,6 +57,9 @@ declare module "@mui/material/styles" {
     tertiary?: PaletteOptions["primary"];
     bg?: {
       primaryBrand: string;
+      primary: string;
+      secondary: string;
+      tertiary: string;
     };
     border?: {
       sBrand: string;
