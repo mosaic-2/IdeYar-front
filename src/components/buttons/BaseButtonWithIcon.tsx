@@ -20,7 +20,7 @@ interface Props {
     | OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   sx: SxProps<Theme>;
   viewBox?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const BaseButtonWithIcon = ({
