@@ -15,6 +15,7 @@ interface Props {
   viewBox?: string;
   width?: string;
   height?: string;
+  onClick: () => void;
 }
 const PrimaryButton = ({
   text,
@@ -24,6 +25,7 @@ const PrimaryButton = ({
   viewBox,
   width,
   height,
+  onClick,
 }: Props) => {
   return (
     <BaseButtonWithIcon
@@ -44,6 +46,7 @@ const PrimaryButton = ({
         },
       }}
       viewBox={viewBox}
+      onClick={onClick}
     >
       <Typography variant="buttonT3">{text}</Typography>
     </BaseButtonWithIcon>

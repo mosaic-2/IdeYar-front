@@ -10,8 +10,14 @@ import LoginIcon from "@mui/icons-material/Login";
 import SecondaryButton from "../buttons/SecondaryButton";
 import PrimaryButton from "../buttons/PrimaryButton";
 import Search from "./Search";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Header: React.FC = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleLoginClick = () => {
+    navigate("login"); // Navigate to /login
+  };
   return (
     <>
       <CssBaseline />
@@ -82,7 +88,11 @@ const Header: React.FC = () => {
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Search />
                 <DarkModeButton />
-                <PrimaryButton text="ورود" leftIcon={LoginIcon} />
+                <PrimaryButton
+                  text="ورود"
+                  leftIcon={LoginIcon}
+                  onClick={handleLoginClick}
+                />
               </Stack>
             </Box>
 

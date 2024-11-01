@@ -20,6 +20,7 @@ interface Props {
     | OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   sx: SxProps<Theme>;
   viewBox?: string;
+  onClick: () => void;
 }
 
 const BaseButtonWithIcon = ({
@@ -29,9 +30,10 @@ const BaseButtonWithIcon = ({
   rightIcon,
   sx,
   viewBox,
+  onClick,
 }: Props) => {
   return (
-    <Button sx={sx}>
+    <Button sx={sx} onClick={onClick}>
       {rightIcon && (
         <SvgIcon
           component={rightIcon}
