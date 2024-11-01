@@ -10,10 +10,9 @@ const IdeaYarSection: React.FC = () => {
         display: "flex", // Flex layout for horizontal stacking
         alignItems: "center", // Center items vertically
         justifyContent: "center", // Center items horizontally
-        bgcolor: "background.paper",
+        bgcolor: "bg.secondary",
         pt: 2,
         pb: 3,
-        // mr: 6,
         borderRadius: "20px",
         boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
       }}
@@ -44,21 +43,10 @@ const IdeaYarSection: React.FC = () => {
           p: 4, // Padding for the text section
         }}
       >
-        <Typography
-          component="h1"
-          variant="h3"
-          color="text.primary"
-          gutterBottom
-          sx={{ textAlign: "center" }}
-        >
+        <Typography variant="h3" gutterBottom sx={{ textAlign: "center" }}>
           ایده یار
         </Typography>
-        <Typography
-          variant="h5"
-          color="text.secondary"
-          paragraph
-          sx={{ textAlign: "justify" }}
-        >
+        <Typography variant="body1" paragraph sx={{ textAlign: "justify" }}>
           به جمع خلاقان بپیوندید و از ایده‌های نوآورانه حمایت کنید! هر ایده، از
           یک فکر ساده تا یک پروژه بزرگ، می‌تواند دنیای ما را تغییر دهد. با
           همکاری و حمایت شما، ما می‌توانیم به این ایده‌ها جان ببخشیم و به تحقق

@@ -26,8 +26,10 @@ const Footer: React.FC = () => {
         py: 6,
         px: 2,
         mt: "auto",
-        backgroundColor: (theme) => theme.palette.primary.main,
-        color: "white",
+        bgcolor: "bg.primaryBrand",
+        color: "text.secondary",
+        borderTop: 2,
+        borderColor: "border.sBrand",
       }}
     >
       <Container maxWidth="lg">
@@ -143,7 +145,6 @@ const Footer: React.FC = () => {
                 color="inherit"
                 aria-label="Facebook"
                 sx={{
-                  color: "white",
                   "&:hover": {
                     color: "primary.light",
                   },
@@ -164,7 +165,6 @@ const Footer: React.FC = () => {
                 color="inherit"
                 aria-label="Twitter"
                 sx={{
-                  color: "white",
                   "&:hover": {
                     color: "primary.light",
                   },
@@ -185,7 +185,6 @@ const Footer: React.FC = () => {
                 color="inherit"
                 aria-label="Instagram"
                 sx={{
-                  color: "white",
                   "&:hover": {
                     color: "primary.light",
                   },

@@ -13,6 +13,8 @@ interface Props {
     | FC<SVGProps<SVGSVGElement>>
     | OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   viewBox?: string;
+  width?: string;
+  height?: string;
 }
 
 const SecondaryButton = ({
@@ -21,6 +23,8 @@ const SecondaryButton = ({
   leftIcon,
   rightIcon,
   viewBox,
+  width,
+  height,
 }: Props) => {
   return (
     <BaseButtonWithIcon
@@ -28,6 +32,8 @@ const SecondaryButton = ({
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       sx={{
+        width: width,
+        height: height,
         paddingX: 1.5,
         color: "button.tGrayFg",
         "&:hover": {

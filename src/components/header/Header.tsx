@@ -22,6 +22,9 @@ const Header: React.FC = () => {
             direction: "rtl",
             backgroundColor: "bg.primary",
             boxShadow: "none",
+            backgroundImage: "none",
+            borderBottom: 2,
+            borderColor: "bg.secondary",
           }}
         >
           <Toolbar

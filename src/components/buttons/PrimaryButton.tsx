@@ -13,6 +13,8 @@ interface Props {
     | FC<SVGProps<SVGSVGElement>>
     | OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   viewBox?: string;
+  width?: string;
+  height?: string;
 }
 const PrimaryButton = ({
   text,
@@ -20,6 +22,8 @@ const PrimaryButton = ({
   leftIcon,
   rightIcon,
   viewBox,
+  width,
+  height,
 }: Props) => {
   return (
     <BaseButtonWithIcon
@@ -27,6 +31,8 @@ const PrimaryButton = ({
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       sx={{
+        width: width,
+        height: height,
         paddingX: 1.5,
         bgcolor: "button.primaryBg",
         color: "button.primaryFg",

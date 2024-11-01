@@ -75,7 +75,7 @@ const ProjectsSlider: React.FC = () => {
             justifyContent: "center",
             alignItems: "center", // Center vertically if needed
             px: 2,
-            mb: 1,
+            mb: 2,
             height: "100%", // Ensure full height for centering
           }}
         >

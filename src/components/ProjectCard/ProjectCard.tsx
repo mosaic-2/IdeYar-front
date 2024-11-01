@@ -9,7 +9,7 @@ import {
   LinearProgress,
   Box,
 } from "@mui/material";
-import CustomButton from "../buttons/CardCustom";
+import PrimaryButton from "../buttons/PrimaryButton";
 
 interface ProjectCardProps {
   title: string;
@@ -101,7 +101,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <CustomButton fullWidth>مشاهده پروژه</CustomButton>
+        <PrimaryButton text="مشاهده پروژه" width="100%" />
       </CardActions>
     </Card>
   );
