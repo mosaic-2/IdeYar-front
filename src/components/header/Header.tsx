@@ -16,7 +16,7 @@ const Header: React.FC = () => {
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleLoginClick = () => {
-    navigate("login"); // Navigate to /login
+    navigate("/login"); // Navigate to /login
   };
   return (
     <>
