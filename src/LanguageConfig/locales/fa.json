@@ -1,0 +1,12 @@
+{
+  "familyName": "نام خانوادگی",
+  "email": "ایمیل",
+  "password": "رمز عبور",
+  "repeatPassword": "تکرار رمز عبور",
+  "register": "ثبت نام",
+  "rememberMe": "من را به خاطر بسپار",
+  "account?": "قبلا حساب کاربری ساختی؟",
+  "login": "ورود",
+  "noAccount?": "حساب کاربری نداری؟",
+  "enterAccount": "ورود به حساب کاربری"
+}

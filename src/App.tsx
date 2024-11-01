@@ -11,6 +11,9 @@ import Header2 from "./components/header/Header";
 import Categories from "./components/categories/Categories";
 import HomePage from "./components/homePage/HomePage";
 import IntroductionSection from "./components/introduction/Introduction";
+import RegisterPage from "./components/RegisterPage/RegisterPage";
+import "./LanguageConfig/i18n";
+import LoginPage from "./components/LoginPage/LoginPage";
 
 function App() {
   setupUserInfo();
@@ -31,6 +34,27 @@ function App() {
           }
         />
         <Route path="/color" element={<ColorDisplay />} />
+        <Route
+          path="/register"
+          element={
+            <>
+              <Header2 />
+              <RegisterPage />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            <>
+              <Header2 />
+              <LoginPage />
+              <Footer />
+            </>
+          }
+        />
       </Routes>
     </ThemeProvider>
   );
