@@ -125,7 +125,7 @@ const RegisterPage = () => {
               }}
             >
               <Typography variant="body4">{t("noAccount?")}</Typography>
-              <GrayLink href="/">
+              <GrayLink href="/register">
                 <Typography variant="body4" mb="10px">
                   {t("register")}
                 </Typography>
