@@ -15,7 +15,7 @@ interface Props {
   viewBox?: string;
   width?: string;
   height?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const SecondaryButton = ({

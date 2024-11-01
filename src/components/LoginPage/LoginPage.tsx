@@ -1,6 +1,5 @@
 import {
   Box,
-  createTheme,
   FormControl,
   IconButton,
   InputAdornment,
@@ -12,7 +11,7 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
-import { CacheProvider, ThemeProvider } from "@emotion/react";
+import { CacheProvider, ThemeProvider, useTheme } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import PrimaryButton from "../buttons/PrimaryButton";
@@ -24,9 +23,7 @@ const RegisterPage = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(false);
-  const theme = createTheme({
-    direction: "rtl",
-  });
+  const theme = useTheme();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -53,6 +50,7 @@ const RegisterPage = () => {
           py={5}
           boxShadow={2}
           borderRadius="10px"
+          bgcolor={"bg.secondary"}
         >
           <Box width="80%" display="flex" flexDirection="column" gap={3}>
             <Typography

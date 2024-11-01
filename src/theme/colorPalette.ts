@@ -12,7 +12,7 @@ export const lightPalette: PaletteOptions = {
   bg: {
     primaryBrand: brand[50],
     primary: white,
-    secondary: grayDarkMode[100],
+    secondary: grayDarkMode[25],
     tertiary: grayDarkMode[200],
   },
   border: {
