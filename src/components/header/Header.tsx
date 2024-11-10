@@ -11,6 +11,7 @@ import SecondaryButton from "../buttons/SecondaryButton";
 import PrimaryButton from "../buttons/PrimaryButton";
 import Search from "./Search";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import Logo from "../logo/Logo";
 
 const Header: React.FC = () => {
   const navigate = useNavigate(); // Initialize useNavigate
@@ -50,9 +51,7 @@ const Header: React.FC = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Typography variant="h6" color="text.primary">
-                ایده یار
-              </Typography>
+              <Logo />
 
               {/* Navigation Buttons */}
               <Box
