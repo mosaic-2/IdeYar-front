@@ -1,22 +1,18 @@
 import { Route, Routes } from "react-router-dom";
-import { setupUserInfo } from "./actions/setupAction";
 import { ThemeProvider } from "@mui/material/styles";
 import getTheme from "./theme/useTheme";
-// import Header from "./components/header/Header";
 import "./assets/font.css";
 import ColorDisplay from "./components/color/ColorDisplay";
-// import HelloWorld from "./components/HelloWorld";
-import Footer from "./components/Footer/Footer";
-import Header2 from "./components/header/Header";
 import Categories from "./components/categories/Categories";
 import HomePage from "./components/homePage/HomePage";
-import IntroductionSection from "./components/introduction/Introduction";
-import RegisterPage from "./components/RegisterPage/RegisterPage";
+import IntroductionSection from "./components/homePage/Introduction";
+import RegisterPage from "./components/registerPage/RegisterPage";
 import "./LanguageConfig/i18n";
 import LoginPage from "./components/LoginPage/LoginPage";
+import PageLayout from "./components/layouts/PageLayout";
+import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 
 function App() {
-  // setupUserInfo();
   const theme = getTheme();
   return (
     <ThemeProvider theme={theme}>
@@ -24,37 +20,31 @@ function App() {
         <Route
           path="/"
           element={
-            <>
-              <Header2 />
+            <PageLayout>
               <Categories />
               <HomePage />
               <IntroductionSection />
-              <Footer />
-            </>
+            </PageLayout>
           }
         />
         <Route path="/color" element={<ColorDisplay />} />
         <Route
           path="/register"
           element={
-            <>
-              <Header2 />
+            <PageLayout>
               <RegisterPage />
-              <Footer />
-            </>
+            </PageLayout>
           }
         />
-
         <Route
           path="/login"
           element={
-            <>
-              <Header2 />
+            <PageLayout>
               <LoginPage />
-              <Footer />
-            </>
+            </PageLayout>
           }
         />
+        <Route path="/hello" element={<HelloWorldStickyLeft />} />
       </Routes>
     </ThemeProvider>
   );

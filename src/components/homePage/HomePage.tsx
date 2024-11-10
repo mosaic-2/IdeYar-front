@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Box, Typography } from "@mui/material";
-import ProjectsSlider from "../ProjectSlider/ProjectSlider";
+import ProjectsSlider from "./ProjectSlider";
 import LandingImage1 from "../../assets/landing_1.svg?react";
 
 const IdeaYarSection: React.FC = () => {
