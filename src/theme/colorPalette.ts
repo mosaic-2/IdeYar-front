@@ -1,9 +1,16 @@
 import { PaletteOptions } from "@mui/material";
 import { textColorDarkMode, textColorLightMode } from "./textColors";
-import { brand, error, grayDarkMode, grayLightMode, white } from "./colors";
+import {
+  brand,
+  error,
+  grayDarkMode,
+  grayLightMode,
+  milkyWhite,
+  white,
+} from "./colors";
 
 export const lightPalette: PaletteOptions = {
-  background: { default: white },
+  background: { default: milkyWhite },
   text: {
     primary: textColorLightMode.primary,
     secondary: textColorLightMode.secondary,

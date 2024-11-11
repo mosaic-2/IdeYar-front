@@ -44,7 +44,9 @@ const CategoryGrid: React.FC = () => {
             "&:hover": {
               transform: "scale(1.1)",
             },
-            bgcolor: "bg.tertiary",
+            bgcolor: "bg.primary",
+            border: 2,
+            borderColor: "border.sBrand",
           }}
         >
           <IconButton>{category.icon}</IconButton>

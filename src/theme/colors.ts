@@ -1,5 +1,6 @@
 export const black = "#000000";
 export const white = "#FFFFFF";
+export const milkyWhite = "#fffefc";
 
 export const grayLightMode = {
   "25": "#FCFCFD",
