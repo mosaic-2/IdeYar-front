@@ -1,0 +1,10 @@
+services:
+  front:
+    image: ghcr.io/mosaic-2/ide-yar-front/ide-yar:latest
+    environment:
+      - NODE_ENV=production
+    logging:
+      options:
+        max-size: 50m
+    ports:
+      - "3100:3000"
