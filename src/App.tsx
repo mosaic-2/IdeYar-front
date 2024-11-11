@@ -11,7 +11,7 @@ import "./LanguageConfig/i18n";
 import LoginPage from "./components/LoginPage/LoginPage";
 import PageLayout from "./components/layouts/PageLayout";
 import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
-
+import Profile from "./components/profile/Profile";
 function App() {
   const theme = getTheme();
   return (
@@ -41,6 +41,14 @@ function App() {
           element={
             <PageLayout>
               <LoginPage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PageLayout>
+              <Profile />
             </PageLayout>
           }
         />
