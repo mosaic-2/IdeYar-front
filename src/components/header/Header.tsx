@@ -30,9 +30,9 @@ const Header: React.FC = () => {
             backgroundColor: "bg.primary",
             boxShadow: "none",
             backgroundImage: "none",
-            borderBottom: 2,
-            borderColor: "bg.secondary",
             paddingX: 3.5,
+            borderBottom: 2,
+            borderColor: "border.sGray",
           }}
         >
           <Toolbar

@@ -50,7 +50,8 @@ const RegisterPage = () => {
           py={5}
           boxShadow={2}
           borderRadius="10px"
-          bgcolor={"bg.secondary"}
+          bgcolor={"bg.primary"}
+          sx={{ border: 2, borderColor: "border.sGray" }}
         >
           <Box width="80%" display="flex" flexDirection="column" gap={3}>
             <Typography
