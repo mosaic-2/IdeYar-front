@@ -9,12 +9,19 @@ import {
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const ProfileBox = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [email, setEmail] = useState("user@example.com");
   const [phone, setPhone] = useState("09123456789");
+  const [profileImage, setProfileImage] = useState<string | undefined>(
+    "/path/to/profile-image.jpg"
+  );
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | undefined>(
+    undefined
+  );
 
   const handleToggleEdit = () => setIsEditing(!isEditing);
 
@@ -25,6 +32,37 @@ const ProfileBox = () => {
     if (field === "email") setEmail(event.target.value);
     if (field === "phone") setPhone(event.target.value);
   };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Ensure the selected file is an image
+      if (!file.type.startsWith("image/")) {
+        alert("لطفاً یک فایل تصویر انتخاب کنید.");
+        return;
+      }
+
+      // Revoke the previous object URL to avoid memory leaks
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
+      }
+
+      // Create a new object URL for the selected image
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl);
+      setImageFile(file);
+      setImagePreviewUrl(imageUrl);
+    }
+  };
+
+  // Cleanup: Revoke object URL when component unmounts or when a new image is selected
+  useEffect(() => {
+    return () => {
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
+      }
+    };
+  }, [imagePreviewUrl]);
 
   return (
     <Box
@@ -38,15 +76,21 @@ const ProfileBox = () => {
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
         width: "100%",
         maxWidth: 350,
-        minHeight: 450,
+        minHeight: 500,
         direction: "rtl",
+        bgcolor: "background.paper",
       }}
     >
       {/* Profile Picture and Upload Icon */}
       <Box position="relative">
         <Avatar
-          sx={{ width: 200, height: 200, border: "2px solid #ddd" }}
-          src="/path/to/profile-image.jpg"
+          sx={{
+            width: 200,
+            height: 200,
+            border: "2px solid #ddd",
+            objectFit: "cover",
+          }}
+          src={profileImage}
           alt="User Profile"
         />
       </Box>
@@ -59,7 +103,12 @@ const ProfileBox = () => {
           component="label"
           sx={{ color: "gray" }}
         >
-          <input hidden accept="image/*" type="file" />
+          <input
+            hidden
+            accept="image/*"
+            type="file"
+            onChange={handleImageChange}
+          />
           <PhotoCamera />
         </IconButton>
       </Box>
@@ -97,7 +146,6 @@ const ProfileBox = () => {
               width: "100%",
               maxWidth: 250,
               height: 40,
-              //   mt: isEditing ? "10px" : "0", // Set margin-top based on editing state
             }}
             InputProps={{
               sx: {
@@ -115,7 +163,6 @@ const ProfileBox = () => {
               width: "100%",
               maxWidth: 250,
               height: 40,
-              //   mt: isEditing ? "5px" : "0", // Set margin-top based on editing state
               display: "flex",
               alignItems: "center",
               justifyContent: "center", // Center the text within the box when not editing
@@ -146,7 +193,6 @@ const ProfileBox = () => {
               width: "100%",
               maxWidth: 250,
               height: 40,
-              //   mt: isEditing ? "5px" : "0", // Set margin-top based on editing state
             }}
             InputProps={{
               sx: {
@@ -164,7 +210,6 @@ const ProfileBox = () => {
               width: "100%",
               maxWidth: 250,
               height: 40,
-              //   mt: isEditing ? "5px" : "0", // Set margin-top based on editing state
               display: "flex",
               alignItems: "center",
               justifyContent: "center", // Center the text within the box when not editing
