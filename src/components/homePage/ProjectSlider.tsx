@@ -1,7 +1,7 @@
 // src/components/ProjectsSlider/ProjectsSlider.tsx
 import React from "react";
 import { Box, Slider } from "@mui/material";
-import ProjectCard from "../projectCard/ProjectCard";
+// import ProjectCard from "../projectCard/ProjectCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -78,7 +78,7 @@ const ProjectsSlider: React.FC = () => {
             height: "100%", // Ensure full height for centering
           }}
         >
-          <ProjectCard {...project} />
+          {/* <ProjectCard {...project} /> */}
         </Box>
       ))}
     </Slider>
