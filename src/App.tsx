@@ -3,15 +3,14 @@ import { ThemeProvider } from "@mui/material/styles";
 import getTheme from "./theme/useTheme";
 import "./assets/font.css";
 import ColorDisplay from "./components/color/ColorDisplay";
-import Categories from "./components/categories/Categories";
-import HomePage from "./components/homePage/HomePage";
-import IntroductionSection from "./components/homePage/Introduction";
+import LandingPage from "./components/landingPage/LandingPage";
+
 import RegisterPage from "./components/registerPage/RegisterPage";
 import "./LanguageConfig/i18n";
 import LoginPage from "./components/LoginPage/LoginPage";
 import PageLayout from "./components/layouts/PageLayout";
 import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
-
+import Profile from "./components/profile/Profile";
 function App() {
   const theme = getTheme();
   return (
@@ -21,9 +20,7 @@ function App() {
           path="/"
           element={
             <PageLayout>
-              <Categories />
-              <HomePage />
-              <IntroductionSection />
+              <LandingPage />
             </PageLayout>
           }
         />
@@ -41,6 +38,14 @@ function App() {
           element={
             <PageLayout>
               <LoginPage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PageLayout>
+              <Profile />
             </PageLayout>
           }
         />
