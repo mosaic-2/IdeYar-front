@@ -1,6 +1,12 @@
 import { Box, Typography } from "@mui/material";
 
-const ProjectCardProfile = ({ title, description, imageUrl }) => {
+interface Prop {
+  title: string;
+  description: string;
+  imageUrl: string;
+}
+
+const ProjectCardProfile = ({ title, description, imageUrl }: Prop) => {
   return (
     <Box
       display="flex"
