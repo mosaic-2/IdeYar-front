@@ -5,6 +5,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  Stack,
   Typography,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -18,7 +19,7 @@ import PrimaryButton from "../buttons/PrimaryButton";
 import CheckBox from "../buttons/CheckBox";
 import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
-import axios from "../../services/api-client.ts";
+import LoginImage from "../../assets/login.svg?react";
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -85,136 +86,113 @@ const LoginPage = () => {
   };
 
   return (
-    <Box
-      minHeight="100vh"
-      flexDirection="row"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      {/* Left part of the register page */}
-      <Box width="60%" height="100px"></Box>
-
-      {/* Right side of the register page */}
-      <Box display="flex" width="40%">
-        <Box
-          display="flex"
-          width="85%"
-          //   bgcolor="bg.secondary"
-          justifyContent="center"
-          py={5}
-          boxShadow={2}
-          borderRadius="10px"
-          bgcolor={"bg.primary"}
-          sx={{ border: 2, borderColor: "border.sGray" }}
-        >
-          <Box width="80%" display="flex" flexDirection="column" gap={3}>
-            <Typography
-              variant="h6"
-              fontWeight="bold"
-              textAlign="center"
-              pb={2}
-            >
-              {t("enterAccount")}
-            </Typography>
-            <CacheProvider value={cacheRtl}>
-              <ThemeProvider theme={theme}>
-                <TextField
-                  dir="rtl"
-                  label={t("email")}
-                  variant="outlined"
-                  size="small"
-                  value={userNameOrEmail}
-                  onChange={(e) => setUserNameOrEmail(e.target.value)}
-                  error={userNameOrEmailError}
-                  helperText={userNameOrEmailError ? t("fieldRequired") : ""}
-                />
-
-                <FormControl dir="rtl" variant="outlined" size="small">
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    {t("password")}
-                  </InputLabel>
-                  <OutlinedInput
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="start">
-                        <IconButton
-                          onClick={() => setShowPassword((show) => !show)}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    error={passwordError}
-                  />
-                  {passwordError && (
-                    <Typography
-                      variant="body2"
-                      color="error"
-                      align="right"
-                      mt={0.5}
-                    >
-                      {t("fieldRequired")}
-                    </Typography>
-                  )}
-                </FormControl>
-              </ThemeProvider>
-            </CacheProvider>
-
-            {loginError && (
-              <Typography variant="body2" color="error" align="center">
-                {loginError}
+    <Box sx={{ mt: 10 }}>
+      <Stack
+        width="100%"
+        direction="row"
+        spacing={2}
+        sx={{
+          px: 20,
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Box sx={{ pl: 10 }}>
+          <LoginImage width="500px" />
+        </Box>
+        <Box display="flex" width="600px">
+          <Box
+            display="flex"
+            width="85%"
+            //   bgcolor="bg.secondary"
+            justifyContent="center"
+            py={5}
+            boxShadow={2}
+            borderRadius="10px"
+            bgcolor={"bg.primary"}
+            sx={{ border: 2, borderColor: "border.sGray" }}
+          >
+            <Box width="80%" display="flex" flexDirection="column" gap={3}>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                textAlign="center"
+                pb={2}
+              >
+                {t("enterAccount")}
               </Typography>
-            )}
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <TextField
+                    dir="rtl"
+                    label={t("email")}
+                    variant="outlined"
+                    size="small"
+                  />
 
-            <PrimaryButton
-              text={t("login")}
-              onClick={handleLogin}
-            ></PrimaryButton>
-            <Box
-              px={2}
-              sx={{
-                direction: "rtl",
-                flexDirection: "row",
-                display: "flex",
-                gap: 1,
-              }}
-            >
-              <CheckBox
-                isActive={checked}
-                onClick={() => {
-                  setChecked(!checked);
-                  console.log("todo");
-                  console.log(checked);
+                  <FormControl dir="rtl" variant="outlined" size="small">
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      {t("password")}
+                    </InputLabel>
+                    <OutlinedInput
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="start">
+                          <IconButton
+                            onClick={() => setShowPassword((show) => !show)}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                    />
+                  </FormControl>
+                </ThemeProvider>
+              </CacheProvider>
+              <PrimaryButton text={t("login")}></PrimaryButton>
+              <Box
+                px={2}
+                sx={{
+                  direction: "rtl",
+                  flexDirection: "row",
+                  display: "flex",
+                  gap: 1,
                 }}
-              />
-              <Typography variant="body4">{t("rememberMe")}</Typography>
-            </Box>
-            <Box width="100%" height="1px" bgcolor="black"></Box>
-            <Box
-              px={2}
-              sx={{
-                direction: "rtl",
-                flexDirection: "row",
-                display: "flex",
-                gap: 1,
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="body4">{t("noAccount?")}</Typography>
-              <GrayLink href="/register">
-                <Typography variant="body4" mb="10px">
-                  {t("register")}
-                </Typography>
-              </GrayLink>
+              >
+                <CheckBox
+                  isActive={checked}
+                  onClick={() => {
+                    setChecked(!checked);
+                    console.log("todo");
+                    console.log(checked);
+                  }}
+                />
+                <Typography variant="body4">{t("rememberMe")}</Typography>
+              </Box>
+              <Box width="100%" height="1px" bgcolor="black"></Box>
+              <Box
+                px={2}
+                sx={{
+                  direction: "rtl",
+                  flexDirection: "row",
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                }}
+              >
+                <Typography variant="body4">{t("noAccount?")}</Typography>
+                <GrayLink href="/register">
+                  <Typography variant="body4" mb="10px">
+                    {t("register")}
+                  </Typography>
+                </GrayLink>
+              </Box>
             </Box>
           </Box>
         </Box>
-      </Box>
+      </Stack>
     </Box>
   );
 };

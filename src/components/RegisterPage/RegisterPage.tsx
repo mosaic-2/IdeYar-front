@@ -5,6 +5,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  Stack,
   Typography,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -23,7 +24,7 @@ import {
   passwordPattern,
   usernamePattern,
 } from "../../assets/regex/regexPatterns";
-import axios from "../../services/api-client.ts";
+import SignupImage from "../../assets/signup.svg?react";
 
 const RegisterPage = () => {
   const [name, setName] = useState<string>("");
@@ -131,219 +132,213 @@ const RegisterPage = () => {
   };
 
   return (
-    <Box
-      minHeight="100vh"
-      flexDirection="row"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      {/* Left part of the register page */}
-      <Box width="60%" height="100px"></Box>
-
-      {/* Right side of the register page */}
-      <Box display="flex" width="40%">
-        <Box
-          display="flex"
-          width="85%"
-          justifyContent="center"
-          py={5}
-          boxShadow={2}
-          borderRadius="10px"
-          bgcolor={"bg.primary"}
-          sx={{ border: 2, borderColor: "border.sGray" }}
-        >
-          <Box width="80%" display="flex" flexDirection="column" gap={3}>
-            <Typography
-              variant="h6"
-              fontWeight="bold"
-              textAlign="center"
-              pb={2}
-            >
-              {t("register")}
-            </Typography>
-            <CacheProvider value={cacheRtl}>
-              <ThemeProvider theme={theme}>
-                <TextField
-                  dir="rtl"
-                  label={t("familyName")}
-                  size="small"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                    validateName(e.target.value);
-                  }}
-                />
-                {nameErr && (
-                  <Typography
-                    variant="body4"
-                    fontWeight="bold"
-                    mt={-2}
-                    ml={1}
-                    textAlign="end"
-                    color="red"
-                  >
-                    {t("nameError")}
-                  </Typography>
-                )}
-
-                <TextField
-                  dir="rtl"
-                  label={t("email")}
-                  variant="outlined"
-                  size="small"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    validateEmail(e.target.value);
-                  }}
-                />
-                {emailErr && (
-                  <Typography
-                    variant="body4"
-                    fontWeight="bold"
-                    mt={-2}
-                    ml={1}
-                    textAlign="end"
-                    color="red"
-                  >
-                    {t("emailError")}
-                  </Typography>
-                )}
-
-                <FormControl dir="rtl" variant="outlined" size="small">
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    {t("password")}
-                  </InputLabel>
-                  <OutlinedInput
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="start">
-                        <IconButton
-                          onClick={() => setShowPassword((show) => !show)}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      validatePassword(e.target.value);
-                    }}
-                  />
-                </FormControl>
-                {passwordErr && (
-                  <Typography
-                    variant="body4"
-                    fontWeight="bold"
-                    mt={-2}
-                    ml={1}
-                    textAlign="end"
-                    color="red"
-                  >
-                    {t("passwordError")}
-                  </Typography>
-                )}
-
-                <FormControl dir="rtl" variant="outlined" size="small">
-                  <InputLabel>{t("repeatPassword")}</InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={showPasswordVal ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="start">
-                        <IconButton
-                          onClick={() => setShowPasswordVal((show) => !show)}
-                          edge="end"
-                        >
-                          {showPasswordVal ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
-                    value={passwordConfirm}
-                    onChange={(e) => {
-                      setPasswordConfirm(e.target.value);
-                      validatePasswordConfirm(e.target.value);
-                    }}
-                  />
-                </FormControl>
-                {passwordConfirmErr && (
-                  <Typography
-                    variant="body4"
-                    fontWeight="bold"
-                    mt={-2}
-                    ml={1}
-                    textAlign="end"
-                    color="red"
-                  >
-                    {t("passwordConfirmError")}
-                  </Typography>
-                )}
-              </ThemeProvider>
-            </CacheProvider>
-
-            {signUpError && (
+    <Box sx={{ mt: 10 }}>
+      <Stack
+        width="100%"
+        direction="row"
+        spacing={2}
+        sx={{
+          px: 20,
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <SignupImage width="50%" />
+        <Box display="flex" width="600px">
+          <Box
+            display="flex"
+            width="85%"
+            justifyContent="center"
+            py={5}
+            boxShadow={2}
+            borderRadius="10px"
+            bgcolor={"bg.primary"}
+            sx={{ border: 2, borderColor: "border.sGray" }}
+          >
+            <Box width="80%" display="flex" flexDirection="column" gap={3}>
               <Typography
-                variant="body2"
+                variant="h6"
                 fontWeight="bold"
-                color="red"
                 textAlign="center"
+                pb={2}
               >
-                {signUpError}
+                {t("register")}
               </Typography>
-            )}
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <TextField
+                    dir="rtl"
+                    label={t("familyName")}
+                    size="small"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      validateName(e.target.value);
+                    }}
+                  />
+                  {nameErr && (
+                    <Typography
+                      variant="body4"
+                      fontWeight="bold"
+                      mt={-2}
+                      ml={1}
+                      textAlign="end"
+                      color="red"
+                    >
+                      {t("nameError")}
+                    </Typography>
+                  )}
 
-            <PrimaryButton
-              text={t("register")}
-              onClick={() => {
-                validateInputs();
-              }}
-            ></PrimaryButton>
+                  <TextField
+                    dir="rtl"
+                    label={t("email")}
+                    variant="outlined"
+                    size="small"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      validateEmail(e.target.value);
+                    }}
+                  />
+                  {emailErr && (
+                    <Typography
+                      variant="body4"
+                      fontWeight="bold"
+                      mt={-2}
+                      ml={1}
+                      textAlign="end"
+                      color="red"
+                    >
+                      {t("emailError")}
+                    </Typography>
+                  )}
 
-            <Box
-              px={2}
-              sx={{
-                direction: "rtl",
-                flexDirection: "row",
-                display: "flex",
-                gap: 1,
-              }}
-            >
-              <CheckBox
-                isActive={checked}
+                  <FormControl dir="rtl" variant="outlined" size="small">
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      {t("password")}
+                    </InputLabel>
+                    <OutlinedInput
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="start">
+                          <IconButton
+                            onClick={() => setShowPassword((show) => !show)}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        validatePassword(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                  {passwordErr && (
+                    <Typography
+                      variant="body4"
+                      fontWeight="bold"
+                      mt={-2}
+                      ml={1}
+                      textAlign="end"
+                      color="red"
+                    >
+                      {t("passwordError")}
+                    </Typography>
+                  )}
+
+                  <FormControl dir="rtl" variant="outlined" size="small">
+                    <InputLabel>{t("repeatPassword")}</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password"
+                      type={showPasswordVal ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="start">
+                          <IconButton
+                            onClick={() => setShowPasswordVal((show) => !show)}
+                            edge="end"
+                          >
+                            {showPasswordVal ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                      value={passwordConfirm}
+                      onChange={(e) => {
+                        setPasswordConfirm(e.target.value);
+                        validatePasswordConfirm(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                  {passwordConfirmErr && (
+                    <Typography
+                      variant="body4"
+                      fontWeight="bold"
+                      mt={-2}
+                      ml={1}
+                      textAlign="end"
+                      color="red"
+                    >
+                      {t("passwordConfirmError")}
+                    </Typography>
+                  )}
+                </ThemeProvider>
+              </CacheProvider>
+              <PrimaryButton
+                text={t("register")}
                 onClick={() => {
-                  setChecked(!checked);
-                  console.log("todo");
-                  console.log(checked);
+                  validateInputs();
                 }}
-              />
-              <Typography variant="body4">{t("rememberMe")}</Typography>
-            </Box>
-            <Box width="100%" height="1px" bgcolor="black"></Box>
-            <Box
-              px={2}
-              sx={{
-                direction: "rtl",
-                flexDirection: "row",
-                display: "flex",
-                gap: 1,
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="body4">{t("account?")}</Typography>
-              <GrayLink href="/login">
-                <Typography variant="body4" mb="10px">
-                  {t("login")}
-                </Typography>
-              </GrayLink>
+              ></PrimaryButton>
+
+              <Box
+                px={2}
+                sx={{
+                  direction: "rtl",
+                  flexDirection: "row",
+                  display: "flex",
+                  gap: 1,
+                }}
+              >
+                <CheckBox
+                  isActive={checked}
+                  onClick={() => {
+                    setChecked(!checked);
+                    console.log("todo");
+                    console.log(checked);
+                  }}
+                />
+                <Typography variant="body4">{t("rememberMe")}</Typography>
+              </Box>
+              <Box width="100%" height="1px" bgcolor="black"></Box>
+              <Box
+                px={2}
+                sx={{
+                  direction: "rtl",
+                  flexDirection: "row",
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                }}
+              >
+                <Typography variant="body4">{t("account?")}</Typography>
+                <GrayLink href="/login">
+                  <Typography variant="body4" mb="10px">
+                    {t("login")}
+                  </Typography>
+                </GrayLink>
+              </Box>
             </Box>
           </Box>
         </Box>
-      </Box>
+      </Stack>
     </Box>
   );
 };
