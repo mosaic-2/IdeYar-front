@@ -85,7 +85,7 @@ const RegisterPage = () => {
     } else setPasswordConfirmErr(false);
   };
   return (
-    <Box sx={{ mt: 10 }}>
+    <Box sx={{ my: 10 }}>
       <Stack
         width="100%"
         direction="row"
