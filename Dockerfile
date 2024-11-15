@@ -2,17 +2,13 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json .
 
 RUN npm install
 
 RUN npm i -g serve
 
 COPY . .
-
-RUN npm install -g typescript
-
-RUN tsc --noEmit
 
 RUN npm run build
 

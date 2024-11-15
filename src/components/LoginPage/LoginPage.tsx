@@ -19,7 +19,7 @@ import CheckBox from "../buttons/CheckBox";
 import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -136,4 +136,4 @@ const RegisterPage = () => {
     </Box>
   );
 };
-export default RegisterPage;
+export default LoginPage;

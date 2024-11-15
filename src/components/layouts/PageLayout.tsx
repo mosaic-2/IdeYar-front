@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import Footer from "../footer/Footer";
 import Header from "../header/Header";
+import Footer from "../footer/Footer";
 
 interface Prop {
   children: ReactNode;

@@ -2,15 +2,15 @@ import { Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import getTheme from "./theme/useTheme";
 import "./assets/font.css";
+import "./LanguageConfig/i18n";
 import ColorDisplay from "./components/color/ColorDisplay";
 import LandingPage from "./components/landingPage/LandingPage";
-import "./LanguageConfig/i18n";
 import LoginPage from "./components/LoginPage/LoginPage";
 import PageLayout from "./components/layouts/PageLayout";
 import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
-import RegisterPage from "./components/RegisterPage/RegisterPage";
+import RegisterPage from "./components/registerPage/RegisterPage";
 
 function App() {
   const theme = getTheme();
