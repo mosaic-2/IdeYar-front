@@ -10,7 +10,7 @@ import PageLayout from "./components/layouts/PageLayout";
 import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
-import RegisterPage from "./components/RegisterPage/RegisterPage";
+import RegisterPage from "./components/registerPage/RegisterPage";
 
 function App() {
   const theme = getTheme();
