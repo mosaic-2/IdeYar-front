@@ -3,9 +3,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import getTheme from "./theme/useTheme";
 import "./assets/font.css";
 import ColorDisplay from "./components/color/ColorDisplay";
-import Categories from "./components/categories/Categories";
-import HomePage from "./components/homePage/HomePage";
-import IntroductionSection from "./components/homePage/Introduction";
+import LandingPage from "./components/landingPage/LandingPage";
+
 import RegisterPage from "./components/registerPage/RegisterPage";
 import "./LanguageConfig/i18n";
 import LoginPage from "./components/LoginPage/LoginPage";
@@ -21,9 +20,7 @@ function App() {
           path="/"
           element={
             <PageLayout>
-              <Categories />
-              <HomePage />
-              <IntroductionSection />
+              <LandingPage />
             </PageLayout>
           }
         />
