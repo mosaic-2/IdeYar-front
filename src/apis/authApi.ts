@@ -1,39 +1,59 @@
-import AuthResponse from "../models/AuthResponse";
 import apiClient from "../services/api-client";
 
-export const loginApi = (email: string, password: string) =>
-  apiClient.post<AuthResponse>("/auth/login", {
-    email: email,
-    password: password,
+export interface LoginRequest {
+  userNameOrEmail: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  jwtToken: string;
+  refreshToken: string;
+}
+
+export const loginApi = (userNameOrEmail: string, password: string) =>
+  apiClient.post<LoginResponse>("/auth/login", {
+    userNameOrEmail,
+    password,
   });
+
+// Signup API
+export interface SignUpRequest {
+  email: string;
+  username: string;
+  password: string;
+}
+
+export interface SignUpResponse {
+  token: string;
+}
 
 export const signupInitializeApi = (
   username: string,
   email: string,
   password: string
 ) =>
-  apiClient.post("/auth/signup/initialize", {
-    username: username,
-    email: email,
-    password: password,
+  apiClient.post<SignUpResponse>("/auth/signup", {
+    username,
+    email,
+    password,
   });
 
-export const signupCompleteApi = (email: string, code: string) =>
-  apiClient.post<AuthResponse>("/auth/signup/complete", {
-    email: email,
-    code: code,
+// Code Verification API
+export interface CodeVerificationRequest {
+  signUpToken: string;
+  code: string;
+}
+
+export interface CodeVerificationResponse {
+  jwtToken: string;
+  refreshToken: string;
+}
+
+export const codeVerificationApi = (signUpToken: string, code: string) =>
+  apiClient.post<CodeVerificationResponse>("/auth/code-verification", {
+    signUpToken,
+    code,
   });
 
-export const oauth2Api = (token: string) =>
-  apiClient.post<AuthResponse>("/auth/oauth2", null, {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  });
-
-export const logoutApi = () => apiClient.post("/auth/logout");
-
-export const promise = (email: string) =>
-  apiClient.post("forgetPassword. ", {
-    email: email,
-  });
+// Export the Axios instance if needed elsewhere
+export default apiClient;

@@ -23,6 +23,7 @@ import {
   passwordPattern,
   usernamePattern,
 } from "../../assets/regex/regexPatterns";
+import axios from "../../services/api-client.ts";
 
 const RegisterPage = () => {
   const [name, setName] = useState<string>("");
@@ -34,6 +35,7 @@ const RegisterPage = () => {
   const [emailErr, setEmailErr] = useState<boolean>(false);
   const [passwordErr, setPasswordErr] = useState<boolean>(false);
   const [passwordConfirmErr, setPasswordConfirmErr] = useState<boolean>(false);
+  const [signUpError, setSignUpError] = useState<string>("");
 
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
@@ -46,10 +48,9 @@ const RegisterPage = () => {
     stylisPlugins: [prefixer, rtlPlugin],
   });
 
-  const validateInputs = () => {};
   const validateName = (value: string) => {
     if (value === "") {
-      setNameErr(false);
+      setNameErr(true);
     } else if (!value.match(usernamePattern)) {
       setNameErr(true);
       console.log("false");
@@ -58,7 +59,7 @@ const RegisterPage = () => {
 
   const validateEmail = (value: string) => {
     if (value === "") {
-      setEmailErr(false);
+      setEmailErr(true);
     } else if (!value.match(emailPattern)) {
       setEmailErr(true);
       console.log("false");
@@ -67,7 +68,7 @@ const RegisterPage = () => {
 
   const validatePassword = (value: string) => {
     if (value === "") {
-      setPasswordErr(false);
+      setPasswordErr(true);
     } else if (!value.match(passwordPattern)) {
       setPasswordErr(true);
       console.log("false");
@@ -76,12 +77,59 @@ const RegisterPage = () => {
 
   const validatePasswordConfirm = (value: string) => {
     if (value === "") {
-      setPasswordConfirmErr(false);
-    } else if (value != password) {
+      setPasswordConfirmErr(true);
+    } else if (value !== password) {
       setPasswordConfirmErr(true);
       console.log("false");
     } else setPasswordConfirmErr(false);
   };
+
+  const validateInputs = async () => {
+    // First, validate all inputs
+    validateName(name);
+    validateEmail(email);
+    validatePassword(password);
+    validatePasswordConfirm(passwordConfirm);
+
+    // If any error flags are true, do not proceed
+    if (nameErr || emailErr || passwordErr || passwordConfirmErr) {
+      console.log("Validation errors");
+      return;
+    }
+
+    // Proceed to send the API request
+    try {
+      const response = await axios.post("/auth/signup", {
+        email: email,
+        username: name,
+        password: password,
+      });
+
+      // Handle the response
+      const { token } = response.data;
+      console.log("Sign up successful, token:", token);
+
+      // You can store the token and navigate to another page if needed
+      // localStorage.setItem("token", token);
+      // navigate("/dashboard");
+    } catch (error: any) {
+      // Handle errors
+      if (error.response) {
+        // The server responded with an error
+        console.log("Error response:", error.response.data);
+        setSignUpError(error.response.data.message || t("signUpFailed"));
+      } else if (error.request) {
+        // No response received
+        console.log("No response:", error.request);
+        setSignUpError(t("noResponseFromServer"));
+      } else {
+        // Other errors
+        console.log("Error", error.message);
+        setSignUpError(t("signUpFailed"));
+      }
+    }
+  };
+
   return (
     <Box
       minHeight="100vh"
@@ -237,6 +285,18 @@ const RegisterPage = () => {
                 )}
               </ThemeProvider>
             </CacheProvider>
+
+            {signUpError && (
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                color="red"
+                textAlign="center"
+              >
+                {signUpError}
+              </Typography>
+            )}
+
             <PrimaryButton
               text={t("register")}
               onClick={() => {
@@ -287,4 +347,5 @@ const RegisterPage = () => {
     </Box>
   );
 };
+
 export default RegisterPage;
