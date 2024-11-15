@@ -4,13 +4,13 @@ import getTheme from "./theme/useTheme";
 import "./assets/font.css";
 import ColorDisplay from "./components/color/ColorDisplay";
 import LandingPage from "./components/landingPage/LandingPage";
-
-import RegisterPage from "./components/RegisterPage/RegisterPage";
 import "./LanguageConfig/i18n";
 import LoginPage from "./components/LoginPage/LoginPage";
 import PageLayout from "./components/layouts/PageLayout";
 import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
+import RegisterPage from "./components/registerPage/RegisterPage";
+
 function App() {
   const theme = getTheme();
   return (
