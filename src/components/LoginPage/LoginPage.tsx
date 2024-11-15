@@ -19,7 +19,7 @@ import PrimaryButton from "../buttons/PrimaryButton";
 import CheckBox from "../buttons/CheckBox";
 import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
-import SignupImage from "../../assets/signup.svg?react";
+import LoginImage from "../../assets/login.svg?react";
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -43,8 +43,10 @@ const LoginPage = () => {
           alignItems: "center",
         }}
       >
-        <SignupImage width="50%" />
-        <Box display="flex" width="50%">
+        <Box sx={{ pl: 10 }}>
+          <LoginImage width="500px" />
+        </Box>
+        <Box display="flex" width="600px">
           <Box
             display="flex"
             width="85%"
