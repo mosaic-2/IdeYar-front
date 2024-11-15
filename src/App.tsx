@@ -11,6 +11,7 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import PageLayout from "./components/layouts/PageLayout";
 import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
+import PostPage from "./pages/PostPage/PostPage";
 function App() {
   const theme = getTheme();
   return (
@@ -46,6 +47,14 @@ function App() {
           element={
             <PageLayout>
               <Profile />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/post"
+          element={
+            <PageLayout>
+              <PostPage />
             </PageLayout>
           }
         />
