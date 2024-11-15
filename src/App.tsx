@@ -5,7 +5,7 @@ import "./assets/font.css";
 import ColorDisplay from "./components/color/ColorDisplay";
 import LandingPage from "./components/landingPage/LandingPage";
 
-import RegisterPage from "./components/registerPage/RegisterPage";
+import RegisterPage from "./components/RegisterPage/RegisterPage";
 import "./LanguageConfig/i18n";
 import LoginPage from "./components/LoginPage/LoginPage";
 import PageLayout from "./components/layouts/PageLayout";

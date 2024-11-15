@@ -1,6 +1,5 @@
 import {
   Box,
-  createTheme,
   FormControl,
   IconButton,
   InputAdornment,
@@ -19,19 +18,70 @@ import PrimaryButton from "../buttons/PrimaryButton";
 import CheckBox from "../buttons/CheckBox";
 import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
+import {
+  emailPattern,
+  passwordPattern,
+  usernamePattern,
+} from "../../assets/regex/regexPatterns";
 
 const RegisterPage = () => {
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordConfirm, setPasswordConfirm] = useState<string>("");
+  // Errors UseState
+  const [nameErr, setNameErr] = useState<boolean>(false);
+  const [emailErr, setEmailErr] = useState<boolean>(false);
+  const [passwordErr, setPasswordErr] = useState<boolean>(false);
+  const [passwordConfirmErr, setPasswordConfirmErr] = useState<boolean>(false);
+
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVal, setShowPasswordVal] = useState(false);
   const [checked, setChecked] = useState(false);
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const theme = useTheme();
 
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
   });
+
+  const validateInputs = () => {};
+  const validateName = (value: string) => {
+    if (value === "") {
+      setNameErr(false);
+    } else if (!value.match(usernamePattern)) {
+      setNameErr(true);
+      console.log("false");
+    } else setNameErr(false);
+  };
+
+  const validateEmail = (value: string) => {
+    if (value === "") {
+      setEmailErr(false);
+    } else if (!value.match(emailPattern)) {
+      setEmailErr(true);
+      console.log("false");
+    } else setEmailErr(false);
+  };
+
+  const validatePassword = (value: string) => {
+    if (value === "") {
+      setPasswordErr(false);
+    } else if (!value.match(passwordPattern)) {
+      setPasswordErr(true);
+      console.log("false");
+    } else setPasswordErr(false);
+  };
+
+  const validatePasswordConfirm = (value: string) => {
+    if (value === "") {
+      setPasswordConfirmErr(false);
+    } else if (value != password) {
+      setPasswordConfirmErr(true);
+      console.log("false");
+    } else setPasswordConfirmErr(false);
+  };
   return (
     <Box
       minHeight="100vh"
@@ -48,7 +98,6 @@ const RegisterPage = () => {
         <Box
           display="flex"
           width="85%"
-          //   bgcolor="bg.secondary"
           justifyContent="center"
           py={5}
           boxShadow={2}
@@ -67,14 +116,52 @@ const RegisterPage = () => {
             </Typography>
             <CacheProvider value={cacheRtl}>
               <ThemeProvider theme={theme}>
-                <TextField dir="rtl" label={t("familyName")} size="small" />
+                <TextField
+                  dir="rtl"
+                  label={t("familyName")}
+                  size="small"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    validateName(e.target.value);
+                  }}
+                />
+                {nameErr && (
+                  <Typography
+                    variant="body4"
+                    fontWeight="bold"
+                    mt={-2}
+                    ml={1}
+                    textAlign="end"
+                    color="red"
+                  >
+                    {t("nameError")}
+                  </Typography>
+                )}
 
                 <TextField
                   dir="rtl"
                   label={t("email")}
                   variant="outlined"
                   size="small"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    validateEmail(e.target.value);
+                  }}
                 />
+                {emailErr && (
+                  <Typography
+                    variant="body4"
+                    fontWeight="bold"
+                    mt={-2}
+                    ml={1}
+                    textAlign="end"
+                    color="red"
+                  >
+                    {t("emailError")}
+                  </Typography>
+                )}
 
                 <FormControl dir="rtl" variant="outlined" size="small">
                   <InputLabel htmlFor="outlined-adornment-password">
@@ -93,8 +180,25 @@ const RegisterPage = () => {
                       </InputAdornment>
                     }
                     label="Password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      validatePassword(e.target.value);
+                    }}
                   />
                 </FormControl>
+                {passwordErr && (
+                  <Typography
+                    variant="body4"
+                    fontWeight="bold"
+                    mt={-2}
+                    ml={1}
+                    textAlign="end"
+                    color="red"
+                  >
+                    {t("passwordError")}
+                  </Typography>
+                )}
 
                 <FormControl dir="rtl" variant="outlined" size="small">
                   <InputLabel>{t("repeatPassword")}</InputLabel>
@@ -112,11 +216,34 @@ const RegisterPage = () => {
                       </InputAdornment>
                     }
                     label="Password"
+                    value={passwordConfirm}
+                    onChange={(e) => {
+                      setPasswordConfirm(e.target.value);
+                      validatePasswordConfirm(e.target.value);
+                    }}
                   />
                 </FormControl>
+                {passwordConfirmErr && (
+                  <Typography
+                    variant="body4"
+                    fontWeight="bold"
+                    mt={-2}
+                    ml={1}
+                    textAlign="end"
+                    color="red"
+                  >
+                    {t("passwordConfirmError")}
+                  </Typography>
+                )}
               </ThemeProvider>
             </CacheProvider>
-            <PrimaryButton text={t("register")}></PrimaryButton>
+            <PrimaryButton
+              text={t("register")}
+              onClick={() => {
+                validateInputs();
+              }}
+            ></PrimaryButton>
+
             <Box
               px={2}
               sx={{
