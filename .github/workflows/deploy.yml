@@ -19,13 +19,13 @@ jobs:
           source: "./docker-compose.yml"
           target: "~/front"
 
-       - name: SSH into VPS and deploy
-          uses: appleboy/ssh-action@master
-          with:
+      - name: SSH into VPS and deploy
+        uses: appleboy/ssh-action@master
+        with:
           host: ${{ secrets.PRODUCTION_SERVER }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-            script: |
-              cd ~/front
-              docker-compose pull  # Pull the latest image
-              docker-compose up -d  # Restart with the new image
+          script: |
+            cd ~/front
+            docker-compose pull  # Pull the latest image
+            docker-compose up -d  # Restart with the new image
