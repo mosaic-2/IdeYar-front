@@ -9,7 +9,7 @@ import {
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEventHandler, ChangeEvent } from "react";
 
 const ProfileBox = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,7 +26,7 @@ const ProfileBox = () => {
   const handleToggleEdit = () => setIsEditing(!isEditing);
 
   const handleFieldChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     field: "email" | "phone"
   ) => {
     if (field === "email") setEmail(event.target.value);

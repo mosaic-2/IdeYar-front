@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import axios from "../../services/api-client.ts";
 
 const LoginPage = () => {
+const LoginPage = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(false);

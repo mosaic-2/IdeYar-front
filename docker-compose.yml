@@ -7,4 +7,4 @@ services:
       options:
         max-size: 50m
     ports:
-      - "3100:3000"
+      - "9090:3000"
