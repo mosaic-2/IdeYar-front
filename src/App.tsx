@@ -6,7 +6,7 @@ import ColorDisplay from "./components/color/ColorDisplay";
 import Categories from "./components/categories/Categories";
 import HomePage from "./components/homePage/HomePage";
 import IntroductionSection from "./components/homePage/Introduction";
-import RegisterPage from "./components/registerPage/RegisterPage";
+import RegisterPage from "./components/RegisterPage/RegisterPage";
 import "./LanguageConfig/i18n";
 import LoginPage from "./components/LoginPage/LoginPage";
 import PageLayout from "./components/layouts/PageLayout";
