@@ -20,6 +20,7 @@ import CheckBox from "../buttons/CheckBox";
 import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
 import LoginImage from "../../assets/login.svg?react";
+import axios from "../../services/api-client.ts"; // Added axios import
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -31,6 +32,60 @@ const LoginPage = () => {
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
   });
+
+  // State variables for form inputs
+  const [userNameOrEmail, setUserNameOrEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // State variables for errors
+  const [userNameOrEmailError, setUserNameOrEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [loginError, setLoginError] = useState("");
+
+  const handleLogin = async () => {
+    // Reset errors
+    setUserNameOrEmailError(false);
+    setPasswordError(false);
+    setLoginError("");
+
+    // Validate inputs
+    if (!userNameOrEmail) {
+      setUserNameOrEmailError(true);
+    }
+    if (!password) {
+      setPasswordError(true);
+    }
+
+    if (userNameOrEmail && password) {
+      try {
+        const response = await axios.post("/auth/login", {
+          userNameOrEmail: userNameOrEmail,
+          password: password,
+        });
+
+        const { jwtToken, refreshToken } = response.data;
+        console.log("Login successful:", jwtToken, refreshToken);
+
+        // Store tokens, redirect, or perform other actions as needed
+        // localStorage.setItem("jwtToken", jwtToken);
+        // localStorage.setItem("refreshToken", refreshToken);
+        // navigate to dashboard or home page
+      } catch (error: any) {
+        // Handle errors
+        if (error.response) {
+          console.log("Error response:", error.response.data);
+          setLoginError(error.response.data.message || t("loginFailed"));
+        } else if (error.request) {
+          console.log("No response:", error.request);
+          setLoginError(t("noResponseFromServer"));
+        } else {
+          console.log("Error", error.message);
+          setLoginError(t("loginFailed"));
+        }
+      }
+    }
+  };
+
   return (
     <Box sx={{ my: 10 }}>
       <Stack
@@ -50,7 +105,6 @@ const LoginPage = () => {
           <Box
             display="flex"
             width="85%"
-            //   bgcolor="bg.secondary"
             justifyContent="center"
             py={5}
             boxShadow={2}
@@ -74,7 +128,21 @@ const LoginPage = () => {
                     label={t("email")}
                     variant="outlined"
                     size="small"
+                    value={userNameOrEmail}
+                    onChange={(e) => setUserNameOrEmail(e.target.value)}
                   />
+                  {userNameOrEmailError && (
+                    <Typography
+                      variant="body4"
+                      fontWeight="bold"
+                      mt={-2}
+                      ml={1}
+                      textAlign="end"
+                      color="red"
+                    >
+                      {t("fieldRequired")}
+                    </Typography>
+                  )}
 
                   <FormControl dir="rtl" variant="outlined" size="small">
                     <InputLabel htmlFor="outlined-adornment-password">
@@ -93,11 +161,42 @@ const LoginPage = () => {
                         </InputAdornment>
                       }
                       label="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </FormControl>
+                  {passwordError && (
+                    <Typography
+                      variant="body4"
+                      fontWeight="bold"
+                      mt={-2}
+                      ml={1}
+                      textAlign="end"
+                      color="red"
+                    >
+                      {t("fieldRequired")}
+                    </Typography>
+                  )}
                 </ThemeProvider>
               </CacheProvider>
-              <PrimaryButton text={t("login")}></PrimaryButton>
+
+              {loginError && (
+                <Typography
+                  variant="body4"
+                  fontWeight="bold"
+                  mt={-2}
+                  ml={1}
+                  textAlign="center"
+                  color="red"
+                >
+                  {loginError}
+                </Typography>
+              )}
+
+              <PrimaryButton
+                text={t("login")}
+                onClick={handleLogin} // Updated to use handleLogin function
+              ></PrimaryButton>
               <Box
                 px={2}
                 sx={{
@@ -142,4 +241,5 @@ const LoginPage = () => {
     </Box>
   );
 };
+
 export default LoginPage;
