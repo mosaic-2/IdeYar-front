@@ -1,7 +1,6 @@
 // src/components/ProjectsSlider/ProjectsSlider.tsx
 import React from "react";
-import Slider from "react-slick";
-import { Box } from "@mui/material";
+import { Box, Slider } from "@mui/material";
 import ProjectCard from "../projectCard/ProjectCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
