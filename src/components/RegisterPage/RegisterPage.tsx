@@ -25,6 +25,7 @@ import {
   usernamePattern,
 } from "../../assets/regex/regexPatterns";
 import SignupImage from "../../assets/signup.svg?react";
+import axios from "../../services/api-client.ts"; // Added axios import
 
 const RegisterPage = () => {
   const [name, setName] = useState<string>("");
@@ -36,7 +37,7 @@ const RegisterPage = () => {
   const [emailErr, setEmailErr] = useState<boolean>(false);
   const [passwordErr, setPasswordErr] = useState<boolean>(false);
   const [passwordConfirmErr, setPasswordConfirmErr] = useState<boolean>(false);
-  const [signUpError, setSignUpError] = useState<string>("");
+  const [signUpError, setSignUpError] = useState<string>(""); // Error message state
 
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
@@ -291,6 +292,20 @@ const RegisterPage = () => {
                   )}
                 </ThemeProvider>
               </CacheProvider>
+
+              {signUpError && (
+                <Typography
+                  variant="body4"
+                  fontWeight="bold"
+                  mt={-2}
+                  ml={1}
+                  textAlign="center"
+                  color="red"
+                >
+                  {signUpError}
+                </Typography>
+              )}
+
               <PrimaryButton
                 text={t("register")}
                 onClick={() => {

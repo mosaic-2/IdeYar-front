@@ -20,6 +20,7 @@ import CheckBox from "../buttons/CheckBox";
 import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
 import LoginImage from "../../assets/login.svg?react";
+import axios from "../../services/api-client.ts"; // Added axios import
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -104,7 +105,6 @@ const LoginPage = () => {
           <Box
             display="flex"
             width="85%"
-            //   bgcolor="bg.secondary"
             justifyContent="center"
             py={5}
             boxShadow={2}
@@ -128,7 +128,21 @@ const LoginPage = () => {
                     label={t("email")}
                     variant="outlined"
                     size="small"
+                    value={userNameOrEmail}
+                    onChange={(e) => setUserNameOrEmail(e.target.value)}
                   />
+                  {userNameOrEmailError && (
+                    <Typography
+                      variant="body4"
+                      fontWeight="bold"
+                      mt={-2}
+                      ml={1}
+                      textAlign="end"
+                      color="red"
+                    >
+                      {t("fieldRequired")}
+                    </Typography>
+                  )}
 
                   <FormControl dir="rtl" variant="outlined" size="small">
                     <InputLabel htmlFor="outlined-adornment-password">
@@ -147,11 +161,42 @@ const LoginPage = () => {
                         </InputAdornment>
                       }
                       label="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </FormControl>
+                  {passwordError && (
+                    <Typography
+                      variant="body4"
+                      fontWeight="bold"
+                      mt={-2}
+                      ml={1}
+                      textAlign="end"
+                      color="red"
+                    >
+                      {t("fieldRequired")}
+                    </Typography>
+                  )}
                 </ThemeProvider>
               </CacheProvider>
-              <PrimaryButton text={t("login")}></PrimaryButton>
+
+              {loginError && (
+                <Typography
+                  variant="body4"
+                  fontWeight="bold"
+                  mt={-2}
+                  ml={1}
+                  textAlign="center"
+                  color="red"
+                >
+                  {loginError}
+                </Typography>
+              )}
+
+              <PrimaryButton
+                text={t("login")}
+                onClick={handleLogin} // Updated to use handleLogin function
+              ></PrimaryButton>
               <Box
                 px={2}
                 sx={{
