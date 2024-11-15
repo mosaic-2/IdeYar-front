@@ -98,10 +98,10 @@ const LoginPage = () => {
           alignItems: "center",
         }}
       >
-        <Box sx={{ pl: 10 }}>
-          <LoginImage width="500px" />
+        <Box width="40%" sx={{ pl: 10 }}>
+          <LoginImage width="100%" />
         </Box>
-        <Box display="flex" width="600px">
+        <Box display="flex" width="45%">
           <Box
             display="flex"
             width="85%"

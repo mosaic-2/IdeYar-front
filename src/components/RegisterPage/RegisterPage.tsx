@@ -145,7 +145,7 @@ const RegisterPage = () => {
         }}
       >
         <SignupImage width="50%" />
-        <Box display="flex" width="600px">
+        <Box display="flex" width="45%">
           <Box
             display="flex"
             width="85%"
