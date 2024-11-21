@@ -25,7 +25,10 @@ import {
   usernamePattern,
 } from "../../assets/regex/regexPatterns";
 import SignupImage from "../../assets/signup.svg?react";
-import axios from "../../services/api-client.ts"; // Added axios import
+import { signupInitializeApi } from "../../apis/signUp.ts";
+import ToastifyNotification from "../ToastifyNotification/Toast";
+import { useDispatch } from "react-redux";
+import { setSession } from "../../store/sessionSlice";
 
 const RegisterPage = () => {
   const [name, setName] = useState<string>("");
@@ -44,6 +47,7 @@ const RegisterPage = () => {
   const [showPasswordVal, setShowPasswordVal] = useState(false);
   const [checked, setChecked] = useState(false);
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -101,18 +105,25 @@ const RegisterPage = () => {
 
     // Proceed to send the API request
     try {
-      const response = await axios.post("/auth/signup", {
-        email: email,
-        username: name,
-        password: password,
-      });
+      const response = await signupInitializeApi(name, email, password);
 
       // Handle the response
-      const { token } = response.data;
+      const { token, refreshToken } = response.data;
       console.log("Sign up successful, token:", token);
 
-      // You can store the token and navigate to another page if needed
-      // localStorage.setItem("token", token);
+      // Show success notification
+      ToastifyNotification({ type: "success", message: t("signUpSuccess") });
+
+      // Store tokens in session slice
+      dispatch(
+        setSession({
+          isLoggedIn: true,
+          jwtToken: token,
+          refreshToken,
+        })
+      );
+
+      // Redirect or perform other actions as needed
       // navigate("/dashboard");
     } catch (error: any) {
       // Handle errors
@@ -120,14 +131,23 @@ const RegisterPage = () => {
         // The server responded with an error
         console.log("Error response:", error.response.data);
         setSignUpError(error.response.data.message || t("signUpFailed"));
+        ToastifyNotification({
+          type: "error",
+          message: error.response.data.message || t("signUpFailed"),
+        });
       } else if (error.request) {
         // No response received
         console.log("No response:", error.request);
         setSignUpError(t("noResponseFromServer"));
+        ToastifyNotification({
+          type: "error",
+          message: t("noResponseFromServer"),
+        });
       } else {
         // Other errors
         console.log("Error", error.message);
         setSignUpError(t("signUpFailed"));
+        ToastifyNotification({ type: "error", message: t("signUpFailed") });
       }
     }
   };

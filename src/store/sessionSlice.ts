@@ -3,23 +3,37 @@ import Session from "../models/Session";
 
 const initialState: Session = {
   isLoggedIn: false,
+  jwtToken: "",
+  refreshToken: "",
 };
 
 const sessionSlice = createSlice({
   name: "session",
   initialState,
   reducers: {
-    setSession(_state, action: PayloadAction<Session>) {
-      return action.payload;
+    setSession(state, action: PayloadAction<Session>) {
+      return { ...state, ...action.payload };
     },
-    clearSession(_state) {
+    clearSession(state) {
       return initialState;
     },
-    setLoggedIn(_state, action: PayloadAction<boolean>) {
-      _state.isLoggedIn = action.payload;
+    setLoggedIn(state, action: PayloadAction<boolean>) {
+      state.isLoggedIn = action.payload;
+    },
+    setJwtToken(state, action: PayloadAction<string>) {
+      state.jwtToken = action.payload;
+    },
+    setRefreshToken(state, action: PayloadAction<string>) {
+      state.refreshToken = action.payload;
     },
   },
 });
 
-export const { setSession, clearSession, setLoggedIn } = sessionSlice.actions;
+export const {
+  setSession,
+  clearSession,
+  setLoggedIn,
+  setJwtToken,
+  setRefreshToken,
+} = sessionSlice.actions;
 export default sessionSlice.reducer;
