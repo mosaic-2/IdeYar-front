@@ -20,13 +20,17 @@ import CheckBox from "../buttons/CheckBox";
 import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
 import LoginImage from "../../assets/login.svg?react";
-import axios from "../../services/api-client.ts"; // Added axios import
+import { loginApi } from "../../apis/loginApi.ts";
+import ToastifyNotification from "../ToastifyNotification/Toast";
+import { useDispatch } from "react-redux";
+import { setSession } from "../../store/sessionSlice";
 
 const LoginPage = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(false);
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -58,29 +62,45 @@ const LoginPage = () => {
 
     if (userNameOrEmail && password) {
       try {
-        const response = await axios.post("/auth/login", {
-          userNameOrEmail: userNameOrEmail,
-          password: password,
-        });
+        const response = await loginApi(userNameOrEmail, password);
 
         const { jwtToken, refreshToken } = response.data;
         console.log("Login successful:", jwtToken, refreshToken);
 
-        // Store tokens, redirect, or perform other actions as needed
-        // localStorage.setItem("jwtToken", jwtToken);
-        // localStorage.setItem("refreshToken", refreshToken);
+        // Store tokens in session slice
+        dispatch(
+          setSession({
+            isLoggedIn: true,
+            jwtToken,
+            refreshToken,
+          })
+        );
+
+        // Show success notification
+        ToastifyNotification({ type: "success", message: t("loginSuccess") });
+
+        // Redirect or perform other actions as needed
         // navigate to dashboard or home page
-      } catch (error: any) {
+      } catch (error) {
         // Handle errors
         if (error.response) {
           console.log("Error response:", error.response.data);
           setLoginError(error.response.data.message || t("loginFailed"));
+          ToastifyNotification({
+            type: "error",
+            message: error.response.data.message || t("loginFailed"),
+          });
         } else if (error.request) {
           console.log("No response:", error.request);
           setLoginError(t("noResponseFromServer"));
+          ToastifyNotification({
+            type: "error",
+            message: t("noResponseFromServer"),
+          });
         } else {
           console.log("Error", error.message);
           setLoginError(t("loginFailed"));
+          ToastifyNotification({ type: "error", message: t("loginFailed") });
         }
       }
     }
@@ -195,7 +215,7 @@ const LoginPage = () => {
 
               <PrimaryButton
                 text={t("login")}
-                onClick={handleLogin} // Updated to use handleLogin function
+                onClick={handleLogin}
               ></PrimaryButton>
               <Box
                 px={2}
