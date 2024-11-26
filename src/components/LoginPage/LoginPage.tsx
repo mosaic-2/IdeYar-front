@@ -21,7 +21,7 @@ import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
 import LoginImage from "../../assets/login.svg?react";
 import { loginApi } from "../../apis/loginApi.ts";
-import ToastifyNotification from "../ToastifyNotification/Toast";
+import Toast from "../toast/Toast.tsx";
 import { useDispatch } from "react-redux";
 import { setSession } from "../../store/sessionSlice";
 
@@ -77,7 +77,11 @@ const LoginPage = () => {
         );
 
         // Show success notification
-        ToastifyNotification({ type: "success", message: t("loginSuccess") });
+        Toast({
+          type: "success",
+          description: t("loginSuccess"),
+          onClose: () => {},
+        });
 
         // Redirect or perform other actions as needed
         // navigate to dashboard or home page
@@ -86,21 +90,27 @@ const LoginPage = () => {
         if (error.response) {
           console.log("Error response:", error.response.data);
           setLoginError(error.response.data.message || t("loginFailed"));
-          ToastifyNotification({
+          Toast({
             type: "error",
-            message: error.response.data.message || t("loginFailed"),
+            description: error.response.data.message || t("loginFailed"),
+            onClose: () => {},
           });
         } else if (error.request) {
           console.log("No response:", error.request);
           setLoginError(t("noResponseFromServer"));
-          ToastifyNotification({
+          Toast({
             type: "error",
-            message: t("noResponseFromServer"),
+            description: t("noResponseFromServer"),
+            onClose: () => {},
           });
         } else {
           console.log("Error", error.message);
           setLoginError(t("loginFailed"));
-          ToastifyNotification({ type: "error", message: t("loginFailed") });
+          Toast({
+            type: "error",
+            description: t("loginFailed"),
+            onClose: () => {},
+          });
         }
       }
     }
