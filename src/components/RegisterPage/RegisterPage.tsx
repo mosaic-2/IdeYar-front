@@ -26,7 +26,7 @@ import {
 } from "../../assets/regex/regexPatterns";
 import SignupImage from "../../assets/signup.svg?react";
 import { signupInitializeApi } from "../../apis/signUp.ts";
-import ToastifyNotification from "../ToastifyNotification/Toast";
+import Toast from "../toast/Toast.tsx";
 import { useDispatch } from "react-redux";
 import { setSession } from "../../store/sessionSlice";
 
@@ -112,7 +112,11 @@ const RegisterPage = () => {
       console.log("Sign up successful, token:", token);
 
       // Show success notification
-      ToastifyNotification({ type: "success", message: t("signUpSuccess") });
+      Toast({
+        type: "success",
+        description: t("signUpSuccess"),
+        onClose: () => {},
+      });
 
       // Store tokens in session slice
       dispatch(
@@ -131,23 +135,29 @@ const RegisterPage = () => {
         // The server responded with an error
         console.log("Error response:", error.response.data);
         setSignUpError(error.response.data.message || t("signUpFailed"));
-        ToastifyNotification({
+        Toast({
           type: "error",
-          message: error.response.data.message || t("signUpFailed"),
+          description: error.response.data.message || t("signUpFailed"),
+          onClose: () => {},
         });
       } else if (error.request) {
         // No response received
         console.log("No response:", error.request);
         setSignUpError(t("noResponseFromServer"));
-        ToastifyNotification({
+        Toast({
           type: "error",
-          message: t("noResponseFromServer"),
+          description: t("noResponseFromServer"),
+          onClose: () => {},
         });
       } else {
         // Other errors
         console.log("Error", error.message);
         setSignUpError(t("signUpFailed"));
-        ToastifyNotification({ type: "error", message: t("signUpFailed") });
+        Toast({
+          type: "error",
+          description: t("signUpFailed"),
+          onClose: () => {},
+        });
       }
     }
   };
