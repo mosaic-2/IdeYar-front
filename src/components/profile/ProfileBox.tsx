@@ -252,53 +252,11 @@ const ProfileBox = () => {
           )}
         </Box>
 
-        {/* Bio Field */}
-        <Box
-          display="flex"
-          alignItems="center"
-          width="100%"
-          justifyContent="center"
-          mb={2}
-          sx={{ gap: 2 }}
-        >
-          {isEditing ? (
-            <TextField
-              value={bio}
-              onChange={(e) => handleFieldChange(e, "bio")}
-              size="small"
-              variant="outlined"
-              multiline
-              rows={3}
-              sx={{
-                flexGrow: 1,
-                width: "100%",
-                maxWidth: 250,
-              }}
-            />
-          ) : (
-            <Typography
-              variant="body1"
-              sx={{
-                flexGrow: 1,
-                width: "100%",
-                maxWidth: 250,
-                minHeight: "100px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-              }}
-            >
-              {bio}
-            </Typography>
-          )}
-        </Box>
-
         {/* Birthday Field */}
         <Box
           display="flex"
           alignItems="center"
-          maxWidth="87%"
+          width="83.9%"
           justifyContent="center"
           mb={2}
           sx={{ gap: 2 }}
@@ -317,7 +275,7 @@ const ProfileBox = () => {
                   sx={{
                     flexGrow: 1,
                     width: "100%",
-                    maxWidth: 250,
+                    maxWidth: 250, // Set maxWidth to 250 to match Bio Field
                     height: 40,
                     "& .MuiInputBase-input": {
                       textAlign: "center",
@@ -328,13 +286,14 @@ const ProfileBox = () => {
               // Customize the calendar popup
               PaperProps={{
                 sx: {
-                  maxWidth: 200,
+                  width: 200,
                   margin: "0 auto",
                 },
               }}
               PopperProps={{
                 sx: {
                   "& .MuiPaper-root": {
+                    width: 250,
                     margin: "0 auto",
                     left: "50% !important",
                     transform: "translateX(-50%) !important",
@@ -347,15 +306,68 @@ const ProfileBox = () => {
               variant="body1"
               sx={{
                 flexGrow: 1,
-                width: "80%",
-                maxWidth: 250,
+                width: "100%",
+                maxWidth: 250, // Set maxWidth to 250 to match Bio Field
                 height: 40,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                wordBreak: "break-word", // Ensures long words break within the box
+                overflowWrap: "break-word", // Additional support for word breaking
+                padding: 1, // Optional: Adds padding for better text readability
               }}
             >
               {birthday ? birthday.format("jYYYY/jMM/jDD") : ""}
+            </Typography>
+          )}
+        </Box>
+
+        {/* Bio Field */}
+        <Box
+          display="flex"
+          alignItems="center"
+          width="100%"
+          justifyContent="center"
+          mb={2}
+          sx={{ gap: 2 }}
+        >
+          {isEditing ? (
+            <TextField
+              value={bio}
+              onChange={(e) => handleFieldChange(e, "bio")}
+              size="small"
+              variant="outlined"
+              multiline
+              minRows={3} // Sets the minimum number of visible rows
+              maxRows={10} // Sets the maximum number of visible rows (adjust as needed)
+              sx={{
+                flexGrow: 1,
+                width: "100%",
+                maxWidth: 250,
+                "& .MuiInputBase-input": {
+                  wordBreak: "break-word", // Ensures long words break to prevent overflow
+                  overflowWrap: "break-word", // Additional support for word breaking
+                },
+              }}
+            />
+          ) : (
+            <Typography
+              variant="body1"
+              sx={{
+                flexGrow: 1,
+                width: "100%",
+                maxWidth: 250,
+                minHeight: "100px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                wordBreak: "break-word", // Ensures long words break within the box
+                overflowWrap: "break-word", // Additional support for word breaking
+                padding: 1, // Optional: Adds padding for better text readability
+              }}
+            >
+              {bio}
             </Typography>
           )}
         </Box>
