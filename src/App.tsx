@@ -10,8 +10,8 @@ import PageLayout from "./components/layouts/PageLayout";
 import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
-import RegisterPage from "./components/registerPage/RegisterPage";
-import ToastifyTest from "./components/toast/TestToastify"
+import RegisterPage from "./components/RegisterPage/RegisterPage";
+import ToastifyTest from "./components/toast/TestToastify";
 
 function App() {
   const theme = getTheme();
@@ -59,12 +59,7 @@ function App() {
             </PageLayout>
           }
         />
-        <Route
-          path="/testToast"
-          element={
-            <ToastifyTest />
-          }
-        />
+        <Route path="/testToast" element={<ToastifyTest />} />
         <Route path="/hello" element={<HelloWorldStickyLeft />} />
       </Routes>
     </ThemeProvider>
