@@ -1,4 +1,5 @@
 import { Box, CardMedia, Typography } from "@mui/material";
+import { RefObject } from "react";
 
 interface Props {
   post: {
@@ -10,8 +11,10 @@ interface Props {
     imageUrls: string[];
     lastModified: string;
   };
+  sectionRefs: RefObject<HTMLDivElement>[]; // New prop for section refs
 }
-const ProjectBoard = ({ post }: Props) => {
+
+const ProjectBoard = ({ post, sectionRefs }: Props) => {
   return (
     <Box
       width="95%"
@@ -50,7 +53,13 @@ const ProjectBoard = ({ post }: Props) => {
 
       <Box width="100%">
         {post.titles.map((title, index) => (
-          <Box display="flex" flexDirection="column" py={2}>
+          <Box
+            key={index}
+            ref={sectionRefs[index]} // Attach the corresponding ref
+            display="flex"
+            flexDirection="column"
+            py={2}
+          >
             <Typography variant="body1" fontWeight="bold" color="text.primary">
               {title}
             </Typography>
@@ -79,4 +88,5 @@ const ProjectBoard = ({ post }: Props) => {
     </Box>
   );
 };
+
 export default ProjectBoard;

@@ -2,8 +2,10 @@ import { Box, Card, Typography } from "@mui/material";
 
 interface Props {
   titles: string[];
+  onTitleClick: (index: number) => void; // New prop for handling clicks
 }
-const ProjectTitles = ({ titles }: Props) => {
+
+const ProjectTitles = ({ titles, onTitleClick }: Props) => {
   return (
     <Card
       sx={{
@@ -18,13 +20,21 @@ const ProjectTitles = ({ titles }: Props) => {
         p: 3,
       }}
     >
-      {titles.map((title) => (
+      {titles.map((title, index) => (
         <Box
+          key={index} // Add a unique key
           display="flex"
           flexDirection="row"
           alignItems="center"
           gap={1.5}
           mb={1}
+          onClick={() => onTitleClick(index)} // Handle click
+          sx={{
+            cursor: "pointer",
+            "&:hover": {
+              color: "brand.500",
+            },
+          }}
         >
           <Box
             borderRadius={100}
@@ -41,4 +51,5 @@ const ProjectTitles = ({ titles }: Props) => {
     </Card>
   );
 };
+
 export default ProjectTitles;
