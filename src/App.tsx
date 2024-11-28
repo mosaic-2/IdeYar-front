@@ -12,6 +12,7 @@ import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import ToastifyTest from "./components/toast/TestToastify";
+import PostPreview from "./pages/PreviewPage/PostPreview";
 
 function App() {
   const theme = getTheme();
@@ -61,6 +62,7 @@ function App() {
         />
         <Route path="/testToast" element={<ToastifyTest />} />
         <Route path="/hello" element={<HelloWorldStickyLeft />} />
+        <Route path="/preview-post" element={<PostPreview />} />
       </Routes>
     </ThemeProvider>
   );
