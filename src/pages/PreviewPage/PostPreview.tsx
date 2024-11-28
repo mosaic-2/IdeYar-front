@@ -1,4 +1,4 @@
-import { Box, LinearProgress } from "@mui/material";
+import { Box, CardMedia, LinearProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const PostPreview = () => {
@@ -24,50 +24,123 @@ const PostPreview = () => {
   };
 
   const [screen, setScreen] = useState<string>("desktop");
+  const [vertical, setVertical] = useState<boolean>(false);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
-      if (window.innerWidth <= 426) setScreen("mobile");
-      else setScreen("desktop");
+      if (window.outerWidth <= 425) {
+        setScreen("mobile");
+        setVertical(true);
+      } else {
+        setScreen("desktop");
+        setVertical(false);
+      }
     });
   }, []);
 
   return (
-    <Box
-      bgcolor={screen == "mobile" ? "red" : "blue"}
-      width={screen == "mobile" ? "100px" : "500px"}
-      height="200px"
-      display="flex"
-      flexDirection={screen == "mobile" ? "column" : "row"}
-    >
+    <Box width="100%" height="100vh" bgcolor="gray" display="flex">
       <Box
-        width="100%"
-        height="100%"
-        bgcolor="black"
-        order={screen == "mobile" ? 2 : 1}
+        width={vertical ? "400px" : "900px"}
+        height={vertical ? "550px" : "300px"}
         display="flex"
-        flexDirection="column"
+        flexDirection={vertical ? "column" : "row"}
+        borderRadius="20px"
+        overflow="hidden"
+        bgcolor="white"
       >
         <Box
-          width="100%"
-          order={screen == "mobile" ? 1 : 2}
-          bgcolor="gray"
+          width={vertical ? "400px" : "500px"}
+          height="300px"
+          order={vertical ? 2 : 1}
           display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent={vertical ? "" : "center"}
         >
           <LinearProgress
             variant="determinate"
             value={progress}
-            sx={{ height: 8, width: "100%", borderRadius: 5 }}
+            sx={{
+              height: "10px",
+              width: vertical ? "100%" : "450px",
+              borderRadius: 5,
+              display: "flex",
+              order: vertical ? 1 : 2,
+            }}
           />
+          <Box
+            width="90%"
+            height="80%"
+            alignItems="center"
+            display="flex"
+            flexDirection="column"
+            order={vertical ? 2 : 1}
+          >
+            {/* Project title */}
+            <Box
+              width="100%"
+              height="30%"
+              order={vertical ? 2 : 1}
+              sx={{ direction: "rtl" }}
+              alignContent="center"
+            >
+              <Box display="flex" flexDirection="row" gap={2}>
+                {/* Profile Image */}
+                <Box
+                  borderRadius={100}
+                  width="50px"
+                  height="50px"
+                  bgcolor="#D9D9D9"
+                />
+
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <Typography variant="body2" fontWeight="bold">
+                    {post.mainTitle}
+                  </Typography>
+                  <Typography variant="body3">نام کاربر</Typography>
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              width="100%"
+              height="70%"
+              order={vertical ? 2 : 1}
+              sx={{ direction: "rtl" }}
+            >
+              <Typography variant="body2" fontWeight="bold">
+                {post.mainTitleCaption}
+              </Typography>
+            </Box>
+            {/* BookMark SVG */}
+            <Box
+              position="absolute"
+              width="10px"
+              height="10px"
+              bgcolor="purple"
+              left={50}
+              top={vertical ? "" : 50}
+              bottom={vertical ? 100 : ""}
+            ></Box>
+          </Box>
         </Box>
-        <Box width="100%" height="100%" order={screen == "mobile" ? 2 : 1}>
-          {/* Project title */}
-          <Box>{post.mainTitle}</Box>
-        </Box>
-      </Box>
-      {/* Post image */}
-      <Box width="100%" bgcolor="purple" order={screen == "mobile" ? 1 : 2}>
-        image
+        {/* Post image */}
+
+        <CardMedia
+          component="img"
+          width="400px"
+          height="300px"
+          image={post.mainImageUrl}
+          alt={post.mainTitle}
+          sx={{
+            minWidth: "400px",
+            order: vertical ? 1 : 2,
+          }}
+        />
       </Box>
     </Box>
   );
