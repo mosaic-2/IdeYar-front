@@ -11,7 +11,8 @@ import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
 import RegisterPage from "./components/registerPage/RegisterPage";
-import ToastifyTest from "./components/toast/TestToastify"
+import ToastifyTest from "./components/toast/TestToastify";
+import CodeVerification from "./components/codeVerfication/CodeVerfication";
 
 function App() {
   const theme = getTheme();
@@ -59,13 +60,16 @@ function App() {
             </PageLayout>
           }
         />
+        <Route path="/testToast" element={<ToastifyTest />} />
+        <Route path="/hello" element={<HelloWorldStickyLeft />} />
         <Route
-          path="/testToast"
+          path="/code-verification/:signUpToken/:code"
           element={
-            <ToastifyTest />
+            <PageLayout>
+              <CodeVerification />
+            </PageLayout>
           }
         />
-        <Route path="/hello" element={<HelloWorldStickyLeft />} />
       </Routes>
     </ThemeProvider>
   );
