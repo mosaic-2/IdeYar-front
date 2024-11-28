@@ -10,9 +10,9 @@ import PageLayout from "./components/layouts/PageLayout";
 import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
-import RegisterPage from "./components/registerPage/RegisterPage";
+import RegisterPage from "./components/RegisterPage/RegisterPage";
 import ToastifyTest from "./components/toast/TestToastify";
-import CodeVerification from "./components/codeVerfication/CodeVerfication";
+import CodeVerification from "./components/codeVerfication/CodeVerfication";;
 
 function App() {
   const theme = getTheme();
