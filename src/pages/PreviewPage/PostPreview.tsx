@@ -112,7 +112,7 @@ const PostPreview = () => {
               order={vertical ? 2 : 1}
               sx={{ direction: "rtl" }}
             >
-              <Typography variant="body2" fontWeight="bold">
+              <Typography variant="body3" fontWeight="bold">
                 {post.mainTitleCaption}
               </Typography>
             </Box>
