@@ -12,6 +12,7 @@ import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import ToastifyTest from "./components/toast/TestToastify";
+import CodeVerification from "./components/codeVerfication/CodeVerfication";;
 
 function App() {
   const theme = getTheme();
@@ -61,6 +62,14 @@ function App() {
         />
         <Route path="/testToast" element={<ToastifyTest />} />
         <Route path="/hello" element={<HelloWorldStickyLeft />} />
+        <Route
+          path="/code-verification/:signUpToken/:code"
+          element={
+            <PageLayout>
+              <CodeVerification />
+            </PageLayout>
+          }
+        />
       </Routes>
     </ThemeProvider>
   );
