@@ -11,6 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import { useState, useEffect, ChangeEvent } from "react";
 import { updateProfileApi } from "../../apis/boxProfileApi";
+import { uploadPostImageApi } from "../../apis/uploadImageApi";
 
 // Import date picker components
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -64,7 +65,9 @@ const ProfileBox = () => {
     if (field === "bio") setBio(value as string);
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       // Ensure the selected file is an image
@@ -83,6 +86,15 @@ const ProfileBox = () => {
       setProfileImage(imageUrl);
       setImageFile(file);
       setImagePreviewUrl(imageUrl);
+
+      // Upload the image using the API
+      try {
+        await uploadPostImageApi(file);
+        alert("تصویر با موفقیت بارگذاری شد.");
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        alert("خطا در بارگذاری تصویر.");
+      }
     }
   };
 
