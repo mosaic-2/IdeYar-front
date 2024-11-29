@@ -10,8 +10,12 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import { useState, useEffect, ChangeEvent } from "react";
-import { updateProfileApi } from "../../apis/boxProfileApi";
-import { uploadPostImageApi } from "../../apis/uploadImageApi";
+import {
+  changeEmailApi,
+  updateProfileInfoApi,
+  getProfileInfoApi,
+} from "../../apis/profileBoxApi";
+import { useSnackbar } from "notistack";
 
 // Import date picker components
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -22,37 +26,145 @@ import jMoment from "moment-jalaali";
 jMoment.loadPersian({ dialect: "persian-modern", usePersianDigits: true });
 
 const ProfileBox = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [isEditing, setIsEditing] = useState(false);
-  const [email, setEmail] = useState("user@example.com");
-  const [phone, setPhone] = useState("09123456789");
-  const [bio, setBio] = useState("این یک بیوگرافی کوتاه درباره کاربر است.");
+
+  // Profile fields
+  const [username, setUsername] = useState("نام کاربری");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [bio, setBio] = useState("");
   const [birthday, setBirthday] = useState<jMoment.Moment | null>(null);
-  const [profileImage, setProfileImage] = useState<string | undefined>(
-    "/path/to/profile-image.jpg"
+  const [profileImage, setProfileImage] = useState<string>(
+    "/path/to/default-profile-image.jpg"
   );
+
+  // Initial values to detect changes
+  const [initialUsername, setInitialUsername] = useState("");
+  const [initialEmail, setInitialEmail] = useState("");
+  const [initialPhone, setInitialPhone] = useState("");
+  const [initialBio, setInitialBio] = useState("");
+  const [initialBirthday, setInitialBirthday] = useState<jMoment.Moment | null>(
+    null
+  );
+  const [initialProfileImage, setInitialProfileImage] = useState<string>(
+    "/path/to/default-profile-image.jpg"
+  );
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | undefined>(
     undefined
   );
 
+  // Fetch user profile information when the component mounts
+  useEffect(() => {
+    const fetchProfileInfo = async () => {
+      try {
+        const response = await getProfileInfoApi();
+        const data = response.data;
+        setUsername(data.username || "نام کاربری");
+        setPhone(data.phone || "");
+        setBio(data.bio || "");
+        setBirthday(
+          data.birthday ? jMoment(data.birthday, "YYYY-MM-DD") : null
+        );
+        setProfileImage(
+          data.profile_image_url || "/path/to/default-profile-image.jpg"
+        );
+        // Set initial values
+        setInitialUsername(data.username || "");
+        setInitialPhone(data.phone || "");
+        setInitialBio(data.bio || "");
+        setInitialBirthday(
+          data.birthday ? jMoment(data.birthday, "YYYY-MM-DD") : null
+        );
+        setInitialProfileImage(
+          data.profile_image_url || "/path/to/default-profile-image.jpg"
+        );
+        // If email is available, set email and initialEmail
+        setEmail(data.email || "");
+        setInitialEmail(data.email || "");
+      } catch (error) {
+        console.error("Error fetching profile info:", error);
+      }
+    };
+    fetchProfileInfo();
+  }, []);
+
+  // Handle saving changes
   const handleToggleEdit = async () => {
     if (isEditing) {
-      // Call API to save updated profile information
       try {
-        // Convert Jalali date to Gregorian date before sending to API
-        const gregorianDate = birthday
-          ? birthday.locale("en").format("YYYY-MM-DD")
-          : null;
-        await updateProfileApi({ email, phone, bio, birthday: gregorianDate });
-        alert("Profile updated successfully");
+        let emailChanged = email !== initialEmail;
+        let profileInfoChanged = false;
+        let updateProfileData: any = {};
+
+        if (username !== initialUsername) {
+          updateProfileData.username = username;
+          profileInfoChanged = true;
+        }
+        if (phone !== initialPhone) {
+          updateProfileData.phone = phone;
+          profileInfoChanged = true;
+        }
+        if (bio !== initialBio) {
+          updateProfileData.bio = bio;
+          profileInfoChanged = true;
+        }
+        if (
+          (birthday && !initialBirthday) ||
+          (!birthday && initialBirthday) ||
+          (birthday &&
+            initialBirthday &&
+            !birthday.isSame(initialBirthday, "day"))
+        ) {
+          // Convert Jalali date to Gregorian date before sending to API
+          const gregorianDate = birthday
+            ? birthday.locale("en").format("YYYY-MM-DD")
+            : null;
+          updateProfileData.birthday = gregorianDate;
+          profileInfoChanged = true;
+        }
+        if (imageFile) {
+          updateProfileData.profile_image = imageFile;
+          profileInfoChanged = true;
+        }
+
+        if (emailChanged) {
+          // Call ChangeEmail API
+          await changeEmailApi(email);
+          enqueueSnackbar("برای تغییر ایمیل خود، به ایمیل خود مراجعه کنید", {
+            variant: "success",
+          });
+          // Update initial email
+          setInitialEmail(email);
+        }
+
+        if (profileInfoChanged) {
+          await updateProfileInfoApi(updateProfileData);
+          enqueueSnackbar("اطلاعات پروفایل با موفقیت به‌روزرسانی شد", {
+            variant: "success",
+          });
+          // Update initial values
+          setInitialUsername(username);
+          setInitialPhone(phone);
+          setInitialBio(bio);
+          setInitialBirthday(birthday);
+          if (imageFile) {
+            // Update profile image preview
+            setInitialProfileImage(profileImage);
+            setImageFile(null); // Reset imageFile after successful upload
+          }
+        }
       } catch (error) {
         console.error("Error updating profile:", error);
-        alert("Failed to update profile");
+        enqueueSnackbar("خطا در به‌روزرسانی پروفایل", { variant: "error" });
       }
     }
     setIsEditing(!isEditing);
   };
 
+  // Handle field changes
   const handleFieldChange = (
     event: ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | { value: unknown }
@@ -65,9 +177,8 @@ const ProfileBox = () => {
     if (field === "bio") setBio(value as string);
   };
 
-  const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  // Handle profile image change
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       // Ensure the selected file is an image
@@ -86,15 +197,6 @@ const ProfileBox = () => {
       setProfileImage(imageUrl);
       setImageFile(file);
       setImagePreviewUrl(imageUrl);
-
-      // Upload the image using the API
-      try {
-        await uploadPostImageApi(file);
-        alert("تصویر با موفقیت بارگذاری شد.");
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        alert("خطا در بارگذاری تصویر.");
-      }
     }
   };
 
@@ -160,14 +262,52 @@ const ProfileBox = () => {
         {/* Divider under the upload section */}
         <Divider sx={{ width: "100%", mb: 4 }} />
 
-        {/* User Information */}
-        <Typography
-          variant="h6"
-          gutterBottom
-          sx={{ mb: isEditing ? "10px" : "12px" }}
+        {/* Username Field */}
+        <Box
+          display="flex"
+          alignItems="center"
+          width="100%"
+          justifyContent="center"
+          mb={2}
+          sx={{ gap: 2 }}
         >
-          نام کاربری
-        </Typography>
+          {isEditing ? (
+            <TextField
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              size="small"
+              variant="outlined"
+              sx={{
+                flexGrow: 1,
+                width: "100%",
+                maxWidth: 250,
+                height: 40,
+              }}
+              InputProps={{
+                sx: {
+                  "& .MuiInputBase-input": {
+                    textAlign: "center",
+                  },
+                },
+              }}
+            />
+          ) : (
+            <Typography
+              variant="body1"
+              sx={{
+                flexGrow: 1,
+                width: "100%",
+                maxWidth: 250,
+                height: 40,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {username}
+            </Typography>
+          )}
+        </Box>
 
         {/* Email Field */}
         <Box
@@ -182,7 +322,6 @@ const ProfileBox = () => {
             <TextField
               value={email}
               onChange={(e) => handleFieldChange(e, "email")}
-              autoFocus
               size="small"
               variant="outlined"
               sx={{
@@ -287,7 +426,7 @@ const ProfileBox = () => {
                   sx={{
                     flexGrow: 1,
                     width: "100%",
-                    maxWidth: 250, // Set maxWidth to 250 to match Bio Field
+                    maxWidth: 250,
                     height: 40,
                     "& .MuiInputBase-input": {
                       textAlign: "center",
@@ -319,14 +458,14 @@ const ProfileBox = () => {
               sx={{
                 flexGrow: 1,
                 width: "100%",
-                maxWidth: 250, // Set maxWidth to 250 to match Bio Field
+                maxWidth: 250,
                 height: 40,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                wordBreak: "break-word", // Ensures long words break within the box
-                overflowWrap: "break-word", // Additional support for word breaking
-                padding: 1, // Optional: Adds padding for better text readability
+                wordBreak: "break-word",
+                overflowWrap: "break-word",
+                padding: 1,
               }}
             >
               {birthday ? birthday.format("jYYYY/jMM/jDD") : ""}
@@ -350,15 +489,15 @@ const ProfileBox = () => {
               size="small"
               variant="outlined"
               multiline
-              minRows={3} // Sets the minimum number of visible rows
-              maxRows={10} // Sets the maximum number of visible rows (adjust as needed)
+              minRows={3}
+              maxRows={10}
               sx={{
                 flexGrow: 1,
                 width: "100%",
                 maxWidth: 250,
                 "& .MuiInputBase-input": {
-                  wordBreak: "break-word", // Ensures long words break to prevent overflow
-                  overflowWrap: "break-word", // Additional support for word breaking
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
                 },
               }}
             />
@@ -374,9 +513,9 @@ const ProfileBox = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 textAlign: "center",
-                wordBreak: "break-word", // Ensures long words break within the box
-                overflowWrap: "break-word", // Additional support for word breaking
-                padding: 1, // Optional: Adds padding for better text readability
+                wordBreak: "break-word",
+                overflowWrap: "break-word",
+                padding: 1,
               }}
             >
               {bio}
