@@ -1,50 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { codeVerificationApi } from "../../apis/codeVerficationApi.ts"; // Assuming the API function is in the specified folder
+import { codeVerificationApi } from "../../apis/codeVerficationApi.ts"; // Ensure the correct path and filename
+import { useSnackbar } from "notistack";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const CodeVerification = () => {
   const { signUpToken, code } = useParams();
   const navigate = useNavigate(); // Initialize navigation
-  const [verificationStatus, setVerificationStatus] = useState(null); // To store verification status
-  const [errorMessage, setErrorMessage] = useState(null); // To handle errors
+  const { enqueueSnackbar } = useSnackbar(); // Snackbar for showing notifications
+  const [loading, setLoading] = useState(true); // Loading state
+  const hasVerifiedRef = useRef(false); // Ref to track if verification has been done
 
   const handleCodeVerification = async () => {
     try {
       const response = await codeVerificationApi({ signUpToken, code });
-      setVerificationStatus(response.data); // Assuming the API returns some success data
-      setErrorMessage(null);
+      setLoading(false);
+      enqueueSnackbar("ثبت نام شما با موفقیت صورت گرفت.", {
+        variant: "success",
+      });
 
       // Redirect to login page after successful verification
       navigate("/login");
     } catch (error) {
-      setVerificationStatus(null);
-      setErrorMessage(
-        error.response?.data?.message || "Code verification failed!"
-      );
+      setLoading(false);
+      enqueueSnackbar("تکمیل ثبت نام شما با خطا مواجه شد.", {
+        variant: "error",
+      });
+      navigate("/");
     }
   };
 
   useEffect(() => {
-    if (signUpToken && code) {
+    if (signUpToken && code && !hasVerifiedRef.current) {
+      hasVerifiedRef.current = true; // Set the flag to prevent future calls
       handleCodeVerification();
     }
   }, [signUpToken, code]);
 
   return (
-    <div>
-      <h1>Code Verification</h1>
-      {verificationStatus && (
-        <div>
-          <p>Verification Successful! Redirecting to login...</p>
-        </div>
-      )}
-      {errorMessage && (
-        <div>
-          <p style={{ color: "red" }}>{errorMessage}</p>
-        </div>
-      )}
-      {!verificationStatus && !errorMessage && <p>Verifying your code...</p>}
-    </div>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      m={2}
+    >
+      {loading ? <CircularProgress /> : <h1>Code Verification</h1>}
+    </Box>
   );
 };
 
