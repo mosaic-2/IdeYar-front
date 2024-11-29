@@ -67,12 +67,14 @@ const LoginPage = () => {
       loginApi(userNameOrEmail, password)
         .then((res) => {
           console.log("Login response: ", res);
+          const { jwtToken, refreshToken } = res.data; // Assuming response has `data` containing tokens
+
           enqueueSnackbar("ورود موفق", { variant: "success" });
           dispatch(
             setSession({
               isLoggedIn: true,
-              jwtToken: "",
-              refreshToken: "",
+              jwtToken: jwtToken || "",
+              refreshToken: refreshToken || "",
             })
           );
           navigate("/");
