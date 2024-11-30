@@ -26,9 +26,8 @@ import {
 } from "../../assets/regex/regexPatterns";
 import SignupImage from "../../assets/signup.svg?react";
 import { signupInitializeApi } from "../../apis/signUp.ts";
-import Toast from "../toast/Toast.tsx";
-import { useDispatch } from "react-redux";
-import { setSession } from "../../store/sessionSlice";
+import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [name, setName] = useState<string>("");
@@ -46,8 +45,10 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVal, setShowPasswordVal] = useState(false);
   const [checked, setChecked] = useState(false);
+
   const theme = useTheme();
-  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -59,7 +60,6 @@ const RegisterPage = () => {
       setNameErr(true);
     } else if (!value.match(usernamePattern)) {
       setNameErr(true);
-      console.log("false");
     } else setNameErr(false);
   };
 
@@ -68,7 +68,6 @@ const RegisterPage = () => {
       setEmailErr(true);
     } else if (!value.match(emailPattern)) {
       setEmailErr(true);
-      console.log("false");
     } else setEmailErr(false);
   };
 
@@ -77,7 +76,6 @@ const RegisterPage = () => {
       setPasswordErr(true);
     } else if (!value.match(passwordPattern)) {
       setPasswordErr(true);
-      console.log("false");
     } else setPasswordErr(false);
   };
 
@@ -86,7 +84,6 @@ const RegisterPage = () => {
       setPasswordConfirmErr(true);
     } else if (value !== password) {
       setPasswordConfirmErr(true);
-      console.log("false");
     } else setPasswordConfirmErr(false);
   };
 
@@ -103,63 +100,20 @@ const RegisterPage = () => {
       return;
     }
 
-    // Proceed to send the API request
-    try {
-      const response = await signupInitializeApi(name, email, password);
-
-      // Handle the response
-      const { token, refreshToken } = response.data;
-      console.log("Sign up successful, token:", token);
-
-      // Show success notification
-      Toast({
-        type: "success",
-        description: t("signUpSuccess"),
-        onClose: () => {},
+    signupInitializeApi(name, email, password)
+      .then((res) => {
+        console.log("Signup response: ", res);
+        enqueueSnackbar("برای تکمیل ثبت نام به ایمیل خود مراجعه کنید", {
+          variant: "success",
+        });
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log("Signup error: ", err);
+        enqueueSnackbar("خطا ارتباط با سرور", {
+          variant: "error",
+        });
       });
-
-      // Store tokens in session slice
-      dispatch(
-        setSession({
-          isLoggedIn: true,
-          jwtToken: token,
-          refreshToken,
-        })
-      );
-
-      // Redirect or perform other actions as needed
-      // navigate("/dashboard");
-    } catch (error: any) {
-      // Handle errors
-      if (error.response) {
-        // The server responded with an error
-        console.log("Error response:", error.response.data);
-        setSignUpError(error.response.data.message || t("signUpFailed"));
-        Toast({
-          type: "error",
-          description: error.response.data.message || t("signUpFailed"),
-          onClose: () => {},
-        });
-      } else if (error.request) {
-        // No response received
-        console.log("No response:", error.request);
-        setSignUpError(t("noResponseFromServer"));
-        Toast({
-          type: "error",
-          description: t("noResponseFromServer"),
-          onClose: () => {},
-        });
-      } else {
-        // Other errors
-        console.log("Error", error.message);
-        setSignUpError(t("signUpFailed"));
-        Toast({
-          type: "error",
-          description: t("signUpFailed"),
-          onClose: () => {},
-        });
-      }
-    }
   };
 
   return (

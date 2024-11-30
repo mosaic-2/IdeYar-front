@@ -7,8 +7,8 @@ export default interface SignupInitializeResponse {
 // ./src/models/SignupCompleteResponse.ts
 export default interface SignupCompleteResponse {
   account: AccountResponse;
-  jwtToken: string;
-  refreshToken: string;
+  jwtToken?: string;
+  refreshToken?: string;
 }
 
 // ./src/models/AuthResponse.ts

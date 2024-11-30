@@ -1,6 +1,18 @@
-import { Box, CardMedia, LinearProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CardMedia,
+  Icon,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import { createPostApi, CreatePostRequest } from "../../apis/postApi";
+import {
+  createPostApi,
+  CreatePostRequest,
+  getPostImage,
+} from "../../apis/postApi";
+import Bookmark from "../../assets/bookmark.svg?react";
 
 const PostPreview = () => {
   const progress = Math.min((1378 / 2000) * 100, 100);
@@ -26,48 +38,50 @@ const PostPreview = () => {
 
   const [screen, setScreen] = useState<string>("desktop");
   const [vertical, setVertical] = useState<boolean>(false);
+  const [isClicked, setIsClicked] = useState<boolean>(false);
 
   useEffect(() => {
-    createPost();
+    getPostImage();
     window.addEventListener("resize", () => {
       if (window.outerWidth <= 425) {
         setScreen("mobile");
-        setVertical(true);
+        // setVertical(true);
       } else {
         setScreen("desktop");
-        setVertical(false);
+        // setVertical(false);
       }
     });
   }, []);
 
-  const createPost = async () => {
-    const postRequestData: CreatePostRequest = {
-      title: "جارو هری پاتر",
-      minimum_fund: "100000",
-      post_details: [
-        {
-          title: "جارو اما نه هر جارویی",
-          description: "جارویی که نقشه ساخت آن از دفتر دامبلدور به سرقت رفته",
-          order: 0,
-        },
-        {
-          title: "",
-          description: "با این جارو پرواز کنید",
-        },
-      ],
-    };
+  // const createPost = async () => {
+  //   const postRequestData: CreatePostRequest = {
+  //     title: "جارو هری پاتر",
+  //     minimum_fund: "100000",
+  //     post_details: [
+  //       {
+  //         title: "جارو اما نه هر جارویی",
+  //         description: "جارویی که نقشه ساخت آن از دفتر دامبلدور به سرقت رفته",
+  //         order: 0,
+  //       },
+  //       {
+  //         title: "",
+  //         description: "با این جارو پرواز کنید",
+  //       },
+  //     ],
+  //   };
 
-    try {
-      const response = await createPostApi(postRequestData);
-      console.log(response);
-      console.log("Post created successfully:", response.data);
-    } catch (error) {
-      console.error("Error creating post:", error);
-    }
-  };
+  //   try {
+  //     const response = await createPostApi(postRequestData);
+  //     console.log(response);
+  //     console.log("Post created successfully:", response.data);
+  //   } catch (error) {
+  //     console.error("Error creating post:", error);
+  //   }
+  // };
 
   return (
     <Box width="100%" height="100vh" bgcolor="gray" display="flex">
+      <Button onClick={() => setVertical(!vertical)}>revert</Button>
       <Box
         width={vertical ? "400px" : "900px"}
         height={vertical ? "550px" : "300px"}
@@ -90,10 +104,11 @@ const PostPreview = () => {
             variant="determinate"
             value={progress}
             sx={{
+              m: vertical ? "" : 2,
               height: "10px",
-              width: vertical ? "100%" : "450px",
+              width: vertical ? "100%" : "90%",
               borderRadius: 5,
-              display: "flex",
+
               order: vertical ? 1 : 2,
             }}
           />
@@ -104,6 +119,7 @@ const PostPreview = () => {
             display="flex"
             flexDirection="column"
             order={vertical ? 2 : 1}
+            position="relative"
           >
             {/* Project title */}
             <Box
@@ -145,27 +161,35 @@ const PostPreview = () => {
               </Typography>
             </Box>
             {/* BookMark SVG */}
+
             <Box
-              position="absolute"
-              width="10px"
-              height="10px"
-              bgcolor="purple"
-              left={50}
-              top={vertical ? "" : 50}
-              bottom={vertical ? 100 : ""}
-            ></Box>
+              sx={{
+                position: "absolute",
+                width: "30px",
+                height: "30px",
+                left: 10,
+                top: vertical ? "" : 20,
+                bottom: vertical ? -20 : "",
+              }}
+            >
+              <Bookmark
+                cursor="pointer"
+                onClick={() => {
+                  setIsClicked(!isClicked);
+                }}
+              />
+            </Box>
           </Box>
         </Box>
         {/* Post image */}
 
         <CardMedia
           component="img"
-          width="400px"
-          height="300px"
           image={post.mainImageUrl}
           alt={post.mainTitle}
           sx={{
-            minWidth: "400px",
+            width: "400px",
+            height: "300px",
             order: vertical ? 1 : 2,
           }}
         />

@@ -21,9 +21,10 @@ import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
 import LoginImage from "../../assets/login.svg?react";
 import { loginApi } from "../../apis/loginApi.ts";
-import Toast from "../toast/Toast.tsx";
 import { useDispatch } from "react-redux";
 import { setSession } from "../../store/sessionSlice";
+import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -31,6 +32,8 @@ const LoginPage = () => {
   const [checked, setChecked] = useState(false);
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -61,58 +64,25 @@ const LoginPage = () => {
     }
 
     if (userNameOrEmail && password) {
-      try {
-        const response = await loginApi(userNameOrEmail, password);
-
-        const { jwtToken, refreshToken } = response.data;
-        console.log("Login successful:", jwtToken, refreshToken);
-
-        // Store tokens in session slice
-        dispatch(
-          setSession({
-            isLoggedIn: true,
-            jwtToken,
-            refreshToken,
-          })
-        );
-
-        // Show success notification
-        Toast({
-          type: "success",
-          description: t("loginSuccess"),
-          onClose: () => {},
+      loginApi(userNameOrEmail, password)
+        .then((res) => {
+          console.log("Login response: ", res);
+          const { jwtToken, refreshToken } = res.data; // Assuming response has `data` containing tokens
+          console.log("jwt: ", jwtToken);
+          enqueueSnackbar("ورود موفق", { variant: "success" });
+          dispatch(
+            setSession({
+              isLoggedIn: true,
+              jwtToken: jwtToken,
+              refreshToken: refreshToken,
+            })
+          );
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log("Login error: ", err);
+          enqueueSnackbar("خطا در ورود", { variant: "error" });
         });
-
-        // Redirect or perform other actions as needed
-        // navigate to dashboard or home page
-      } catch (error) {
-        // Handle errors
-        if (error.response) {
-          console.log("Error response:", error.response.data);
-          setLoginError(error.response.data.message || t("loginFailed"));
-          Toast({
-            type: "error",
-            description: error.response.data.message || t("loginFailed"),
-            onClose: () => {},
-          });
-        } else if (error.request) {
-          console.log("No response:", error.request);
-          setLoginError(t("noResponseFromServer"));
-          Toast({
-            type: "error",
-            description: t("noResponseFromServer"),
-            onClose: () => {},
-          });
-        } else {
-          console.log("Error", error.message);
-          setLoginError(t("loginFailed"));
-          Toast({
-            type: "error",
-            description: t("loginFailed"),
-            onClose: () => {},
-          });
-        }
-      }
     }
   };
 

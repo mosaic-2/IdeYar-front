@@ -18,5 +18,31 @@ export interface CreatePostResponse {
   message?: string;
 }
 
+export interface UploadPostImageResponse {
+  success: boolean;
+  message: string;
+  imageUrl?: string; // Assuming the server responds with the image URL
+}
+
 export const createPostApi = (requestData: CreatePostRequest) =>
   apiClient.post<CreatePostResponse>("/api/post", requestData);
+
+export const getPostImage = () =>
+  apiClient.post<CreatePostResponse>("/api/image/1");
+
+// export const uploadPostImageApi = (
+//   file: File,
+//   order: number,
+//   postID: string
+// ) => {
+//   const formData = new FormData();
+//   formData.append("uploadFile", file);
+//   formData.append("order", order.toString());
+//   formData.append("postID", postID);
+
+//   return apiClient.post<UploadPostImageResponse>("/api/post-image", formData, {
+//     headers: {
+//       "Content-Type": "multipart/form-data",
+//     },
+//   });
+// };
