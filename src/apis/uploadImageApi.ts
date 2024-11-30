@@ -7,18 +7,12 @@ export interface UploadImageResponse {
   // Add response fields if available
 }
 
-// Function to upload the image
-export const uploadPostImageApi = (
-  uploadFile: File,
-  order: number = 0,
-  postID: string = ""
-) => {
+// Function to upload the user image
+export const uploadUserImageApi = (uploadFile: File) => {
   const formData = new FormData();
   formData.append("uploadFile", uploadFile);
-  formData.append("order", order.toString());
-  formData.append("postID", postID);
 
-  return apiClient.post<UploadImageResponse>("/api/post-image", formData, {
+  return apiClient.post<UploadImageResponse>("/api/user-image", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

@@ -15,6 +15,7 @@ import {
   updateProfileInfoApi,
   getProfileInfoApi,
 } from "../../apis/profileBoxApi";
+import { uploadUserImageApi } from "../../apis/uploadImageApi.ts";
 import { useSnackbar } from "notistack";
 
 // Import date picker components
@@ -62,15 +63,21 @@ const ProfileBox = () => {
       try {
         const response = await getProfileInfoApi();
         const data = response.data;
+
+        // Set the profile image URL using the base URL and the image URL from the response
+        const fullProfileImageUrl = data.profileImageUrl
+          ? `https://back.ideyar-app.ir/api/image/${data.profileImageUrl}`
+          : "/path/to/default-profile-image.jpg"; // Fallback to default image
+
         setUsername(data.username || "نام کاربری");
         setPhone(data.phone || "");
         setBio(data.bio || "");
         setBirthday(
           data.birthday ? jMoment(data.birthday, "YYYY-MM-DD") : null
         );
-        setProfileImage(
-          data.profile_image_url || "/path/to/default-profile-image.jpg"
-        );
+        setProfileImage(fullProfileImageUrl); // Set the image URL
+        setInitialProfileImage(fullProfileImageUrl); // Set the initial image URL for comparison
+
         // Set initial values
         setInitialUsername(data.username || "");
         setInitialPhone(data.phone || "");
@@ -78,12 +85,10 @@ const ProfileBox = () => {
         setInitialBirthday(
           data.birthday ? jMoment(data.birthday, "YYYY-MM-DD") : null
         );
-        setInitialProfileImage(
-          data.profile_image_url || "/path/to/default-profile-image.jpg"
-        );
-        // If email is available, set email and initialEmail
-        setEmail(data.email || "");
         setInitialEmail(data.email || "");
+        setEmail(data.email || "");
+
+        console.log(data);
       } catch (error) {
         console.error("Error fetching profile info:", error);
       }
@@ -195,7 +200,9 @@ const ProfileBox = () => {
   };
 
   // Handle profile image change
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       // Ensure the selected file is an image
@@ -214,6 +221,18 @@ const ProfileBox = () => {
       setProfileImage(imageUrl);
       setImageFile(file);
       setImagePreviewUrl(imageUrl);
+
+      // Upload the image using the API
+      try {
+        const response = await uploadUserImageApi(file);
+        if (response) {
+          console.log("Image uploaded successfully:", response);
+          // Handle the response (e.g., store image URL, show success message, etc.)
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        alert("خطا در بارگذاری تصویر. لطفاً دوباره تلاش کنید.");
+      }
     }
   };
 
