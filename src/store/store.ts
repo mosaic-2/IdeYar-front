@@ -12,7 +12,7 @@ import Settings from "../models/Settings";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["settings"],
+  whitelist: ["settings", "session"],
 };
 
 const rootReducer = combineReducers({

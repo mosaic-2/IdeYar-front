@@ -3,8 +3,8 @@ import Session from "../models/Session";
 
 const initialState: Session = {
   isLoggedIn: false,
-  jwtToken: "",
-  refreshToken: "",
+  jwtToken: null,
+  refreshToken: null,
 };
 
 const sessionSlice = createSlice({
