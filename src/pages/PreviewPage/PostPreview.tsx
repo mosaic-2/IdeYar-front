@@ -1,5 +1,6 @@
 import { Box, CardMedia, LinearProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { createPostApi, CreatePostRequest } from "../../apis/postApi";
 
 const PostPreview = () => {
   const progress = Math.min((1378 / 2000) * 100, 100);
@@ -27,6 +28,7 @@ const PostPreview = () => {
   const [vertical, setVertical] = useState<boolean>(false);
 
   useEffect(() => {
+    createPost();
     window.addEventListener("resize", () => {
       if (window.outerWidth <= 425) {
         setScreen("mobile");
@@ -37,6 +39,32 @@ const PostPreview = () => {
       }
     });
   }, []);
+
+  const createPost = async () => {
+    const postRequestData: CreatePostRequest = {
+      title: "جارو هری پاتر",
+      minimum_fund: "100000",
+      post_details: [
+        {
+          title: "جارو اما نه هر جارویی",
+          description: "جارویی که نقشه ساخت آن از دفتر دامبلدور به سرقت رفته",
+          order: 0,
+        },
+        {
+          title: "",
+          description: "با این جارو پرواز کنید",
+        },
+      ],
+    };
+
+    try {
+      const response = await createPostApi(postRequestData);
+      console.log(response);
+      console.log("Post created successfully:", response.data);
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
+  };
 
   return (
     <Box width="100%" height="100vh" bgcolor="gray" display="flex">
