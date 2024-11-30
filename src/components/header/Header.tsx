@@ -1,7 +1,7 @@
 // src/components/Header/Header.tsx
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { Typography, Box, IconButton, Stack, CssBaseline } from "@mui/material";
+import { Box, IconButton, Stack, CssBaseline } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeButton from "../buttons/DarkModeButton";
 import ExploreIcon from "@mui/icons-material/Explore";
@@ -12,9 +12,13 @@ import PrimaryButton from "../buttons/PrimaryButton";
 import Search from "./Search";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Logo from "../logo/Logo";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import UserButton from "./UserButton";
 
 const Header: React.FC = () => {
   const navigate = useNavigate(); // Initialize useNavigate
+  const session = useSelector((state: RootState) => state.session);
 
   const handleLoginClick = () => {
     navigate("/login"); // Navigate to /login
@@ -86,13 +90,18 @@ const Header: React.FC = () => {
               }}
             >
               <Stack direction="row" alignItems="center" spacing={1}>
+                <Box width={10} height={10} />
                 <Search />
                 <DarkModeButton />
-                <PrimaryButton
-                  text="ورود"
-                  leftIcon={LoginIcon}
-                  onClick={handleLoginClick}
-                />
+                {session.isLoggedIn ? (
+                  <UserButton />
+                ) : (
+                  <PrimaryButton
+                    text="ورود"
+                    leftIcon={LoginIcon}
+                    onClick={handleLoginClick}
+                  />
+                )}
               </Stack>
             </Box>
 

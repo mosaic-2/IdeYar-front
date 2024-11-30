@@ -68,13 +68,13 @@ const LoginPage = () => {
         .then((res) => {
           console.log("Login response: ", res);
           const { jwtToken, refreshToken } = res.data; // Assuming response has `data` containing tokens
-
+          console.log("jwt: ", jwtToken);
           enqueueSnackbar("ورود موفق", { variant: "success" });
           dispatch(
             setSession({
               isLoggedIn: true,
-              jwtToken: jwtToken || "",
-              refreshToken: refreshToken || "",
+              jwtToken: jwtToken,
+              refreshToken: refreshToken,
             })
           );
           navigate("/");
