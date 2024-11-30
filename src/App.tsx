@@ -11,7 +11,8 @@ import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
 import CodeVerification from "./components/codeVerfication/CodeVerfication";
-import RegisterPage from "./components/registerPage/RegisterPage";
+import RegisterPage from "./components/RegisterPage/RegisterPage";
+import PostPreview from "./pages/PreviewPage/PostPreview";
 
 function App() {
   const theme = getTheme();
@@ -60,6 +61,7 @@ function App() {
           }
         />
         <Route path="/hello" element={<HelloWorldStickyLeft />} />
+        <Route path="/preview-post" element={<PostPreview />} />
         <Route
           path="/code-veification/:signUpToken/:code"
           element={
