@@ -97,7 +97,14 @@ const ProfileBox = () => {
       try {
         let emailChanged = email !== initialEmail;
         let profileInfoChanged = false;
-        let updateProfileData: any = {};
+
+        // Prepare the update profile data
+        const updateProfileData: {
+          username?: string;
+          phone?: string;
+          bio?: string;
+          birthday?: string;
+        } = {};
 
         if (username !== initialUsername) {
           updateProfileData.username = username;
@@ -125,10 +132,6 @@ const ProfileBox = () => {
           updateProfileData.birthday = gregorianDate;
           profileInfoChanged = true;
         }
-        if (imageFile) {
-          updateProfileData.profile_image = imageFile;
-          profileInfoChanged = true;
-        }
 
         if (emailChanged) {
           // Call ChangeEmail API
@@ -141,15 +144,29 @@ const ProfileBox = () => {
         }
 
         if (profileInfoChanged) {
-          await updateProfileInfoApi(updateProfileData);
+          // Call the UpdateProfileInfo API with the updated profile data
+          const updatedProfile = await updateProfileInfoApi(
+            updateProfileData.username ?? initialUsername,
+            updateProfileData.phone ?? initialPhone,
+            updateProfileData.bio ?? initialBio,
+            updateProfileData.birthday ??
+              initialBirthday?.locale("en").format("YYYY-MM-DD") ??
+              ""
+          );
           enqueueSnackbar("اطلاعات پروفایل با موفقیت به‌روزرسانی شد", {
             variant: "success",
           });
-          // Update initial values
-          setInitialUsername(username);
-          setInitialPhone(phone);
-          setInitialBio(bio);
-          setInitialBirthday(birthday);
+
+          // Update the initial values with the response from the server
+          setInitialUsername(updatedProfile.username);
+          setInitialPhone(updatedProfile.phone);
+          setInitialBio(updatedProfile.bio);
+          setInitialBirthday(
+            updatedProfile.birthday
+              ? moment(updatedProfile.birthday, "YYYY-MM-DD")
+              : null
+          );
+
           if (imageFile) {
             // Update profile image preview
             setInitialProfileImage(profileImage);
