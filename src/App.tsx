@@ -13,6 +13,7 @@ import PostPage from "./pages/PostPage/PostPage";
 import CodeVerification from "./components/codeVerfication/CodeVerfication";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import PostPreview from "./pages/PreviewPage/PostPreview";
+import CreatePost from "./components/createPostPage/CreatePost";
 
 function App() {
   const theme = getTheme();
@@ -57,6 +58,14 @@ function App() {
           element={
             <PageLayout>
               <PostPage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/create-post"
+          element={
+            <PageLayout>
+              <CreatePost />
             </PageLayout>
           }
         />

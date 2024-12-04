@@ -18,7 +18,13 @@
   "timeLeft": ":زمان باقیمانده",
   "startTime": "زمان شروع پروژه:",
   "goal": ":هدف",
-  "filled": "تکمیل شده %"
+  "filled": "تکمیل شده %",
+  "button": {
+    "uploadImage": "آپلود عکس",
+    "AddNewSection": "افزودن بخش جدید"
+  },
+  "field": {
+    "mainTitle": "عنوان اصلی",
+    "subTitle": "زیر عنوان"
+  }
 }
-
-
