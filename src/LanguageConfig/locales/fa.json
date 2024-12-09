@@ -26,5 +26,8 @@
   "field": {
     "mainTitle": "عنوان اصلی",
     "subTitle": "زیر عنوان"
+  },
+  "createPost": {
+    "section": "بخش"
   }
 }

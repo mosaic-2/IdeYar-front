@@ -2,7 +2,11 @@ import { Box, Stack } from "@mui/material";
 import PrimaryGrayButton from "../buttons/PrimaryGrayButton";
 import { useTranslation } from "react-i18next";
 
-const AddNewSectionPart = () => {
+interface Prop {
+  onAdd: () => void;
+}
+
+const AddNewSectionPart = ({ onAdd }: Prop) => {
   const { t } = useTranslation();
   return (
     <Stack
@@ -13,8 +17,8 @@ const AddNewSectionPart = () => {
         alignItems: "center",
       }}
     >
-      <Box bgcolor="bg.secondary" sx={{ height: 3, width: "100%" }} />
-      <PrimaryGrayButton text={t("button.AddNewSection")} />
+      <Box bgcolor="border.sGray" sx={{ height: 2, width: "100%" }} />
+      <PrimaryGrayButton text={t("button.AddNewSection")} onClick={onAdd} />
     </Stack>
   );
 };

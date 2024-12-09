@@ -9,11 +9,11 @@ export interface TextColor {
 export const textColorLightMode: TextColor = {
   primary: grayLightMode[900],
   secondary: grayLightMode[700],
-  tertiary: grayLightMode[600],
+  tertiary: grayLightMode[500],
 };
 
 export const textColorDarkMode: TextColor = {
   primary: white,
   secondary: grayDarkMode[200],
-  tertiary: grayDarkMode[300],
+  tertiary: grayDarkMode[400],
 };

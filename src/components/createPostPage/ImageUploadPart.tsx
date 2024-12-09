@@ -6,7 +6,13 @@ const ImageUploadPart = () => {
     <Box height={400}>
       <Box
         bgcolor="bg.secondary"
-        sx={{ height: "100%", mx: 20, borderRadius: 4 }}
+        sx={{
+          height: "100%",
+          mx: 20,
+          borderRadius: 4,
+          border: 2,
+          borderColor: "border.sGray",
+        }}
       >
         <Stack
           sx={{

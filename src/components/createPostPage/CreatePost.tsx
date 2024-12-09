@@ -5,16 +5,50 @@ import MainTitlePart from "./MainTitlePart";
 import AddNewSectionPart from "./AddNewSectionPart";
 import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
-import { CacheProvider, ThemeProvider, useTheme } from "@emotion/react";
+import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
+import { useState } from "react";
+import PostInfo from "../../models/PostInfo";
+import SectionPart from "./SectionPart";
+import PostSection from "../../models/PostSection";
 
 const CreatePost = () => {
-  const theme = useTheme();
+  const [post, setPost] = useState<PostInfo>({
+    title: null,
+    text: null,
+    image: null,
+    sections: [],
+  });
 
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
   });
+
+  const handleAddSection = () => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      sections: [
+        ...prevPost.sections,
+        {
+          order: prevPost.sections.length,
+          title: null,
+          text: null,
+          image: null,
+        },
+      ],
+    }));
+  };
+
+  const handleSectionChange = (index: number, newSection: PostSection) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      sections: prevPost.sections.map((section, i) => {
+        if ((i = index)) return newSection;
+        else return section;
+      }),
+    }));
+  };
 
   return (
     <div dir="rtl">
@@ -32,7 +66,14 @@ const CreatePost = () => {
             }}
           >
             <MainTitlePart />
-            <AddNewSectionPart />
+            {post.sections.map((section, i) => (
+              <SectionPart
+                index={i}
+                section={section}
+                onChangeSection={handleSectionChange}
+              />
+            ))}
+            <AddNewSectionPart onAdd={handleAddSection} />
             <DetailsPart />
           </Stack>
         </SimpleLayout>
