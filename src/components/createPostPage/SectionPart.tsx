@@ -1,8 +1,9 @@
-import { Box, Stack, TextField, Typography } from "@mui/material";
+import { Box, Collapse, Stack, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import UploadImageButton from "../buttons/UploadImageButton";
-import PostSection from "../../models/PostSection";
 import { toPersianDigits } from "../../util/persianNumberConverter";
+import { PostSection } from "./CreatePost";
+import { useEffect, useState } from "react";
 
 interface Prob {
   index: number;
@@ -12,49 +13,70 @@ interface Prob {
 
 const SectionPart = ({ index, section, onChangeSection }: Prob) => {
   const { t } = useTranslation();
+  const [isNew, setNew] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (isNew) {
+      const timeout = setTimeout(() => {
+        setNew(false);
+      }, 10);
+
+      return () => clearTimeout(timeout);
+    }
+  }, []);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChangeSection(index, { ...section, title: event.target.value });
   };
 
+  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onChangeSection(index, { ...section, text: event.target.value });
+  };
+
   return (
-    <Stack
-      direction="column"
-      spacing={2}
-      sx={{
-        justifyContent: "flex-start",
-        alignItems: "stretch",
-      }}
-    >
-      <Box bgcolor="border.sGray" sx={{ height: 2, width: "100%" }} />
-      <Typography variant="h6" color="text.tertiary">
-        {t("createPost.section")}{" "}
-        {section.order == null
-          ? ""
-          : toPersianDigits((section.order + 1).toString())}
-      </Typography>
-      <TextField
-        dir="rtl"
-        label={t("field.mainTitle")}
-        variant="outlined"
-        size="small"
-      />
-      <TextField
-        dir="rtl"
-        label={t("field.subTitle")}
-        variant="outlined"
-        size="small"
-      />
+    <Collapse in={!isNew} timeout="auto" unmountOnExit>
       <Stack
+        direction="column"
+        spacing={2}
         sx={{
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: "flex-start",
+          alignItems: "stretch",
         }}
       >
-        <UploadImageButton />
+        <Box bgcolor="border.sGray" sx={{ height: 2, width: "100%" }} />
+        <Typography variant="h6" color="text.tertiary">
+          {t("createPost.section")}{" "}
+          {section.order == null
+            ? ""
+            : toPersianDigits((section.order + 1).toString())}
+        </Typography>
+        <TextField
+          dir="rtl"
+          label={t("field.title")}
+          variant="outlined"
+          size="small"
+          onChange={handleTitleChange}
+        />
+        <TextField
+          dir="rtl"
+          label={t("field.text")}
+          variant="outlined"
+          size="small"
+          onChange={handleTextChange}
+          multiline
+          rows={10}
+        />
+        <Stack
+          sx={{
+            height: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <UploadImageButton />
+        </Stack>
       </Stack>
-    </Stack>
+    </Collapse>
   );
 };
 

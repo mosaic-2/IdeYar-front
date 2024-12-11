@@ -25,7 +25,9 @@
   },
   "field": {
     "mainTitle": "عنوان اصلی",
-    "subTitle": "زیر عنوان"
+    "subTitle": "زیر عنوان",
+    "title": "عنوان",
+    "text": "متن"
   },
   "createPost": {
     "section": "بخش"

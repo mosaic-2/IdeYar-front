@@ -7,13 +7,24 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import { useState } from "react";
-import PostInfo from "../../models/PostInfo";
 import SectionPart from "./SectionPart";
-import PostSection from "../../models/PostSection";
+
+interface PostInfo {
+  title: string | null;
+  text: string | null;
+  image: string | null;
+  sections: PostSection[];
+}
+
+export interface PostSection {
+  order: number | null;
+  title: string | null;
+  text: string | null;
+  image: string | null;
+}
 
 const CreatePost = () => {
-  const [post, setPost] = useState<PostInfo>({
+  const [post, updatePost] = useImmer<PostInfo>({
     title: null,
     text: null,
     image: null,
@@ -26,28 +37,20 @@ const CreatePost = () => {
   });
 
   const handleAddSection = () => {
-    setPost((prevPost) => ({
-      ...prevPost,
-      sections: [
-        ...prevPost.sections,
-        {
-          order: prevPost.sections.length,
-          title: null,
-          text: null,
-          image: null,
-        },
-      ],
-    }));
+    updatePost((draft: PostInfo) => {
+      draft.sections.push({
+        order: draft.sections.length,
+        title: null,
+        text: null,
+        image: null,
+      });
+    });
   };
 
   const handleSectionChange = (index: number, newSection: PostSection) => {
-    setPost((prevPost) => ({
-      ...prevPost,
-      sections: prevPost.sections.map((section, i) => {
-        if ((i = index)) return newSection;
-        else return section;
-      }),
-    }));
+    updatePost((draft: PostInfo) => {
+      draft.sections[index] = newSection;
+    });
   };
 
   return (
@@ -66,8 +69,9 @@ const CreatePost = () => {
             }}
           >
             <MainTitlePart />
-            {post.sections.map((section, i) => (
+            {post.sections.map((section: PostSection, i: number) => (
               <SectionPart
+                key={i}
                 index={i}
                 section={section}
                 onChangeSection={handleSectionChange}
