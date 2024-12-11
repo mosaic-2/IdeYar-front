@@ -4,6 +4,7 @@ import UploadImageButton from "../buttons/UploadImageButton";
 import { toPersianDigits } from "../../util/persianNumberConverter";
 import { PostSection } from "./CreatePost";
 import { useEffect, useState } from "react";
+import { debounce } from "lodash";
 
 interface Prob {
   index: number;
@@ -29,9 +30,12 @@ const SectionPart = ({ index, section, onChangeSection }: Prob) => {
     onChangeSection(index, { ...section, title: event.target.value });
   };
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChangeSection(index, { ...section, text: event.target.value });
-  };
+  const handleTextChange = debounce(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChangeSection(index, { ...section, text: event.target.value });
+    },
+    300
+  );
 
   return (
     <Collapse in={!isNew} timeout="auto" unmountOnExit>
@@ -62,7 +66,10 @@ const SectionPart = ({ index, section, onChangeSection }: Prob) => {
           label={t("field.text")}
           variant="outlined"
           size="small"
-          onChange={handleTextChange}
+          onChange={(e) => {
+            e.persist();
+            handleTextChange(e);
+          }}
           multiline
           rows={10}
         />
