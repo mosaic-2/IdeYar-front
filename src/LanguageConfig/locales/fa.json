@@ -30,6 +30,7 @@
     "text": "متن"
   },
   "createPost": {
-    "section": "بخش"
+    "section": "بخش",
+    "info": "اطلاعات"
   }
 }
