@@ -17,7 +17,7 @@ import { emailPattern } from "../../assets/regex/regexPatterns";
 import ChangeEmailImage from "../../assets/signup.svg?react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-
+import { changeEmailApi } from "../../apis/changeEmailApi.ts";
 const ChangeEmail = () => {
   const [email, setEmail] = useState<string>("");
   const [emailErr, setEmailErr] = useState<boolean>(false);
@@ -39,17 +39,28 @@ const ChangeEmail = () => {
   };
 
   const validateInputs = async () => {
-    validateEmail(email);
+    try {
+      validateEmail(email);
 
-    if (emailErr) {
-      console.log("Validation errors");
-      enqueueSnackbar(t("fixErrors"), { variant: "error" });
-      return;
+      if (emailErr) {
+        console.log("Validation errors");
+        enqueueSnackbar(t("fixErrors"), { variant: "error" });
+        return;
+      }
+
+      // Create request payload using the ChangeEmailRequest interface
+      const requestPayload: ChangeEmailRequest = { email };
+
+      // Call the API
+      await changeEmailApi(requestPayload);
+
+      // Show success message
+      enqueueSnackbar(t("emailChanged"), { variant: "success" });
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to change email:", error);
+      enqueueSnackbar(t("emailChangeFailed"), { variant: "error" });
     }
-
-    // Here you would implement your email change logic
-    enqueueSnackbar(t("emailChanged"), { variant: "success" });
-    navigate("/");
   };
 
   return (
@@ -83,7 +94,8 @@ const ChangeEmail = () => {
                 textAlign="center"
                 pb={2}
               >
-                {t("changeEmail")}
+                {/* {t("changeEmail")} */}
+                تغییر ایمیل
               </Typography>
               <CacheProvider value={cacheRtl}>
                 <ThemeProvider theme={theme}>
@@ -118,7 +130,8 @@ const ChangeEmail = () => {
               </CacheProvider>
 
               <PrimaryButton
-                text={t("confirm")}
+                // text={t("confirm")}
+                text={"ثبت"}
                 onClick={() => {
                   validateInputs();
                 }}

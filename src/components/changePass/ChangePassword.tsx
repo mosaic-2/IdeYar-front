@@ -23,6 +23,7 @@ import { passwordPattern } from "../../assets/regex/regexPatterns";
 import ChangePassImage from "../../assets/signup.svg?react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import { changePasswordApi } from "../../apis/changePass.ts";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState<string>("");
@@ -59,19 +60,37 @@ const ChangePassword = () => {
   };
 
   const validateInputs = async () => {
-    // Validate both password fields
-    validatePassword(password);
-    validatePasswordConfirm(passwordConfirm);
+    try {
+      // Validate both password fields
+      validatePassword(password);
+      validatePasswordConfirm(passwordConfirm);
 
-    // If any error flags are true, do not proceed
-    if (passwordErr || passwordConfirmErr) {
-      console.log("Validation errors");
-      return;
+      // If any error flags are true, do not proceed
+      if (passwordErr || passwordConfirmErr) {
+        console.log("Validation errors");
+        return;
+      }
+
+      // Prepare the request payload
+      const requestData = {
+        newPassword: password,
+      };
+
+      // Call the API to change the password
+      await changePasswordApi(requestData);
+
+      // Show success notification
+      enqueueSnackbar(t("passwordChanged"), { variant: "success" });
+
+      // Navigate to the desired page
+      navigate("/");
+    } catch (error) {
+      // Handle API errors gracefully
+      console.error("Error changing password:", error);
+
+      // Display an error notification to the user
+      enqueueSnackbar(t("passwordChangeFailed"), { variant: "error" });
     }
-
-    // Here you would implement your password change logic
-    enqueueSnackbar(t("passwordChanged"), { variant: "success" });
-    navigate("/");
   };
 
   return (
@@ -105,13 +124,15 @@ const ChangePassword = () => {
                 textAlign="center"
                 pb={2}
               >
-                {t("changePassword")}
+                {/* {t("changePassword")} */}
+                تغییر رمز عبور
               </Typography>
               <CacheProvider value={cacheRtl}>
                 <ThemeProvider theme={theme}>
                   <FormControl dir="rtl" variant="outlined" size="small">
                     <InputLabel htmlFor="outlined-adornment-password">
-                      {t("newPassword")}
+                      {/* {t("newPassword")} */}
+                      رمز عبور
                     </InputLabel>
                     <OutlinedInput
                       type={showPassword ? "text" : "password"}
@@ -147,7 +168,10 @@ const ChangePassword = () => {
                   )}
 
                   <FormControl dir="rtl" variant="outlined" size="small">
-                    <InputLabel>{t("confirmNewPassword")}</InputLabel>
+                    <InputLabel>
+                      {/* {t("confirmNewPassword")} */}
+                      تکرار رمز عبور
+                    </InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-password"
                       type={showPasswordVal ? "text" : "password"}
@@ -191,7 +215,8 @@ const ChangePassword = () => {
               {/* No signUpError now, but we keep the structure for styling consistency */}
 
               <PrimaryButton
-                text={t("confirm")}
+                // text={t("confirm")}
+                text="ثبت"
                 onClick={() => {
                   validateInputs();
                 }}
