@@ -11,7 +11,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import { useState, useEffect, ChangeEvent } from "react";
 import {
-  changeEmailApi,
   updateProfileInfoApi,
   getProfileInfoApi,
 } from "../../apis/profileBoxApi";
@@ -24,14 +23,19 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 import jMoment from "moment-jalaali";
 
+import { useNavigate } from "react-router-dom";
+import PrimaryButton from "../buttons/PrimaryButton";
+import SecondaryButton from "../buttons/SecondaryButton";
+
 jMoment.loadPersian({ dialect: "persian-modern", usePersianDigits: true });
 
 const ProfileBox = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
 
   // Profile fields
-  const [username, setUsername] = useState("نام کاربری");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
@@ -42,12 +46,12 @@ const ProfileBox = () => {
 
   // Initial values to detect changes
   const [initialUsername, setInitialUsername] = useState("");
-  const [initialEmail, setInitialEmail] = useState("");
   const [initialPhone, setInitialPhone] = useState("");
   const [initialBio, setInitialBio] = useState("");
   const [initialBirthday, setInitialBirthday] = useState<jMoment.Moment | null>(
     null
   );
+  const [initialEmail, setInitialEmail] = useState("");
   const [initialProfileImage, setInitialProfileImage] = useState<string>(
     "/path/to/default-profile-image.jpg"
   );
@@ -64,21 +68,21 @@ const ProfileBox = () => {
         const response = await getProfileInfoApi();
         const data = response.data;
 
-        // Set the profile image URL using the base URL and the image URL from the response
+        console.log("Fetched profile data:", data);
+
         const fullProfileImageUrl = data.profileImageUrl
           ? `https://back.ideyar-app.ir/api/image/${data.profileImageUrl}`
-          : "/path/to/default-profile-image.jpg"; // Fallback to default image
+          : "/path/to/default-profile-image.jpg";
 
-        setUsername(data.username || "نام کاربری");
+        setUsername(data.username || "");
         setPhone(data.phone || "");
         setBio(data.bio || "");
         setBirthday(
           data.birthday ? jMoment(data.birthday, "YYYY-MM-DD") : null
         );
-        setProfileImage(fullProfileImageUrl); // Set the image URL
-        setInitialProfileImage(fullProfileImageUrl); // Set the initial image URL for comparison
+        setProfileImage(fullProfileImageUrl);
+        setInitialProfileImage(fullProfileImageUrl);
 
-        // Set initial values
         setInitialUsername(data.username || "");
         setInitialPhone(data.phone || "");
         setInitialBio(data.bio || "");
@@ -87,8 +91,6 @@ const ProfileBox = () => {
         );
         setInitialEmail(data.email || "");
         setEmail(data.email || "");
-
-        console.log(data);
       } catch (error) {
         console.error("Error fetching profile info:", error);
       }
@@ -96,14 +98,11 @@ const ProfileBox = () => {
     fetchProfileInfo();
   }, []);
 
-  // Handle saving changes
+  // Handle saving changes (only username, phone, birthday, bio)
   const handleToggleEdit = async () => {
     if (isEditing) {
       try {
-        let emailChanged = email !== initialEmail;
         let profileInfoChanged = false;
-
-        // Prepare the update profile data
         const updateProfileData: {
           username?: string;
           phone?: string;
@@ -130,26 +129,14 @@ const ProfileBox = () => {
             initialBirthday &&
             !birthday.isSame(initialBirthday, "day"))
         ) {
-          // Convert Jalali date to Gregorian date before sending to API
           const gregorianDate = birthday
             ? birthday.locale("en").format("YYYY-MM-DD")
-            : null;
+            : "";
           updateProfileData.birthday = gregorianDate;
           profileInfoChanged = true;
         }
 
-        if (emailChanged) {
-          // Call ChangeEmail API
-          await changeEmailApi(email);
-          enqueueSnackbar("برای تغییر ایمیل خود، به ایمیل خود مراجعه کنید", {
-            variant: "success",
-          });
-          // Update initial email
-          setInitialEmail(email);
-        }
-
         if (profileInfoChanged) {
-          // Call the UpdateProfileInfo API with the updated profile data
           const updatedProfile = await updateProfileInfoApi(
             updateProfileData.username ?? initialUsername,
             updateProfileData.phone ?? initialPhone,
@@ -158,24 +145,23 @@ const ProfileBox = () => {
               initialBirthday?.locale("en").format("YYYY-MM-DD") ??
               ""
           );
+
           enqueueSnackbar("اطلاعات پروفایل با موفقیت به‌روزرسانی شد", {
             variant: "success",
           });
 
-          // Update the initial values with the response from the server
           setInitialUsername(updatedProfile.username);
           setInitialPhone(updatedProfile.phone);
           setInitialBio(updatedProfile.bio);
           setInitialBirthday(
             updatedProfile.birthday
-              ? moment(updatedProfile.birthday, "YYYY-MM-DD")
+              ? jMoment(updatedProfile.birthday, "YYYY-MM-DD")
               : null
           );
 
           if (imageFile) {
-            // Update profile image preview
             setInitialProfileImage(profileImage);
-            setImageFile(null); // Reset imageFile after successful upload
+            setImageFile(null);
           }
         }
       } catch (error) {
@@ -191,10 +177,9 @@ const ProfileBox = () => {
     event: ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | { value: unknown }
     >,
-    field: "email" | "phone" | "bio"
+    field: "phone" | "bio"
   ) => {
     const { value } = event.target;
-    if (field === "email") setEmail(value as string);
     if (field === "phone") setPhone(value as string);
     if (field === "bio") setBio(value as string);
   };
@@ -205,29 +190,24 @@ const ProfileBox = () => {
   ) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Ensure the selected file is an image
       if (!file.type.startsWith("image/")) {
         alert("لطفاً یک فایل تصویر انتخاب کنید.");
         return;
       }
 
-      // Revoke the previous object URL to avoid memory leaks
       if (imagePreviewUrl) {
         URL.revokeObjectURL(imagePreviewUrl);
       }
 
-      // Create a new object URL for the selected image
       const imageUrl = URL.createObjectURL(file);
       setProfileImage(imageUrl);
       setImageFile(file);
       setImagePreviewUrl(imageUrl);
 
-      // Upload the image using the API
       try {
         const response = await uploadUserImageApi(file);
         if (response) {
           console.log("Image uploaded successfully:", response);
-          // Handle the response (e.g., store image URL, show success message, etc.)
         }
       } catch (error) {
         console.error("Error uploading image:", error);
@@ -236,7 +216,7 @@ const ProfileBox = () => {
     }
   };
 
-  // Cleanup: Revoke object URL when component unmounts or when a new image is selected
+  // Cleanup object URL
   useEffect(() => {
     return () => {
       if (imagePreviewUrl) {
@@ -244,6 +224,11 @@ const ProfileBox = () => {
       }
     };
   }, [imagePreviewUrl]);
+
+  // Helper to get placeholder text if field is empty
+  const getDisplayValue = (value: string, placeholder: string) => {
+    return value.trim() === "" ? placeholder : value;
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterMomentJalaali}>
@@ -295,7 +280,6 @@ const ProfileBox = () => {
           </IconButton>
         </Box>
 
-        {/* Divider under the upload section */}
         <Divider sx={{ width: "100%", mb: 4 }} />
 
         {/* Username Field */}
@@ -338,56 +322,10 @@ const ProfileBox = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                fontWeight: "bold",
               }}
             >
-              {username}
-            </Typography>
-          )}
-        </Box>
-
-        {/* Email Field */}
-        <Box
-          display="flex"
-          alignItems="center"
-          width="100%"
-          justifyContent="center"
-          mb={2}
-          sx={{ gap: 2 }}
-        >
-          {isEditing ? (
-            <TextField
-              value={email}
-              onChange={(e) => handleFieldChange(e, "email")}
-              size="small"
-              variant="outlined"
-              sx={{
-                flexGrow: 1,
-                width: "100%",
-                maxWidth: 250,
-                height: 40,
-              }}
-              InputProps={{
-                sx: {
-                  "& .MuiInputBase-input": {
-                    textAlign: "center",
-                  },
-                },
-              }}
-            />
-          ) : (
-            <Typography
-              variant="body1"
-              sx={{
-                flexGrow: 1,
-                width: "100%",
-                maxWidth: 250,
-                height: 40,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {email}
+              {getDisplayValue(username, "نام کاربری")}
             </Typography>
           )}
         </Box>
@@ -434,7 +372,7 @@ const ProfileBox = () => {
                 justifyContent: "center",
               }}
             >
-              {phone}
+              {getDisplayValue(phone, "شماره همراه")}
             </Typography>
           )}
         </Box>
@@ -470,7 +408,6 @@ const ProfileBox = () => {
                   }}
                 />
               )}
-              // Customize the calendar popup
               PaperProps={{
                 sx: {
                   width: 200,
@@ -504,7 +441,7 @@ const ProfileBox = () => {
                 padding: 1,
               }}
             >
-              {birthday ? birthday.format("jYYYY/jMM/jDD") : ""}
+              {birthday ? birthday.format("jYYYY/jMM/jDD") : "تاریخ تولد"}
             </Typography>
           )}
         </Box>
@@ -554,7 +491,7 @@ const ProfileBox = () => {
                 padding: 1,
               }}
             >
-              {bio}
+              {getDisplayValue(bio, "بیو")}
             </Typography>
           )}
         </Box>
@@ -572,6 +509,78 @@ const ProfileBox = () => {
               <EditIcon fontSize="small" />
             )}
           </IconButton>
+        </Box>
+      </Box>
+
+      {/* Email and Buttons Below */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        p={3}
+        sx={{
+          direction: "rtl",
+        }}
+      >
+        {/* Email Field (Not Editable) */}
+        <Box
+          display="flex"
+          alignItems="center"
+          width="100%"
+          justifyContent="center"
+          mb={2}
+          sx={{
+            border: "1px solid #ddd",
+            borderRadius: "16px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            width: "100%",
+
+            maxWidth: 350,
+            minHeight: 50,
+            direction: "rtl",
+            bgcolor: "background.paper",
+          }}
+        >
+          <Typography
+            variant="body1"
+            sx={{
+              flexGrow: 1,
+              width: "100%",
+              maxWidth: 250,
+              height: 40,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {email || "ایمیل تعریف نشده"}{" "}
+            {/* Add a fallback for undefined or empty email */}
+          </Typography>
+        </Box>
+
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap={2}
+          width="100%"
+          maxWidth={350} // Matches the width of the profile box
+          mt={2} // Adds spacing from the profile box
+        >
+          <PrimaryButton
+            text="تغییر ایمیل"
+            onClick={() => {
+              navigate("/change-email");
+            }}
+            width="250px"
+          />
+          <PrimaryButton
+            text="تغییر رمز عبور"
+            onClick={() => {
+              navigate("/change-pass");
+            }}
+            width="250px"
+          />
         </Box>
       </Box>
     </LocalizationProvider>
