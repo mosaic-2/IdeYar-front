@@ -72,7 +72,14 @@ const Search = () => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon />
+                  <IconButton
+                    onClick={() => {
+                      window.location.href = `http://localhost:3000/search/${searchTerm}`;
+                    }}
+                    sx={{ padding: 1 }}
+                  >
+                    <SearchIcon />
+                  </IconButton>
                 </InputAdornment>
               ),
               endAdornment: searchTerm ? (

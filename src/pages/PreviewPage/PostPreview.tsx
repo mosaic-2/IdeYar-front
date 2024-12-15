@@ -80,120 +80,119 @@ const PostPreview = () => {
   // };
 
   return (
-    <Box width="100%" height="100vh" bgcolor="gray" display="flex">
-      <Button onClick={() => setVertical(!vertical)}>revert</Button>
+    <Box
+      width={vertical ? "400px" : "900px"}
+      height={vertical ? "550px" : "300px"}
+      display="flex"
+      flexDirection={vertical ? "column" : "row"}
+      borderRadius="20px"
+      overflow="hidden"
+      bgcolor="white"
+      border="1px solid"
+      borderColor="button.tGrayFG"
+    >
       <Box
-        width={vertical ? "400px" : "900px"}
-        height={vertical ? "550px" : "300px"}
+        width={vertical ? "400px" : "500px"}
+        height="300px"
+        order={vertical ? 2 : 1}
         display="flex"
-        flexDirection={vertical ? "column" : "row"}
-        borderRadius="20px"
-        overflow="hidden"
-        bgcolor="white"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent={vertical ? "" : "center"}
       >
-        <Box
-          width={vertical ? "400px" : "500px"}
-          height="300px"
-          order={vertical ? 2 : 1}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent={vertical ? "" : "center"}
-        >
-          <LinearProgress
-            variant="determinate"
-            value={progress}
-            sx={{
-              m: vertical ? "" : 2,
-              height: "10px",
-              width: vertical ? "100%" : "90%",
-              borderRadius: 5,
-
-              order: vertical ? 1 : 2,
-            }}
-          />
-          <Box
-            width="90%"
-            height="80%"
-            alignItems="center"
-            display="flex"
-            flexDirection="column"
-            order={vertical ? 2 : 1}
-            position="relative"
-          >
-            {/* Project title */}
-            <Box
-              width="100%"
-              height="30%"
-              order={vertical ? 2 : 1}
-              sx={{ direction: "rtl" }}
-              alignContent="center"
-            >
-              <Box display="flex" flexDirection="row" gap={2}>
-                {/* Profile Image */}
-                <Box
-                  borderRadius={100}
-                  width="50px"
-                  height="50px"
-                  bgcolor="#D9D9D9"
-                />
-
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                >
-                  <Typography variant="body2" fontWeight="bold">
-                    {post.mainTitle}
-                  </Typography>
-                  <Typography variant="body3">نام کاربر</Typography>
-                </Box>
-              </Box>
-            </Box>
-            <Box
-              width="100%"
-              height="70%"
-              order={vertical ? 2 : 1}
-              sx={{ direction: "rtl" }}
-            >
-              <Typography variant="body3" fontWeight="bold">
-                {post.mainTitleCaption}
-              </Typography>
-            </Box>
-            {/* BookMark SVG */}
-
-            <Box
-              sx={{
-                position: "absolute",
-                width: "30px",
-                height: "30px",
-                left: 10,
-                top: vertical ? "" : 20,
-                bottom: vertical ? -20 : "",
-              }}
-            >
-              <Bookmark
-                cursor="pointer"
-                onClick={() => {
-                  setIsClicked(!isClicked);
-                }}
-              />
-            </Box>
-          </Box>
-        </Box>
-        {/* Post image */}
-
-        <CardMedia
-          component="img"
-          image={post.mainImageUrl}
-          alt={post.mainTitle}
+        <LinearProgress
+          variant="determinate"
+          value={progress}
           sx={{
-            width: "400px",
-            height: "300px",
+            m: vertical ? "" : 2,
+            height: "10px",
+            width: vertical ? "100%" : "90%",
+            borderRadius: 5,
+
             order: vertical ? 1 : 2,
           }}
         />
+        <Box
+          width="90%"
+          height="80%"
+          alignItems="center"
+          display="flex"
+          flexDirection="column"
+          order={vertical ? 2 : 1}
+          position="relative"
+        >
+          {/* Project title */}
+          <Box
+            width="100%"
+            height="30%"
+            order={vertical ? 2 : 1}
+            sx={{ direction: "rtl" }}
+            alignContent="center"
+          >
+            <Box display="flex" flexDirection="row" gap={2}>
+              {/* Profile Image */}
+              <Box
+                borderRadius={100}
+                width="50px"
+                height="50px"
+                bgcolor="#D9D9D9"
+              />
+
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+              >
+                <Typography variant="body2" fontWeight="bold">
+                  {post.mainTitle}
+                </Typography>
+                <Typography variant="body3">نام کاربر</Typography>
+              </Box>
+            </Box>
+          </Box>
+          <Box
+            width="100%"
+            height="70%"
+            order={vertical ? 2 : 1}
+            sx={{ direction: "rtl" }}
+          >
+            <Typography variant="body3" fontWeight="bold">
+              {post.mainTitleCaption}
+            </Typography>
+          </Box>
+          {/* BookMark SVG */}
+
+          <Box
+            sx={{
+              position: "absolute",
+              width: "30px",
+              height: "30px",
+              left: 10,
+              top: vertical ? "" : 20,
+              bottom: vertical ? -20 : "",
+            }}
+          >
+            <Bookmark
+              cursor="pointer"
+              onClick={() => {
+                setIsClicked(!isClicked);
+              }}
+            />
+          </Box>
+        </Box>
       </Box>
+      {/* Post image */}
+
+      <CardMedia
+        component="img"
+        image={post.mainImageUrl}
+        alt={post.mainTitle}
+        sx={{
+          width: "400px",
+          height: "300px",
+          order: vertical ? 1 : 2,
+        }}
+      />
     </Box>
   );
 };

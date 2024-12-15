@@ -14,7 +14,8 @@ import CodeVerification from "./components/codeVerfication/CodeVerfication";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import PostPreview from "./pages/PreviewPage/PostPreview";
 import ChangePassword from "./components/changePass/ChangePassword";
-import ChangeEmail from './components/changeEmail/ChangeEmail'
+import ChangeEmail from "./components/changeEmail/ChangeEmail";
+import SearchPage from "./components/SearchPage/SearchPage";
 function App() {
   const theme = getTheme();
   return (
@@ -84,6 +85,14 @@ function App() {
           element={
             <PageLayout>
               <ChangeEmail />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/search/:object"
+          element={
+            <PageLayout>
+              <SearchPage />
             </PageLayout>
           }
         />
