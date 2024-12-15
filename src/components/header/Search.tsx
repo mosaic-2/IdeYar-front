@@ -7,6 +7,7 @@ const Search = () => {
   const [showSearch, setShowSearch] = useState(false); // State to toggle search box visibility
   const [searchTerm, setSearchTerm] = useState(""); // State to manage search input
   const searchInputRef = useRef<HTMLInputElement>(null); // Ref to focus the search input
+  const containerRef = useRef<HTMLDivElement>(null); // Ref for the entire search component
 
   // Handle changes in the search input
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,8 +41,25 @@ const Search = () => {
     };
   }, [showSearch]);
 
+  // Close search box on clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setShowSearch(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <>
+    <div ref={containerRef}>
       {showSearch ? (
         <Grow in={showSearch} timeout={500}>
           <TextField
@@ -90,7 +108,7 @@ const Search = () => {
           <SearchIcon sx={{ margin: 1, color: "button.tGrayFg" }} />
         </IconButton>
       )}
-    </>
+    </div>
   );
 };
 
