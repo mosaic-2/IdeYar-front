@@ -13,6 +13,9 @@ import PostPage from "./pages/PostPage/PostPage";
 import CodeVerification from "./components/codeVerfication/CodeVerfication";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import PostPreview from "./pages/PreviewPage/PostPreview";
+import ChangePassword from "./components/changePass/ChangePassword";
+import ChangeEmail from "./components/changeEmail/ChangeEmail";
+import SearchPage from "./components/SearchPage/SearchPage";
 import CreatePost from "./components/createPostPage/CreatePost";
 
 function App() {
@@ -76,6 +79,30 @@ function App() {
           element={
             <PageLayout>
               <CodeVerification />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/change-pass"
+          element={
+            <PageLayout>
+              <ChangePassword />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/change-email"
+          element={
+            <PageLayout>
+              <ChangeEmail />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/search/:object"
+          element={
+            <PageLayout>
+              <SearchPage />
             </PageLayout>
           }
         />
