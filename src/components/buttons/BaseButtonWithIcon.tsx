@@ -33,31 +33,33 @@ const BaseButtonWithIcon = ({
   onClick,
 }: Props) => {
   return (
-    <Button sx={sx} onClick={onClick}>
-      {rightIcon && (
-        <SvgIcon
-          component={rightIcon}
-          viewBox={viewBox}
-          sx={{ marginLeft: 1 }}
-        />
-      )}
-      {badge && (
-        <Chip
-          label={badge}
-          variant="outlined"
-          color="primary"
-          sx={{ marginX: 1 }}
-        />
-      )}
-      {children}
-      {leftIcon && (
-        <SvgIcon
-          component={leftIcon}
-          viewBox={viewBox}
-          sx={{ marginRight: 1 }}
-        />
-      )}
-    </Button>
+    <div dir="rtl">
+      <Button sx={sx} onClick={onClick}>
+        {rightIcon && (
+          <SvgIcon
+            component={rightIcon}
+            viewBox={viewBox}
+            sx={{ marginLeft: 1 }}
+          />
+        )}
+        {badge && (
+          <Chip
+            label={badge}
+            variant="outlined"
+            color="primary"
+            sx={{ marginX: 1 }}
+          />
+        )}
+        {children}
+        {leftIcon && (
+          <SvgIcon
+            component={leftIcon}
+            viewBox={viewBox}
+            sx={{ marginRight: 1 }}
+          />
+        )}
+      </Button>
+    </div>
   );
 };
 

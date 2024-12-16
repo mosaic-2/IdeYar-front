@@ -11,11 +11,13 @@ import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
 import CodeVerification from "./components/codeVerfication/CodeVerfication";
-import RegisterPage from "./components/RegisterPage/RegisterPage";
+import RegisterPage from "./components/registerPage/RegisterPage";
 import PostPreview from "./pages/PreviewPage/PostPreview";
 import ChangePassword from "./components/changePass/ChangePassword";
 import ChangeEmail from "./components/changeEmail/ChangeEmail";
 import SearchPage from "./components/SearchPage/SearchPage";
+import CreatePost from "./components/createPostPage/CreatePost";
+
 function App() {
   const theme = getTheme();
   return (
@@ -59,6 +61,14 @@ function App() {
           element={
             <PageLayout>
               <PostPage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/create-post"
+          element={
+            <PageLayout>
+              <CreatePost />
             </PageLayout>
           }
         />

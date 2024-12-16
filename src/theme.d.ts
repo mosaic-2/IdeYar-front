@@ -70,6 +70,11 @@ declare module "@mui/material/styles" {
       primaryBg: string;
       primaryBgHover: string;
       primaryBgPressed: string;
+      primaryGrayFg: string;
+      primaryGrayBg: string;
+      primaryGrayBd: string;
+      primaryGrayBgHover: string;
+      primaryGrayBgPressed: string;
       tGrayFg: string;
       tGrayFgHover: string;
       tGrayFgPressed: string;
