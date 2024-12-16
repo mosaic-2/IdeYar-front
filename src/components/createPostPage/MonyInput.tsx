@@ -1,5 +1,9 @@
+import { TextField } from "@mui/material";
+
 const MonyInput = () => {
-  return <div>MonyInput</div>;
+  return (
+    <TextField dir="rtl" label={"هزینه"} variant="outlined" size="small" />
+  );
 };
 
 export default MonyInput;

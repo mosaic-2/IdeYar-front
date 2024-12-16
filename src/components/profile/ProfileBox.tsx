@@ -24,8 +24,7 @@ import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 import jMoment from "moment-jalaali";
 
 import { useNavigate } from "react-router-dom";
-import PrimaryButton from "../buttons/PrimaryButton";
-import SecondaryButton from "../buttons/SecondaryButton";
+import PrimaryGrayButton from "../buttons/PrimaryGrayButton";
 
 jMoment.loadPersian({ dialect: "persian-modern", usePersianDigits: true });
 
@@ -567,14 +566,14 @@ const ProfileBox = () => {
           maxWidth={350} // Matches the width of the profile box
           mt={2} // Adds spacing from the profile box
         >
-          <PrimaryButton
+          <PrimaryGrayButton
             text="تغییر ایمیل"
             onClick={() => {
               navigate("/change-email");
             }}
             width="250px"
           />
-          <PrimaryButton
+          <PrimaryGrayButton
             text="تغییر رمز عبور"
             onClick={() => {
               navigate("/change-pass");
