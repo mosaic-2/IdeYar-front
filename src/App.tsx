@@ -15,6 +15,7 @@ import RegisterPage from "./components/registerPage/RegisterPage";
 import PostPreview from "./pages/PreviewPage/PostPreview";
 import ChangePassword from "./components/changePass/ChangePassword";
 import ChangeEmail from "./components/changeEmail/ChangeEmail";
+import ForgotPassword from "./components/forgotPass/ForgotPassword";
 import SearchPage from "./components/SearchPage/SearchPage";
 import CreatePost from "./components/createPostPage/CreatePost";
 
@@ -95,6 +96,14 @@ function App() {
           element={
             <PageLayout>
               <ChangeEmail />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <PageLayout>
+              <ForgotPassword />
             </PageLayout>
           }
         />
