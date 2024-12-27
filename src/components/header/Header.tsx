@@ -1,4 +1,5 @@
 // src/components/Header/Header.tsx
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Box, IconButton, Stack, CssBaseline } from "@mui/material";
@@ -7,22 +8,33 @@ import DarkModeButton from "../buttons/DarkModeButton";
 import ExploreIcon from "@mui/icons-material/Explore";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout"; // <-- Import Logout icon
 import SecondaryButton from "../buttons/SecondaryButton";
 import PrimaryButton from "../buttons/PrimaryButton";
 import Search from "./Search";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import Logo from "../logo/Logo";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; // <-- Import useDispatch
 import { RootState } from "../../store/store";
 import UserButton from "./UserButton";
+import { clearSession } from "../../store/sessionSlice"; // <-- Import clearSession
 
 const Header: React.FC = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const session = useSelector((state: RootState) => state.session);
 
+  // Handler for Login Button
   const handleLoginClick = () => {
     navigate("/login"); // Navigate to /login
   };
+
+  // Handler for Logout Button
+  const handleLogoutClick = () => {
+    dispatch(clearSession()); // Clears session state
+    navigate("/"); // Navigate to home page (or any route you prefer)
+  };
+
   return (
     <>
       <CssBaseline />
@@ -47,7 +59,7 @@ const Header: React.FC = () => {
               flexWrap: "wrap",
             }}
           >
-            {/* Grouped Box for Brand and Navigation Buttons */}
+            {/* Left Section: Logo and Navigation */}
             <Box
               sx={{
                 display: "flex",
@@ -70,34 +82,40 @@ const Header: React.FC = () => {
               >
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <SecondaryButton text="کاوش" rightIcon={ExploreIcon} />
-                  <SecondaryButton
-                    text="شروع پروژه"
-                    rightIcon={AddCircleIcon}
-                  />
+                  <SecondaryButton text="شروع پروژه" rightIcon={AddCircleIcon} />
                 </Stack>
               </Box>
             </Box>
 
-            {/* Right-Aligned Buttons */}
+            {/* Right Section: Search, Theme Toggle, User/Login/Logout */}
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
                 gap: 2,
-                flexWrap: "wrap", // Allow wrapping on smaller screens
+                flexWrap: "wrap",
                 justifyContent: { xs: "center", sm: "flex-start" },
-                width: { xs: "100%", sm: "auto" }, // Full width on small screens
+                width: { xs: "100%", sm: "auto" },
               }}
             >
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Box width={10} height={10} />
                 <Search />
                 <DarkModeButton />
+
                 {session.isLoggedIn ? (
-                  <UserButton />
+                  <>
+                    <UserButton />
+                    {/* Logout Button */}
+                    <PrimaryButton
+                      text="خروج"         // "Logout" in Persian/Farsi
+                      leftIcon={LogoutIcon} // Use LogoutIcon for clarity
+                      onClick={handleLogoutClick}
+                    />
+                  </>
                 ) : (
                   <PrimaryButton
-                    text="ورود"
+                    text="ورود"        // "Login" in Persian/Farsi
                     leftIcon={LoginIcon}
                     onClick={handleLoginClick}
                   />

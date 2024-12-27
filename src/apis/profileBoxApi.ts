@@ -1,30 +1,30 @@
 import apiClient from "../services/api-client";
 
-// ChangeEmail API
-export interface ChangeEmailRequest {
-  email: string;
-}
+// // ChangeEmail API
+// export interface ChangeEmailRequest {
+//   email: string;
+// }
 
-export interface ChangeEmailResponse {}
+// export interface ChangeEmailResponse {}
 
-export const changeEmailApi = (email: string) =>
-  apiClient.post<ChangeEmailResponse>("/user-profile/change-email", {
-    email,
-  });
+// export const changeEmailApi = (email: string) =>
+//   apiClient.post<ChangeEmailResponse>("/user-profile/change-email", {
+//     email,
+//   });
 
-// ChangePassword API
-export interface ChangePasswordRequest {
-  oldPassword: string;
-  newPassword: string;
-}
+// // ChangePassword API
+// export interface ChangePasswordRequest {
+//   oldPassword: string;
+//   newPassword: string;
+// }
 
-export interface ChangePasswordResponse {}
+// export interface ChangePasswordResponse {}
 
-export const changePasswordApi = (oldPassword: string, newPassword: string) =>
-  apiClient.post<ChangePasswordResponse>("/user-profile/change-password", {
-    oldPassword,
-    newPassword,
-  });
+// export const changePasswordApi = (oldPassword: string, newPassword: string) =>
+//   apiClient.post<ChangePasswordResponse>("/user-profile/change-password", {
+//     oldPassword,
+//     newPassword,
+//   });
 
 // GetProfileInfo API
 export interface GetProfileInfoResponse {
