@@ -33,6 +33,7 @@ export interface GetProfileInfoResponse {
   bio: string;
   birthday: string;
   profile_image_url: string;
+  email: string;
 }
 
 export const getProfileInfoApi = () =>
