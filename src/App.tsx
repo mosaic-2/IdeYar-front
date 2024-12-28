@@ -76,7 +76,7 @@ function App() {
         <Route path="/hello" element={<HelloWorldStickyLeft />} />
         <Route path="/preview-post" element={<PostPreview />} />
         <Route
-          path="/code-veification/:signUpToken/:code"
+          path="/code-verification/:signUpToken/:code"
           element={
             <PageLayout>
               <CodeVerification />
