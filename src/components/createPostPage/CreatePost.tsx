@@ -9,6 +9,7 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import SectionPart from "./SectionPart";
 import { useImmer } from "use-immer";
+import { useCreatePost } from "../../hooks/handleCreatePost";
 
 interface PostInfo {
   title: string | null;
@@ -31,6 +32,7 @@ const CreatePost = () => {
     image: null,
     sections: [],
   });
+  const { handleCreatePost } = useCreatePost();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -51,6 +53,15 @@ const CreatePost = () => {
   const handleSectionChange = (index: number, newSection: PostSection) => {
     updatePost((draft: PostInfo) => {
       draft.sections[index] = newSection;
+    });
+  };
+
+  const handleSubmit = () => {
+    handleCreatePost({
+      title: post.title !== null ? post.title : "",
+      deadline_date: "",
+      minimum_fund: "",
+      post_details: post.sections.map(()),
     });
   };
 
