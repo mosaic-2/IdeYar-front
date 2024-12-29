@@ -11,4 +11,4 @@ export interface ForgotPasswordResponse {}
 export const ForgotPassApi = (
   data: ForgotPasswordRequest
 ): Promise<ForgotPasswordResponse> =>
-  apiClient.post("/user-profile/change-email", data);
+  apiClient.post("/auth/forget-password", data);
