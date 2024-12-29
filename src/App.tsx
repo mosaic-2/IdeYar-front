@@ -18,6 +18,9 @@ import ChangeEmail from "./components/changeEmail/ChangeEmail";
 import ForgotPassword from "./components/forgotPass/ForgotPassword";
 import SearchPage from "./components/SearchPage/SearchPage";
 import CreatePost from "./components/createPostPage/CreatePost";
+import ChangeEmailConfirm from "./components/changEmailVerification/ChangeEmailVerification";
+import ForgotChangePassword from "./components/forgotPassNewPass/ForgotPasswordNewPass";
+import FundPage from "./components/fund/FundPage";
 
 function App() {
   const theme = getTheme();
@@ -108,10 +111,34 @@ function App() {
           }
         />
         <Route
+          path="/change-email/:token"
+          element={
+            <PageLayout>
+              <ChangeEmailConfirm />
+            </PageLayout>
+          }
+        />
+        <Route
           path="/search/:object"
           element={
             <PageLayout>
               <SearchPage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/forget-password/:token"
+          element={
+            <PageLayout>
+              <ForgotChangePassword />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/fund"
+          element={
+            <PageLayout>
+              <FundPage />
             </PageLayout>
           }
         />
