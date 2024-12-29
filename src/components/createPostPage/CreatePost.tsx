@@ -24,7 +24,8 @@ export interface PostSection {
   order: number | null;
   title: string | null;
   text: string | null;
-  image: string | null;
+  imageFile: File | null;
+  imagePreview: string | null;
 }
 
 const CreatePost = () => {
@@ -67,7 +68,8 @@ const CreatePost = () => {
         order: draft.sections.length,
         title: null,
         text: null,
-        image: null,
+        imageFile: null,
+        imagePreview: null,
       });
     });
   };

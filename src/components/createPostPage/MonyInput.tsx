@@ -9,6 +9,8 @@ const MonyInput = ({ onChange }: Props) => {
   return (
     <TextField
       dir="rtl"
+      type="number"
+      inputProps={{ min: 0 }}
       label={"هزینه اولیه"}
       variant="outlined"
       sx={{ width: 500 }}
