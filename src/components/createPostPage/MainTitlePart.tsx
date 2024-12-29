@@ -2,7 +2,10 @@ import { Box, Stack, TextField } from "@mui/material";
 import ImageUploadPart from "./ImageUploadPart";
 import { useTranslation } from "react-i18next";
 
-const MainTitlePart = () => {
+interface Props {
+  onTitleChange?: (title: string) => void;
+}
+const MainTitlePart = ({ onTitleChange }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -20,6 +23,9 @@ const MainTitlePart = () => {
         label={t("field.mainTitle")}
         variant="outlined"
         size="small"
+        onChange={(e) => {
+          onTitleChange?.(e.target.value);
+        }}
       />
       <TextField
         dir="rtl"

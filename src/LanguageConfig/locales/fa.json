@@ -31,6 +31,7 @@
   },
   "createPost": {
     "section": "بخش",
-    "info": "اطلاعات"
+    "info": "اطلاعات",
+    "submit": "تایید"
   }
 }

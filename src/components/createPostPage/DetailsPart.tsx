@@ -1,19 +1,16 @@
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  styled,
-  Typography,
-} from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import MonyInput from "./MonyInput";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import DateInput from "./DateInput";
+import PrimaryButton from "../buttons/PrimaryButton";
 
-const DetailsPart = () => {
+interface Props {
+  onFundChange?: (fund: string) => void;
+  onDateChange?: (fund: string) => void;
+  onSubmit?: () => void;
+}
+
+const DetailsPart = ({ onFundChange, onDateChange, onSubmit }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -21,6 +18,7 @@ const DetailsPart = () => {
       direction="column"
       spacing={2}
       sx={{
+        pb: 10,
         justifyContent: "flex-start",
         alignItems: "stretch",
       }}
@@ -30,36 +28,21 @@ const DetailsPart = () => {
         {t("createPost.info")}
       </Typography>
       <Stack
-        sx={{ px: 40, justifyContent: "flex-start", alignItems: "stretch" }}
+        spacing={2}
+        sx={{ px: 40, justifyContent: "flex-start", alignItems: "center" }}
       >
-        <MonyInput />
-        <DateInput />
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">دسته بندی</InputLabel>
-          <Select
-            size="small"
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="Age"
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">مکان</InputLabel>
-          <Select
-            size="small"
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="Age"
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl>
+        <MonyInput
+          onChange={(e) => {
+            onFundChange?.(e.target.value);
+          }}
+        />
+        <DateInput onChange={onDateChange} />
+        <PrimaryButton
+          onClick={onSubmit}
+          text={t("createPost.submit")}
+          width="300px"
+          height="50px"
+        />
       </Stack>
     </Stack>
   );

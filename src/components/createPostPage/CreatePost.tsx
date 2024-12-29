@@ -14,6 +14,8 @@ import { useCreatePost } from "../../hooks/handleCreatePost";
 interface PostInfo {
   title: string | null;
   text: string | null;
+  fund: string | null;
+  date: string | null;
   image: string | null;
   sections: PostSection[];
 }
@@ -29,6 +31,8 @@ const CreatePost = () => {
   const [post, updatePost] = useImmer<PostInfo>({
     title: null,
     text: null,
+    fund: null,
+    date: null,
     image: null,
     sections: [],
   });
@@ -38,6 +42,24 @@ const CreatePost = () => {
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
   });
+
+  const handleTitleChange = (t: string) => {
+    updatePost((draft: PostInfo) => {
+      draft.title = t;
+    });
+  };
+
+  const handleFundChange = (f: string) => {
+    updatePost((draft: PostInfo) => {
+      draft.fund = f;
+    });
+  };
+
+  const handleDateChange = (d: string) => {
+    updatePost((draft: PostInfo) => {
+      draft.date = d;
+    });
+  };
 
   const handleAddSection = () => {
     updatePost((draft: PostInfo) => {
@@ -59,9 +81,15 @@ const CreatePost = () => {
   const handleSubmit = () => {
     handleCreatePost({
       title: post.title !== null ? post.title : "",
-      deadline_date: "",
-      minimum_fund: "",
-      post_details: post.sections.map(()),
+      deadline_date: post.date !== null ? post.date : "",
+      minimum_fund: post.fund !== null ? post.fund : "",
+      post_details: post.sections.map((section, index) => {
+        return {
+          title: section.title !== null ? section.title : "",
+          description: section.text !== null ? section.text : "",
+          order: index + 1,
+        };
+      }),
     });
   };
 
@@ -80,7 +108,7 @@ const CreatePost = () => {
               alignItems: "stretch",
             }}
           >
-            <MainTitlePart />
+            <MainTitlePart onTitleChange={handleTitleChange} />
             {post.sections.map((section: PostSection, i: number) => (
               <SectionPart
                 key={i}
@@ -90,7 +118,11 @@ const CreatePost = () => {
               />
             ))}
             <AddNewSectionPart onAdd={handleAddSection} />
-            <DetailsPart />
+            <DetailsPart
+              onFundChange={handleFundChange}
+              onDateChange={handleDateChange}
+              onSubmit={handleSubmit}
+            />
           </Stack>
         </SimpleLayout>
       </CacheProvider>

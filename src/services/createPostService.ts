@@ -1,8 +1,9 @@
 import apiClient from "./api-client";
 
 export interface PostDetails {
-  username: string;
-  password: string;
+  title: string;
+  description: string;
+  order: number;
 }
 
 export interface CreatePostPayload {
@@ -12,7 +13,9 @@ export interface CreatePostPayload {
   post_details: PostDetails[];
 }
 
-export interface CreatePostResponse {}
+export interface CreatePostResponse {
+  id: number;
+}
 
 export const createPost = async (
   payload: CreatePostPayload
