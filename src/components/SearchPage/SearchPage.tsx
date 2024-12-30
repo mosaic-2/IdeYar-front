@@ -4,6 +4,10 @@ import { useParams } from "react-router-dom";
 import PostPreview from "../../pages/PreviewPage/PostPreview";
 import SecondaryButton from "../buttons/SecondaryButton";
 import PrimaryButton from "../buttons/PrimaryButton";
+import { enqueueSnackbar } from "notistack";
+import { searchPostsApi } from "../../apis/searchPostsApi";
+import MultipleTextField from "../textField/multipleTextField";
+import SingleTextField from "../textField/singleTextField";
 
 const SearchPage = () => {
   const searchObject = useParams().object;
@@ -22,7 +26,21 @@ const SearchPage = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log(searchObject);
+    if (searchObject) {
+      console.log("Triggering API call for:", searchObject);
+
+      searchPostsApi(searchObject, 0)
+        .then((response) => {
+          console.log("here");
+          console.log("API Response:", response);
+          if (response.data) {
+            console.log("Posts:", response.data.postOverview);
+          }
+        })
+        .catch((err) => {
+          console.log("API Error:", err);
+        });
+    }
   }, [searchObject]);
 
   const toggleCategory = (category: string) => {
@@ -42,21 +60,21 @@ const SearchPage = () => {
       justifyContent="center"
     >
       <Box
+        py={2}
         display="flex"
         flexDirection="column"
-        gap={1}
         sx={{
           direction: "rtl",
           border: "2px solid",
           borderRadius: "20px",
           borderColor: "border.sGray",
         }}
-        height="480px"
+        height="300px"
         width="300px"
-        justifyContent="center"
+        justifyContent="space-between"
         alignItems="center"
       >
-        <Box
+        {/* <Box
           width="260px"
           height="36px"
           justifyItems="center"
@@ -68,9 +86,9 @@ const SearchPage = () => {
           }}
         >
           <Typography>مرتب سازی</Typography>
-        </Box>
+        </Box> */}
 
-        {categories.map((category: string) => (
+        {/* {categories.map((category: string) => (
           <Box
             key={category}
             width="260px"
@@ -90,7 +108,25 @@ const SearchPage = () => {
           >
             <Typography>{category}</Typography>
           </Box>
-        ))}
+        ))} */}
+        <Box display="flex" flexDirection="column" gap={2}>
+          <SingleTextField
+            selects={["محبوب ترین", "جدیدترین", "قدیمی ترین", "پر بازدیدترین"]}
+          />
+          <MultipleTextField
+            categories={[
+              "هنر",
+              "ویدیو",
+              "پروژه ها",
+              "طراحی",
+              "سرامیک",
+              "هنر مفهومی",
+              "هنر دیجیتال",
+              "تصویرسازی",
+              "نصب",
+            ]}
+          ></MultipleTextField>
+        </Box>
 
         <PrimaryButton height="40px" width="260px" text="اعمال فیلترها" />
       </Box>

@@ -41,7 +41,6 @@ const PostPreview = () => {
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
   useEffect(() => {
-    getPostImage();
     window.addEventListener("resize", () => {
       if (window.outerWidth <= 425) {
         setScreen("mobile");
