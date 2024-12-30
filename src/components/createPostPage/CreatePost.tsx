@@ -138,7 +138,7 @@ const CreatePost = () => {
             direction="column"
             spacing={2}
             sx={{
-              paddingX: 10,
+              paddingX: "8%",
               mt: 2,
               width: "100%",
               justifyContent: "flex-start",

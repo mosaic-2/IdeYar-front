@@ -35,7 +35,7 @@ const ImageUploadPart = ({ imagePreview, onChange }: Props) => {
           bgcolor="bg.secondary"
           sx={{
             height: "500px",
-            mx: 20,
+            mx: "10%",
             borderRadius: 4,
             border: 2,
             borderColor: "border.sGray",
