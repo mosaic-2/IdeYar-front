@@ -1,4 +1,4 @@
-import apiClient from "./api-client";
+import apiClient from "../services/api-client";
 
 export interface PostDetails {
   title: string;
@@ -21,6 +21,18 @@ export const createPost = async (
   payload: CreatePostPayload
 ): Promise<CreatePostResponse> => {
   const response = await apiClient.post("/api/post", payload);
-  console.log("createPost response: ", response);
+  return response.data;
+};
+
+export const uploadPostImage = async (
+  imageFile: File,
+  order: number,
+  postId: number
+): Promise<CreatePostResponse> => {
+  const formData = new FormData();
+  formData.append("uploadFile", imageFile);
+  formData.append("order", order.toString());
+  formData.append("postID", postId.toString());
+  const response = await apiClient.post("/api/post-image", formData);
   return response.data;
 };

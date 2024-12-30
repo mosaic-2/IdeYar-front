@@ -89,7 +89,7 @@ const SectionPart = ({ index, section, onChangeSection }: Prob) => {
             <img
               src={section.imagePreview}
               alt="Selected"
-              style={{ maxWidth: "100%", maxHeight: "300px" }}
+              style={{ maxWidth: "100%", maxHeight: "500px", borderRadius: 20 }}
             />
           </Box>
         )}

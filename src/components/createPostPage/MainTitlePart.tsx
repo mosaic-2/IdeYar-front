@@ -1,11 +1,18 @@
-import { Box, Stack, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import ImageUploadPart from "./ImageUploadPart";
 import { useTranslation } from "react-i18next";
+import { ChangeEvent } from "react";
 
 interface Props {
+  imagePreview: string | null;
+  onImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onTitleChange?: (title: string) => void;
 }
-const MainTitlePart = ({ onTitleChange }: Props) => {
+const MainTitlePart = ({
+  imagePreview,
+  onImageChange,
+  onTitleChange,
+}: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -17,7 +24,7 @@ const MainTitlePart = ({ onTitleChange }: Props) => {
         alignItems: "stretch",
       }}
     >
-      <ImageUploadPart />
+      <ImageUploadPart imagePreview={imagePreview} onChange={onImageChange} />
       <TextField
         dir="rtl"
         label={t("field.mainTitle")}

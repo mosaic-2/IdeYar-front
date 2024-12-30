@@ -9,14 +9,16 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import SectionPart from "./SectionPart";
 import { useImmer } from "use-immer";
-import { useCreatePost } from "../../hooks/handleCreatePost";
+import { createPost, uploadPostImage } from "../../apis/createPostApi";
+import { ChangeEvent } from "react";
 
 interface PostInfo {
   title: string | null;
   text: string | null;
   fund: string | null;
   date: string | null;
-  image: string | null;
+  imageFile: File | null;
+  imagePreview: string | null;
   sections: PostSection[];
 }
 
@@ -34,10 +36,10 @@ const CreatePost = () => {
     text: null,
     fund: null,
     date: null,
-    image: null,
+    imageFile: null,
+    imagePreview: null,
     sections: [],
   });
-  const { handleCreatePost } = useCreatePost();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -48,6 +50,16 @@ const CreatePost = () => {
     updatePost((draft: PostInfo) => {
       draft.title = t;
     });
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      updatePost((draft: PostInfo) => {
+        draft.imageFile = file;
+        draft.imagePreview = URL.createObjectURL(file);
+      });
+    }
   };
 
   const handleFundChange = (f: string) => {
@@ -81,7 +93,7 @@ const CreatePost = () => {
   };
 
   const handleSubmit = () => {
-    handleCreatePost({
+    const request = {
       title: post.title !== null ? post.title : "",
       deadline_date: post.date !== null ? post.date : "",
       minimum_fund: post.fund !== null ? post.fund : "",
@@ -92,7 +104,30 @@ const CreatePost = () => {
           order: index + 1,
         };
       }),
-    });
+    };
+    createPost(request)
+      .then(({ id }) => {
+        console.log("Post created. id: {}", id);
+        if (post.imageFile)
+          uploadPostImage(post.imageFile, 0, id)
+            .then(() => {
+              console.log("Post image uploaded. order: {}", 0);
+            })
+            .catch((error) => console.error("UploadPostImage failed:", error));
+        for (let index = 0; index < post.sections.length; index++) {
+          const section = post.sections[index];
+          if (section.imageFile) {
+            uploadPostImage(section.imageFile, index + 1, id)
+              .then(() => {
+                console.log("Post image uploaded. order: {}", index + 1);
+              })
+              .catch((error) =>
+                console.error("UploadPostImage failed:", error)
+              );
+          }
+        }
+      })
+      .catch((error) => console.error("CreatePost failed:", error));
   };
 
   return (
@@ -110,7 +145,11 @@ const CreatePost = () => {
               alignItems: "stretch",
             }}
           >
-            <MainTitlePart onTitleChange={handleTitleChange} />
+            <MainTitlePart
+              imagePreview={post.imagePreview}
+              onImageChange={handleImageChange}
+              onTitleChange={handleTitleChange}
+            />
             {post.sections.map((section: PostSection, i: number) => (
               <SectionPart
                 key={i}
