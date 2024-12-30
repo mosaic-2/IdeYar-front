@@ -55,11 +55,11 @@ const ForgotPassword = () => {
       await ForgotPassApi(requestPayload);
 
       // Show success message
-      enqueueSnackbar(t("emailChanged"), { variant: "success" });
+      enqueueSnackbar(t("برای ادامه درخواست به ایمیل مراجعه کنید"), { variant: "success" });
       navigate("/");
     } catch (error) {
       console.error("Failed to change email:", error);
-      enqueueSnackbar(t("emailChangeFailed"), { variant: "error" });
+      enqueueSnackbar(t("درخواست شما با خطا مواجه شد"), { variant: "error" });
     }
   };
 

@@ -55,11 +55,15 @@ const ChangeEmail = () => {
       await changeEmailApi(requestPayload);
 
       // Show success message
-      enqueueSnackbar(t("emailChanged"), { variant: "success" });
+      enqueueSnackbar(t("ایمیل شما با موفقیت تغییر یافت"), {
+        variant: "success",
+      });
       navigate("/");
     } catch (error) {
       console.error("Failed to change email:", error);
-      enqueueSnackbar(t("emailChangeFailed"), { variant: "error" });
+      enqueueSnackbar(t("تغییر ایمیل شما با خطا مواجه شد"), {
+        variant: "error",
+      });
     }
   };
 

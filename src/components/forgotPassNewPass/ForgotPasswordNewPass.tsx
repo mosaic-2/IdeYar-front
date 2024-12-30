@@ -8,7 +8,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
@@ -16,16 +15,15 @@ import { CacheProvider, ThemeProvider, useTheme } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import PrimaryButton from "../buttons/PrimaryButton";
-import CheckBox from "../buttons/CheckBox";
-import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
 import { passwordPattern } from "../../assets/regex/regexPatterns";
 import ChangePassImage from "../../assets/signup.svg?react";
 import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
-import { changePasswordApi } from "../../apis/changePass.ts";
+import { useNavigate, useParams } from "react-router-dom";
+import { forgetPasswordFinalizeApi } from "../../apis/forgetPasswordFinalizeApi.ts";
 
-const ChangePassword = () => {
+const ForgotChangePassword = () => {
+  const { token } = useParams<{ token: string }>(); // Get the token from the path
   const [password, setPassword] = useState<string>("");
   const [passwordConfirm, setPasswordConfirm] = useState<string>("");
 
@@ -35,7 +33,6 @@ const ChangePassword = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVal, setShowPasswordVal] = useState(false);
-  const [checked, setChecked] = useState(false);
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -59,7 +56,7 @@ const ChangePassword = () => {
     } else setPasswordConfirmErr(false);
   };
 
-  const validateInputs = async () => {
+  const handleSubmit = async () => {
     try {
       // Validate both password fields
       validatePassword(password);
@@ -67,29 +64,35 @@ const ChangePassword = () => {
 
       // If any error flags are true, do not proceed
       if (passwordErr || passwordConfirmErr) {
-        console.log("Validation errors");
+        enqueueSnackbar(t("validationError"), { variant: "error" });
+        return;
+      }
+
+      if (!token) {
+        enqueueSnackbar(t("missingTokenError"), { variant: "error" });
         return;
       }
 
       // Prepare the request payload
       const requestData = {
         newPassword: password,
+        resetToken: token,
       };
 
-      // Call the API to change the password
-      await changePasswordApi(requestData);
+      // Call the API to finalize the password change
+      await forgetPasswordFinalizeApi(requestData);
 
       // Show success notification
-      enqueueSnackbar(t("رمز عبور با موفقیت تغییر یافت"), { variant: "success" });
+      enqueueSnackbar(t("رمز عبور با خطا مواجه شد"), { variant: "success" });
 
-      // Navigate to the desired page
-      navigate("/");
+      // Navigate to the login page
+      navigate("/login");
     } catch (error) {
       // Handle API errors gracefully
       console.error("Error changing password:", error);
 
       // Display an error notification to the user
-      enqueueSnackbar(t("تغییر رمز عبور با خطا مواجه شد"), { variant: "error" });
+      enqueueSnackbar(t("درخواست شما با خطا مواجه شد"), { variant: "error" });
     }
   };
 
@@ -124,13 +127,13 @@ const ChangePassword = () => {
                 textAlign="center"
                 pb={2}
               >
-                {/* {t("changePassword")} */}
-                تغییر رمز عبور
+                {/* {t("ForgotChangePassword")} تغییر رمز عبور */}
+                فراموشی رمز عبور
               </Typography>
               <CacheProvider value={cacheRtl}>
                 <ThemeProvider theme={theme}>
                   <FormControl dir="rtl" variant="outlined" size="small">
-                    <InputLabel htmlFor="outlined-adornment-password">
+                    <InputLabel>
                       {/* {t("newPassword")} */}
                       رمز عبور
                     </InputLabel>
@@ -146,7 +149,7 @@ const ChangePassword = () => {
                           </IconButton>
                         </InputAdornment>
                       }
-                      label="Password"
+                      label={t("password")}
                       value={password}
                       onChange={(e) => {
                         setPassword(e.target.value);
@@ -173,7 +176,6 @@ const ChangePassword = () => {
                       تکرار رمز عبور
                     </InputLabel>
                     <OutlinedInput
-                      id="outlined-adornment-password"
                       type={showPasswordVal ? "text" : "password"}
                       endAdornment={
                         <InputAdornment position="start">
@@ -189,7 +191,7 @@ const ChangePassword = () => {
                           </IconButton>
                         </InputAdornment>
                       }
-                      label="Password"
+                      label={t("password")}
                       value={passwordConfirm}
                       onChange={(e) => {
                         setPasswordConfirm(e.target.value);
@@ -212,14 +214,10 @@ const ChangePassword = () => {
                 </ThemeProvider>
               </CacheProvider>
 
-              {/* No signUpError now, but we keep the structure for styling consistency */}
-
               <PrimaryButton
                 // text={t("confirm")}
-                text="ثبت"
-                onClick={() => {
-                  validateInputs();
-                }}
+                text={"تایید"}
+                onClick={handleSubmit}
               ></PrimaryButton>
             </Box>
           </Box>
@@ -229,4 +227,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ForgotChangePassword;
