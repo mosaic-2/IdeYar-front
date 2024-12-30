@@ -27,9 +27,9 @@ export interface UploadPostImageResponse {
 export const createPostApi = (requestData: CreatePostRequest) =>
   apiClient.post<CreatePostResponse>("/api/post", requestData);
 
-export const getPostImage = () =>
-  apiClient.post<CreatePostResponse>("/api/image/1");
-
+export const getPostImage = () => {
+  apiClient.post<CreatePostResponse>(`/api/post`, 1);
+};
 // export const uploadPostImageApi = (
 //   file: File,
 //   order: number,
