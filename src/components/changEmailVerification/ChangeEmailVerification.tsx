@@ -35,7 +35,7 @@ const ChangeEmailConfirm = () => {
     } catch (error) {
       console.error("Error during email confirmation:", error);
       setLoading(false);
-      enqueueSnackbar("تایید ایمیل شما با خطا مواجه شد.", {
+      enqueueSnackbar("تایید ایمیل شما با خطا مواجه شد", {
         variant: "error",
       });
 

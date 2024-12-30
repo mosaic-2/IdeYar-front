@@ -80,7 +80,7 @@ const ChangePassword = () => {
       await changePasswordApi(requestData);
 
       // Show success notification
-      enqueueSnackbar(t("passwordChanged"), { variant: "success" });
+      enqueueSnackbar(t("رمز عبور با موفقیت تغییر یافت"), { variant: "success" });
 
       // Navigate to the desired page
       navigate("/");
@@ -89,7 +89,7 @@ const ChangePassword = () => {
       console.error("Error changing password:", error);
 
       // Display an error notification to the user
-      enqueueSnackbar(t("passwordChangeFailed"), { variant: "error" });
+      enqueueSnackbar(t("تغییر رمز عبور با خطا مواجه شد"), { variant: "error" });
     }
   };
 

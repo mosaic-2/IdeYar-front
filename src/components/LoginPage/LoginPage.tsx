@@ -234,6 +234,25 @@ const LoginPage = () => {
                   </Typography>
                 </GrayLink>
               </Box>
+              <Box
+                px={2}
+                sx={{
+                  direction: "rtl",
+                  flexDirection: "row",
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                }}
+              >
+                <Typography variant="body4">
+                  {t("رمز عبور خود را فراموش کرده‌اید؟")}
+                </Typography>
+                <GrayLink href="/forgot-password">
+                  <Typography variant="body4" mb="10px">
+                    {t("فراموشی رمز عبور")}
+                  </Typography>
+                </GrayLink>
+              </Box>
             </Box>
           </Box>
         </Box>
