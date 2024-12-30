@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
     "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    // test
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "types": ["jest", "@testing-library/jest-dom"]
   },
   "files": [],
   "references": [
@@ -11,5 +17,6 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
+  "include": ["src/**/*"]
 }

@@ -11,6 +11,22 @@ import { darkPalette, lightPalette } from "./colorPalette";
 import { setDarkMode } from "../store/settingsSlice";
 import typography from "./typography";
 
+export const lightModeTheme = createTheme({
+  palette: {
+    mode: "light",
+    ...lightPalette,
+  },
+  typography: typography,
+});
+
+export const darkModeTheme = createTheme({
+  palette: {
+    mode: "dark",
+    ...darkPalette,
+  },
+  typography: typography,
+});
+
 const getTheme = (): Theme => {
   const dispatch = useDispatch<AppDispatch>();
   const settings = useSelector((state: RootState) => state.settings);
@@ -20,13 +36,7 @@ const getTheme = (): Theme => {
       const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
       dispatch(setDarkMode(prefersDarkMode));
     }
-    return createTheme({
-      palette: {
-        mode: settings.darkMode ? "dark" : "light",
-        ...(settings.darkMode ? darkPalette : lightPalette),
-      },
-      typography: typography,
-    });
+    return settings.darkMode ? darkModeTheme : lightModeTheme;
   }, [settings.darkMode]);
 
   return responsiveFontSizes(theme, { factor: 4 });
