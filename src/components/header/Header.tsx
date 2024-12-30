@@ -12,7 +12,7 @@ import LogoutIcon from "@mui/icons-material/Logout"; // <-- Import Logout icon
 import SecondaryButton from "../buttons/SecondaryButton";
 import PrimaryButton from "../buttons/PrimaryButton";
 import Search from "./Search";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
 import { useSelector, useDispatch } from "react-redux"; // <-- Import useDispatch
 import { RootState } from "../../store/store";
@@ -82,7 +82,11 @@ const Header: React.FC = () => {
               >
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <SecondaryButton text="کاوش" rightIcon={ExploreIcon} />
-                  <SecondaryButton text="شروع پروژه" rightIcon={AddCircleIcon} />
+                  <SecondaryButton
+                    text="شروع پروژه"
+                    rightIcon={AddCircleIcon}
+                    onClick={() => navigate("/create-post")}
+                  />
                 </Stack>
               </Box>
             </Box>
@@ -108,14 +112,14 @@ const Header: React.FC = () => {
                     <UserButton />
                     {/* Logout Button */}
                     <PrimaryButton
-                      text="خروج"         // "Logout" in Persian/Farsi
+                      text="خروج" // "Logout" in Persian/Farsi
                       leftIcon={LogoutIcon} // Use LogoutIcon for clarity
                       onClick={handleLogoutClick}
                     />
                   </>
                 ) : (
                   <PrimaryButton
-                    text="ورود"        // "Login" in Persian/Farsi
+                    text="ورود" // "Login" in Persian/Farsi
                     leftIcon={LoginIcon}
                     onClick={handleLoginClick}
                   />

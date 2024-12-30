@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import UploadImageButton from "../buttons/UploadImageButton";
 import { toPersianDigits } from "../../util/persianNumberConverter";
 import { PostSection } from "./CreatePost";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { debounce } from "lodash";
 
 interface Prob {
@@ -36,6 +36,17 @@ const SectionPart = ({ index, section, onChangeSection }: Prob) => {
     },
     300
   );
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onChangeSection(index, {
+        ...section,
+        imageFile: file,
+        imagePreview: URL.createObjectURL(file),
+      });
+    }
+  };
 
   return (
     <Collapse in={!isNew} timeout="auto" unmountOnExit>
@@ -73,6 +84,15 @@ const SectionPart = ({ index, section, onChangeSection }: Prob) => {
           multiline
           rows={10}
         />
+        {section.imagePreview && (
+          <Box textAlign="center">
+            <img
+              src={section.imagePreview}
+              alt="Selected"
+              style={{ maxWidth: "100%", maxHeight: "500px", borderRadius: 20 }}
+            />
+          </Box>
+        )}
         <Stack
           sx={{
             height: "100%",
@@ -80,7 +100,7 @@ const SectionPart = ({ index, section, onChangeSection }: Prob) => {
             alignItems: "center",
           }}
         >
-          <UploadImageButton />
+          <UploadImageButton onChange={handleImageChange} />
         </Stack>
       </Stack>
     </Collapse>
