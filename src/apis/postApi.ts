@@ -1,48 +1,31 @@
 import apiClient from "../services/api-client";
 
-export interface PostDetails {
+export interface PostResponse {
+  id: number;
+  userId: number;
+  username: string;
+  profileImageUrl: string;
+  title: string;
+  description: string;
+  minimumFund: number;
+  fundRaised: number;
+  deadlineDate: string;
+  image: string;
+  createdAt: Date;
+}
+
+export interface PostDetail {
   title: string;
   description: string;
   order?: number;
 }
 
-export interface CreatePostRequest {
-  title: string;
-  minimum_fund: string;
-  post_details: PostDetails[];
+export interface FetchPostResponse {
+  post: PostResponse;
+  postDetails: PostDetail[];
 }
 
-export interface CreatePostResponse {
-  success: boolean;
-  postId?: string;
-  message?: string;
-}
-
-export interface UploadPostImageResponse {
-  success: boolean;
-  message: string;
-  imageUrl?: string; // Assuming the server responds with the image URL
-}
-
-export const createPostApi = (requestData: CreatePostRequest) =>
-  apiClient.post<CreatePostResponse>("/api/post", requestData);
-
-export const getPostImage = () => {
-  apiClient.post<CreatePostResponse>(`/api/post`, 1);
+export const fetchPost = async (id: number): Promise<FetchPostResponse> => {
+  const response = await apiClient.get(`/api/post/${id}`);
+  return response.data;
 };
-// export const uploadPostImageApi = (
-//   file: File,
-//   order: number,
-//   postID: string
-// ) => {
-//   const formData = new FormData();
-//   formData.append("uploadFile", file);
-//   formData.append("order", order.toString());
-//   formData.append("postID", postID);
-
-//   return apiClient.post<UploadPostImageResponse>("/api/post-image", formData, {
-//     headers: {
-//       "Content-Type": "multipart/form-data",
-//     },
-//   });
-// };

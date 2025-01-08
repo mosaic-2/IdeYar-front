@@ -11,6 +11,7 @@ import SectionPart from "./SectionPart";
 import { useImmer } from "use-immer";
 import { createPost, uploadPostImage } from "../../apis/createPostApi";
 import { ChangeEvent } from "react";
+import { useSnackbar } from "notistack";
 
 interface PostInfo {
   title: string | null;
@@ -40,6 +41,8 @@ const CreatePost = () => {
     imagePreview: null,
     sections: [],
   });
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -93,6 +96,12 @@ const CreatePost = () => {
   };
 
   const handleSubmit = () => {
+    if (!post.imageFile) {
+      enqueueSnackbar("باید برای پروژه عکس اصلی انتخاب شود.", {
+        variant: "success",
+      });
+      return;
+    }
     const request = {
       title: post.title !== null ? post.title : "",
       deadline_date: post.date !== null ? post.date : "",
@@ -108,12 +117,6 @@ const CreatePost = () => {
     createPost(request)
       .then(({ id }) => {
         console.log("Post created. id: {}", id);
-        if (post.imageFile)
-          uploadPostImage(post.imageFile, 0, id)
-            .then(() => {
-              console.log("Post image uploaded. order: {}", 0);
-            })
-            .catch((error) => console.error("UploadPostImage failed:", error));
         for (let index = 0; index < post.sections.length; index++) {
           const section = post.sections[index];
           if (section.imageFile) {
@@ -126,6 +129,7 @@ const CreatePost = () => {
               );
           }
         }
+        enqueueSnackbar("پروژه با موفقیت ایجاد شد.", { variant: "success" });
       })
       .catch((error) => console.error("CreatePost failed:", error));
   };

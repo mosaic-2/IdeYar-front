@@ -6,21 +6,24 @@ export interface PostDetails {
   order: number;
 }
 
-export interface CreatePostPayload {
-  title: string;
-  minimum_fund: string;
-  deadline_date: string;
-  post_details: PostDetails[];
-}
-
 export interface CreatePostResponse {
   id: number;
 }
 
 export const createPost = async (
-  payload: CreatePostPayload
+  image: File,
+  title: string,
+  description: string,
+  minimumFund: string,
+  deadline: string
 ): Promise<CreatePostResponse> => {
-  const response = await apiClient.post("/api/post", payload);
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("title", title);
+  formData.append("description", description);
+  formData.append("minimumFund", minimumFund);
+  formData.append("deadline", deadline);
+  const response = await apiClient.post("/api/post", formData);
   return response.data;
 };
 
