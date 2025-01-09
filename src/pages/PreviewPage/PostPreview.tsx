@@ -1,82 +1,54 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
-  Button,
   CardMedia,
-  Icon,
   LinearProgress,
   Typography,
+  IconButton,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import {
-  createPostApi,
-  CreatePostRequest,
-  getPostImage,
-} from "../../apis/postApi";
 import Bookmark from "../../assets/bookmark.svg?react";
 
-const PostPreview = () => {
-  const progress = Math.min((1378 / 2000) * 100, 100);
+interface PostPreviewProps {
+  title: string;
+  description: string;
+  username: string;
+  profileImageUrl?: string;
+  minimumFund: string;
+  fundRaised: string;
+  image: string;
+}
 
-  const post = {
-    mainTitle: "عنوان کامل پروژه یا محصول مورد نظر",
-    mainTitleCaption:
-      "زیر نویس و یک توضیح کوتاه از پروژه یا محصول در حد یک یا دو جمله.",
-    titles: ["عنوان بخش 1", "عنوان بخش 2", "عنوان بخش 3"],
-    titlesCaptions: [
-      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
-      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
-      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
-    ],
-    mainImageUrl: "https://via.placeholder.com/300x400",
-    imageUrls: [
-      "https://via.placeholder.com/400x200",
-      "https://via.placeholder.com/400x200",
-      "https://via.placeholder.com/400x200",
-    ],
-    lastModified: "1403/8/8",
-  };
-
+const PostPreview: React.FC<PostPreviewProps> = ({
+  title,
+  description,
+  username,
+  profileImageUrl,
+  minimumFund,
+  fundRaised,
+  image,
+}) => {
   const [screen, setScreen] = useState<string>("desktop");
   const [vertical, setVertical] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
+  const progress = Math.min(
+    (Number(fundRaised) / Number(minimumFund)) * 100,
+    100
+  );
+
   useEffect(() => {
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       if (window.outerWidth <= 425) {
         setScreen("mobile");
-        // setVertical(true);
       } else {
         setScreen("desktop");
-        // setVertical(false);
       }
-    });
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Set the initial state based on the current window size
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // const createPost = async () => {
-  //   const postRequestData: CreatePostRequest = {
-  //     title: "جارو هری پاتر",
-  //     minimum_fund: "100000",
-  //     post_details: [
-  //       {
-  //         title: "جارو اما نه هر جارویی",
-  //         description: "جارویی که نقشه ساخت آن از دفتر دامبلدور به سرقت رفته",
-  //         order: 0,
-  //       },
-  //       {
-  //         title: "",
-  //         description: "با این جارو پرواز کنید",
-  //       },
-  //     ],
-  //   };
-
-  //   try {
-  //     const response = await createPostApi(postRequestData);
-  //     console.log(response);
-  //     console.log("Post created successfully:", response.data);
-  //   } catch (error) {
-  //     console.error("Error creating post:", error);
-  //   }
-  // };
 
   return (
     <Box
@@ -107,7 +79,6 @@ const PostPreview = () => {
             height: "10px",
             width: vertical ? "100%" : "90%",
             borderRadius: 5,
-
             order: vertical ? 1 : 2,
           }}
         />
@@ -130,12 +101,25 @@ const PostPreview = () => {
           >
             <Box display="flex" flexDirection="row" gap={2}>
               {/* Profile Image */}
-              <Box
-                borderRadius={100}
-                width="50px"
-                height="50px"
-                bgcolor="#D9D9D9"
-              />
+              {profileImageUrl ? (
+                <CardMedia
+                  component="img"
+                  image={profileImageUrl}
+                  alt={`${username}'s profile`}
+                  sx={{
+                    borderRadius: "50%",
+                    width: "50px",
+                    height: "50px",
+                  }}
+                />
+              ) : (
+                <Box
+                  borderRadius="50%"
+                  width="50px"
+                  height="50px"
+                  bgcolor="#D9D9D9"
+                />
+              )}
 
               <Box
                 display="flex"
@@ -143,9 +127,9 @@ const PostPreview = () => {
                 justifyContent="center"
               >
                 <Typography variant="body2" fontWeight="bold">
-                  {post.mainTitle}
+                  {title}
                 </Typography>
-                <Typography variant="body3">نام کاربر</Typography>
+                <Typography variant="body3">{username}</Typography>
               </Box>
             </Box>
           </Box>
@@ -156,36 +140,28 @@ const PostPreview = () => {
             sx={{ direction: "rtl" }}
           >
             <Typography variant="body3" fontWeight="bold">
-              {post.mainTitleCaption}
+              {description}
             </Typography>
           </Box>
-          {/* BookMark SVG */}
-
-          <Box
+          {/* Bookmark SVG */}
+          <IconButton
             sx={{
               position: "absolute",
-              width: "30px",
-              height: "30px",
               left: 10,
               top: vertical ? "" : 20,
               bottom: vertical ? -20 : "",
             }}
+            onClick={() => setIsClicked(!isClicked)}
           >
-            <Bookmark
-              cursor="pointer"
-              onClick={() => {
-                setIsClicked(!isClicked);
-              }}
-            />
-          </Box>
+            <Bookmark />
+          </IconButton>
         </Box>
       </Box>
       {/* Post image */}
-
       <CardMedia
         component="img"
-        image={post.mainImageUrl}
-        alt={post.mainTitle}
+        image={image}
+        alt={title}
         sx={{
           width: "400px",
           height: "300px",
