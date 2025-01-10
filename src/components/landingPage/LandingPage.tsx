@@ -8,10 +8,10 @@ type Post = {
   createdAt: string;
   deadlineDate: string;
   description: string;
-  fundRaised: string;
+  fundRaised: number;
   id: string;
   image: string;
-  minimumFund: string;
+  minimumFund: number;
   profileImageUrl: string;
   title: string;
   userId: string;

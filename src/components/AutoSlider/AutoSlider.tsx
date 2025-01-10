@@ -9,6 +9,7 @@ import {
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { FaQuoteRight } from "react-icons/fa";
 import { Posts } from "../landingPage/LandingPage";
+import ProjectCard from "../ProjectCard/ProjectCard";
 
 interface AutoSliderProps {
   posts: Posts;
@@ -126,28 +127,36 @@ const AutoSlider = ({ posts }: AutoSliderProps) => {
           }}
         >
           {posts.map((post, i) => (
-            <Card
-              key={i}
-              sx={{ width: 300, boxShadow: 3, flexShrink: 0, direction: "rtl" }}
-            >
-              <CardMedia
-                component="img"
-                height="140"
-                image={post.image}
-                alt={post.title}
-              />
-              <CardContent>
-                <Typography variant="h6" color="primary" gutterBottom>
-                  {post.title}
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary" paragraph>
-                  {post.username}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" paragraph>
-                  {post.description}
-                </Typography>
-              </CardContent>
-            </Card>
+            // <Card
+            //   key={i}
+            //   sx={{ width: 300, boxShadow: 3, flexShrink: 0, direction: "rtl" }}
+            // >
+            //   <CardMedia
+            //     component="img"
+            //     height="140"
+            //     image={post.image}
+            //     alt={post.title}
+            //   />
+            //   <CardContent>
+            //     <Typography variant="h6" color="primary" gutterBottom>
+            //       {post.title}
+            //     </Typography>
+            //     <Typography variant="subtitle2" color="textSecondary" paragraph>
+            //       {post.username}
+            //     </Typography>
+            //     <Typography variant="body2" color="textSecondary" paragraph>
+            //       {post.description}
+            //     </Typography>
+            //   </CardContent>
+            // </Card>
+            <ProjectCard
+              title={post.title}
+              description={post.description}
+              imageUrl={post.image}
+              amountGoal={post.minimumFund}
+              amountPaid={post.fundRaised}
+              userName={post.username}
+            />
           ))}
         </div>
         <Button

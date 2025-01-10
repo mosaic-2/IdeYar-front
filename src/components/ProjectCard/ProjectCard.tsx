@@ -17,6 +17,7 @@ interface ProjectCardProps {
   imageUrl?: string;
   amountPaid: number;
   amountGoal: number;
+  userName: string;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -25,24 +26,37 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   imageUrl = "https://via.placeholder.com/400x200", // Default Image
   amountPaid,
   amountGoal,
+  userName,
 }) => {
   const progress = Math.min((amountPaid / amountGoal) * 100, 100);
 
   return (
     <Card
       sx={{
-        width: "100%",
-        maxWidth: 300,
-        height: 450,
+        pb: 2,
+        minWidth: "300px",
+        height: "450px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         borderRadius: 2,
+        alignContent: "center",
+        alignItems: "center",
       }}
     >
-      <CardMedia component="img" height="180" image={imageUrl} alt={title} />
-      <CardContent sx={{ flexGrow: 1, textAlign: "right", paddingX: 2 }}>
+      <CardMedia
+        dir="rtl"
+        component="img"
+        sx={{ minHeight: "180px" }}
+        image={
+          imageUrl
+            ? `https://back.ideyar-app.ir/api/image/${imageUrl}`
+            : "https://via.placeholder.com/400x200"
+        }
+        alt={title}
+      />
+      <CardContent sx={{ flexGrow: 1, textAlign: "right", width: "100%" }}>
         <Typography
           variant="h5"
           component="div"
@@ -63,7 +77,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             textAlign: "justify start",
           }}
         >
-          {description}
+          {userName}
         </Typography>
         <Box sx={{ mb: 1 }}>
           <Typography
@@ -100,9 +114,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           {progress.toFixed(2)}% تکمیل شده
         </Typography>
       </CardContent>
-      <CardActions>
-        <PrimaryButton text="مشاهده پروژه" width="100%" />
-      </CardActions>
+
+      <PrimaryButton text="مشاهده پروژه" width="250px" />
     </Card>
   );
 };
