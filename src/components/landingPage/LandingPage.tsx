@@ -1,29 +1,54 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Categories from "../categories/Categories";
 import HomePage from "../homePage/HomePage";
 import IntroductionSection from "../homePage/Introduction";
 import { getLandingPostsApi } from "../../apis/landingPostsApi";
 import axios from "axios";
+type Post = {
+  createdAt: string;
+  deadlineDate: string;
+  description: string;
+  fundRaised: string;
+  id: string;
+  image: string;
+  minimumFund: string;
+  profileImageUrl: string;
+  title: string;
+  userId: string;
+  username: string;
+};
+
+export type Posts = Post[];
 
 const LandingPage = () => {
+  const [landingPosts, setLandingPosts] = useState<Posts>([]);
+
   useEffect(() => {
     getLandingPostsApi()
       .then((res) => {
-        console.log("getAccountApi response:", res);
+        console.log("getLandingPostsApi response:", res.data.posts);
+        const postsWithRandomIds = res.data.posts.map(
+          (post: Post, index: number) => ({
+            ...post,
+            id: (index + 1).toString(), // Assign sequential IDs
+          })
+        );
+        setLandingPosts(postsWithRandomIds);
       })
       .catch((err) => {
-        console.log("getAccountApi error: ", err);
+        console.log("getLandingPostsApi error: ", err);
         if (axios.isAxiosError(err)) {
         }
       });
   }, []);
+
   return (
     <>
       {/* Render the Categories */}
       <Categories />
 
       {/* Render the Home Page */}
-      <HomePage />
+      <HomePage posts={landingPosts} />
 
       {/* Render the Introduction Section */}
       <IntroductionSection />

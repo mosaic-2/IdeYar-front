@@ -31,10 +31,19 @@ const PostPreview: React.FC<PostPreviewProps> = ({
   const [vertical, setVertical] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
-  const progress = Math.min(
-    (Number(fundRaised) / Number(minimumFund)) * 100,
-    100
-  );
+  // const progress = Math.min(
+  //   (Number(fundRaised) / Number(minimumFund)) * 100,
+  //   100
+  // );
+  const mf = Math.floor(Math.random() * 1000000);
+  const fr = Math.floor(Math.random() * 1000000);
+
+  const progress =
+    mf >= fr
+      ? Math.min((Number(fr) / Number(mf)) * 100, 100)
+      : fr > mf
+      ? Math.min((Number(mf) / Number(fr)) * 100, 100)
+      : 0;
 
   useEffect(() => {
     const handleResize = () => {
@@ -104,7 +113,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
               {profileImageUrl ? (
                 <CardMedia
                   component="img"
-                  image={profileImageUrl}
+                  image={`https://back.ideyar-app.ir/api/image/${profileImageUrl}`}
                   alt={`${username}'s profile`}
                   sx={{
                     borderRadius: "50%",
@@ -160,7 +169,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
       {/* Post image */}
       <CardMedia
         component="img"
-        image={image}
+        image={`https://back.ideyar-app.ir/api/image/${image}`}
         alt={title}
         sx={{
           width: "400px",
