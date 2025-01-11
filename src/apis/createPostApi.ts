@@ -27,15 +27,19 @@ export const createPost = async (
   return response.data;
 };
 
-export const uploadPostImage = async (
-  imageFile: File,
+export const createPostDetail = async (
+  image: File | null,
+  title: string | null,
+  description: string | null,
   order: number,
-  postId: number
+  postId: string
 ): Promise<CreatePostResponse> => {
   const formData = new FormData();
-  formData.append("uploadFile", imageFile);
+  if (image) formData.append("image", image);
+  if (title) formData.append("title", title);
+  if (description) formData.append("description", description);
   formData.append("order", order.toString());
-  formData.append("postID", postId.toString());
-  const response = await apiClient.post("/api/post-image", formData);
+  formData.append("postID", postId);
+  const response = await apiClient.post("/api/post-detail", formData);
   return response.data;
 };

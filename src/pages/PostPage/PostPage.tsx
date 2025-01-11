@@ -3,7 +3,7 @@ import StickyLeftLayout from "../../components/layouts/StickyLeftLayout";
 import ProjectSupport from "./ProjectSupport";
 import ProjectTitles from "./ProjectTitles";
 import ProjectBoard from "./ProjectBoard";
-import { useRef } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import usePost from "../../hooks/usePost";
 
@@ -11,16 +11,19 @@ const PostPage = () => {
   const { id } = useParams();
   const { post, postDetails, loading } = usePost(id ? parseInt(id) : 0);
 
-  // Create refs for each section
-  const sectionRefs = postDetails
-    ? postDetails.map(() => useRef<HTMLDivElement>(null))
-    : [];
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    if (postDetails)
+      sectionRefs.current = postDetails.map(
+        (_, i) => sectionRefs.current[i] ?? null
+      );
+  }, [postDetails]);
 
   const scrollToSection = (index: number) => {
-    sectionRefs[index]?.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    if (sectionRefs.current[index]) {
+      sectionRefs.current[index]?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (

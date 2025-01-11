@@ -18,6 +18,7 @@ export interface PostDetail {
   title: string;
   description: string;
   order?: number;
+  image?: string;
 }
 
 export interface FetchPostResponse {

@@ -1,5 +1,5 @@
 import { Box, CardMedia, Typography } from "@mui/material";
-import { RefObject } from "react";
+import { MutableRefObject, RefObject } from "react";
 import { PostDetail, PostResponse } from "../../apis/postApi";
 import { format } from "date-fns";
 import { faIR } from "date-fns-jalali/locale";
@@ -8,7 +8,7 @@ import { toPersianDigits } from "../../util/persianNumberConverter";
 interface Props {
   post: PostResponse | undefined;
   postDetails: PostDetail[] | undefined;
-  sectionRefs: RefObject<HTMLDivElement>[]; // New prop for section refs
+  sectionRefs: MutableRefObject<(HTMLDivElement | null)[]>;
 }
 
 const ProjectBoard = ({ post, postDetails, sectionRefs }: Props) => {
@@ -33,11 +33,11 @@ const ProjectBoard = ({ post, postDetails, sectionRefs }: Props) => {
     >
       <CardMedia
         component="img"
-        width="100%"
-        height="420px"
-        image={"post.mainImageUrl"}
+        image={`https://back.ideyar-app.ir/api/image/${post?.image}`}
         alt={post?.title}
         sx={{
+          width: "100%",
+          maxHeight: "600px",
           borderRadius: "15px",
         }}
       />
@@ -60,7 +60,9 @@ const ProjectBoard = ({ post, postDetails, sectionRefs }: Props) => {
         {postDetails?.map((detail, index) => (
           <Box
             key={index}
-            ref={sectionRefs[index]} // Attach the corresponding ref
+            ref={(el: HTMLDivElement | null) =>
+              (sectionRefs.current[index] = el)
+            }
             display="flex"
             flexDirection="column"
             py={2}
@@ -76,17 +78,18 @@ const ProjectBoard = ({ post, postDetails, sectionRefs }: Props) => {
             >
               {detail.description}
             </Typography>
-
-            <CardMedia
-              component="img"
-              width="90%"
-              height="420px"
-              image={"detail.imageUrls[index]"}
-              alt={detail.title}
-              sx={{
-                borderRadius: "15px",
-              }}
-            />
+            {detail.image && (
+              <CardMedia
+                component="img"
+                image={`https://back.ideyar-app.ir/api/image/${detail.image}`}
+                alt={detail.title}
+                sx={{
+                  width: "100%",
+                  maxHeight: "600px",
+                  borderRadius: "15px",
+                }}
+              />
+            )}
           </Box>
         ))}
       </Box>
