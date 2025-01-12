@@ -6,33 +6,40 @@ export interface PostDetails {
   order: number;
 }
 
-export interface CreatePostPayload {
-  title: string;
-  minimum_fund: string;
-  deadline_date: string;
-  post_details: PostDetails[];
-}
-
 export interface CreatePostResponse {
   id: number;
 }
 
 export const createPost = async (
-  payload: CreatePostPayload
+  image: File,
+  title: string,
+  description: string,
+  minimumFund: string,
+  deadline: string
 ): Promise<CreatePostResponse> => {
-  const response = await apiClient.post("/api/post", payload);
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("title", title);
+  formData.append("description", description);
+  formData.append("minimumFund", minimumFund);
+  formData.append("deadline", deadline);
+  const response = await apiClient.post("/api/post", formData);
   return response.data;
 };
 
-export const uploadPostImage = async (
-  imageFile: File,
+export const createPostDetail = async (
+  image: File | null,
+  title: string | null,
+  description: string | null,
   order: number,
-  postId: number
+  postId: string
 ): Promise<CreatePostResponse> => {
   const formData = new FormData();
-  formData.append("uploadFile", imageFile);
+  if (image) formData.append("image", image);
+  if (title) formData.append("title", title);
+  if (description) formData.append("description", description);
   formData.append("order", order.toString());
-  formData.append("postID", postId.toString());
-  const response = await apiClient.post("/api/post-image", formData);
+  formData.append("postID", postId);
+  const response = await apiClient.post("/api/post-detail", formData);
   return response.data;
 };
