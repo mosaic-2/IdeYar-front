@@ -138,7 +138,7 @@ const CreatePost = () => {
             id.toString()
           )
             .then(() => {
-              console.log("Post detail added. order: {}", index + 1);
+              console.log("Post detail added. order: ", index + 1);
             })
             .catch((error) => console.error("Post detail add failed:", error));
         }

@@ -30,12 +30,7 @@ const PostPage = () => {
     <StickyLeftLayout
       leftFrame={
         <Box flexDirection="column" gap={3} display="flex">
-          <ProjectSupport
-            startTime="1 اذر 1403"
-            timeLeft="یک ماه و بیست و شش روز"
-            amountPaid={1357000}
-            amountGoal={2000000}
-          />
+          <ProjectSupport post={post} />
           <ProjectTitles
             titles={postDetails ? postDetails.map((d) => d.title) : []}
             onTitleClick={scrollToSection} // Pass scroll handler

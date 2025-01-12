@@ -1,6 +1,6 @@
 import { FC, SVGProps } from "react";
 import BaseButtonWithIcon from "./BaseButtonWithIcon";
-import { SvgIconTypeMap, Typography } from "@mui/material";
+import { SvgIconTypeMap, SxProps, Theme, Typography } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
   viewBox?: string;
   width?: string;
   height?: string;
+  sx?: SxProps<Theme>;
   onClick?: () => void;
 }
 const PrimaryButton = ({
@@ -25,6 +26,7 @@ const PrimaryButton = ({
   viewBox,
   width,
   height,
+  sx,
   onClick,
 }: Props) => {
   return (
@@ -44,6 +46,7 @@ const PrimaryButton = ({
         "&:active": {
           bgcolor: "button.primaryBgPressed",
         },
+        ...sx,
       }}
       viewBox={viewBox}
       onClick={onClick}
