@@ -35,7 +35,7 @@ const PrimaryButton = ({
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       sx={{
-        width: width,
+        width: width ? width : "100%",
         height: height,
         paddingX: 1.5,
         bgcolor: "button.primaryBg",
