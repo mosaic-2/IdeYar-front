@@ -6,10 +6,20 @@ import ProjectBoard from "./ProjectBoard";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import usePost from "../../hooks/usePost";
+import FundModal from "../../components/fund/FundModal";
 
 const PostPage = () => {
   const { id } = useParams();
   const { post, postDetails, loading } = usePost(id ? parseInt(id) : 0);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -27,23 +37,30 @@ const PostPage = () => {
   };
 
   return (
-    <StickyLeftLayout
-      leftFrame={
-        <Box flexDirection="column" gap={3} display="flex">
-          <ProjectSupport post={post} />
-          <ProjectTitles
-            titles={postDetails ? postDetails.map((d) => d.title) : []}
-            onTitleClick={scrollToSection} // Pass scroll handler
-          />
-        </Box>
-      }
-    >
-      <ProjectBoard
-        post={post}
-        postDetails={postDetails}
-        sectionRefs={sectionRefs}
+    <>
+      <FundModal
+        id={post ? post.id : 0}
+        open={open}
+        handleClose={handleClose}
       />
-    </StickyLeftLayout>
+      <StickyLeftLayout
+        leftFrame={
+          <Box flexDirection="column" gap={3} display="flex">
+            <ProjectSupport post={post} onSupportClick={handleOpen} />
+            <ProjectTitles
+              titles={postDetails ? postDetails.map((d) => d.title) : []}
+              onTitleClick={scrollToSection} // Pass scroll handler
+            />
+          </Box>
+        }
+      >
+        <ProjectBoard
+          post={post}
+          postDetails={postDetails}
+          sectionRefs={sectionRefs}
+        />
+      </StickyLeftLayout>
+    </>
   );
 };
 

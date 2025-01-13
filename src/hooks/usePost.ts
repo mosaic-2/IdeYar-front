@@ -12,7 +12,9 @@ const usePost = (id: number) => {
     fetchPost(id)
       .then(({ post, postDetails }) => {
         setPost(post);
-        setPostDetails(postDetails);
+        setPostDetails(
+          postDetails.sort((a, b) => (a.order || 0) - (b.order || 0))
+        );
       })
       .catch((err) => console.log("FetchPost error: ", err))
       .finally(() => setLoading(false));

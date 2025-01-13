@@ -14,13 +14,36 @@ import { PostResponse } from "../../apis/postApi";
 
 interface ProjectSupportProps {
   post: PostResponse | undefined;
+  onSupportClick: () => void;
 }
 
-const ProjectSupport = ({ post }: ProjectSupportProps) => {
+const calculateDifference = (end: Date): string => {
+  const start = new Date();
+  const diffMs = end.getTime() - start.getTime();
+
+  // Convert to days and hours
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffHours = Math.floor(
+    (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+
+  // Format the result in Persian
+  return `${diffDays} روز و ${diffHours} ساعت`;
+};
+
+const ProjectSupport = ({ post, onSupportClick }: ProjectSupportProps) => {
   const { t } = useTranslation();
   const progress = post
     ? Math.min((post.fundRaised / post.minimumFund) * 100, 100)
     : 0;
+
+  const formattedDate = post
+    ? new Intl.DateTimeFormat("fa-IR", {
+        dateStyle: "medium",
+      }).format(new Date(post.deadlineDate))
+    : "";
+
+  const leftTime = post ? calculateDifference(new Date(post.deadlineDate)) : "";
 
   return (
     <Card
@@ -108,7 +131,7 @@ const ProjectSupport = ({ post }: ProjectSupportProps) => {
                 direction: "rtl",
               }}
             >
-              {post?.deadlineDate}
+              {leftTime}
             </Typography>
 
             <Box
@@ -128,7 +151,7 @@ const ProjectSupport = ({ post }: ProjectSupportProps) => {
                 {t("startTime")}
               </Typography>
               <Typography variant="body2" color="text.primary">
-                {post?.createdAt.toString()}
+                {formattedDate}
               </Typography>
             </Box>
           </>
@@ -155,6 +178,7 @@ const ProjectSupport = ({ post }: ProjectSupportProps) => {
             text={t("support")}
             height="40px"
             sx={{ width: "100%" }}
+            onClick={onSupportClick}
           />
         </Box>
       </CardActions>

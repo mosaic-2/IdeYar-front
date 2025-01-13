@@ -11,7 +11,7 @@ export interface PostResponse {
   fundRaised: number;
   deadlineDate: string;
   image: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export interface PostDetail {
