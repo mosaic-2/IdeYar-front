@@ -3,56 +3,46 @@ import StickyLeftLayout from "../../components/layouts/StickyLeftLayout";
 import ProjectSupport from "./ProjectSupport";
 import ProjectTitles from "./ProjectTitles";
 import ProjectBoard from "./ProjectBoard";
-import { useRef } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import usePost from "../../hooks/usePost";
 
 const PostPage = () => {
-  const post = {
-    mainTitle: "عنوان کامل پروژه یا محصول مورد نظر",
-    mainTitleCaption:
-      "زیر نویس و یک توضیح کوتاه از پروژه یا محصول در حد یک یا دو جمله.",
-    titles: ["عنوان بخش 1", "عنوان بخش 2", "عنوان بخش 3"],
-    titlesCaptions: [
-      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
-      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
-      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
-    ],
-    mainImageUrl: "https://via.placeholder.com/300x400",
-    imageUrls: [
-      "https://via.placeholder.com/400x200",
-      "https://via.placeholder.com/400x200",
-      "https://via.placeholder.com/400x200",
-    ],
-    lastModified: "1403/8/8",
-  };
+  const { id } = useParams();
+  const { post, postDetails, loading } = usePost(id ? parseInt(id) : 0);
 
-  // Create refs for each section
-  const sectionRefs = post.titles.map(() => useRef<HTMLDivElement>(null));
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    if (postDetails)
+      sectionRefs.current = postDetails.map(
+        (_, i) => sectionRefs.current[i] ?? null
+      );
+  }, [postDetails]);
 
   const scrollToSection = (index: number) => {
-    sectionRefs[index]?.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    if (sectionRefs.current[index]) {
+      sectionRefs.current[index]?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
     <StickyLeftLayout
       leftFrame={
         <Box flexDirection="column" gap={3} display="flex">
-          <ProjectSupport
-            startTime="1 اذر 1403"
-            timeLeft="یک ماه و بیست و شش روز"
-            amountPaid={1357000}
-            amountGoal={2000000}
-          />
+          <ProjectSupport post={post} />
           <ProjectTitles
-            titles={post.titles}
+            titles={postDetails ? postDetails.map((d) => d.title) : []}
             onTitleClick={scrollToSection} // Pass scroll handler
           />
         </Box>
       }
     >
-      <ProjectBoard post={post} sectionRefs={sectionRefs} />
+      <ProjectBoard
+        post={post}
+        postDetails={postDetails}
+        sectionRefs={sectionRefs}
+      />
     </StickyLeftLayout>
   );
 };
