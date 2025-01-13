@@ -42,6 +42,7 @@ const CreatePost = () => {
     imagePreview: null,
     sections: [],
   });
+  const [creating, setCreating] = useImmer(false);
 
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -119,6 +120,8 @@ const CreatePost = () => {
         };
       }),
     };
+    enqueueSnackbar("در حال ایجاد پروژه", { variant: "info" });
+    setCreating(true);
     createPost(
       post.imageFile,
       post.title,
@@ -128,24 +131,47 @@ const CreatePost = () => {
     )
       .then(({ id }) => {
         console.log("Post created. id: {}", id);
-        for (let index = 0; index < post.sections.length; index++) {
-          const section = post.sections[index];
-          createPostDetail(
-            section.imageFile,
-            section.title,
-            section.text,
-            index + 1,
-            id.toString()
-          )
-            .then(() => {
+        async function uploadPostDetails() {
+          for (let index = 0; index < post.sections.length; index++) {
+            const section = post.sections[index];
+            try {
+              await createPostDetail(
+                section.imageFile,
+                section.title,
+                section.text,
+                index + 1,
+                id.toString()
+              );
               console.log("Post detail added. order: ", index + 1);
-            })
-            .catch((error) => console.error("Post detail add failed:", error));
+            } catch (error) {
+              console.error("Post detail add failed:", error);
+            }
+          }
+          setCreating(false);
+          enqueueSnackbar("پروژه با موفقیت ایجاد شد.", { variant: "success" });
+          navigate(`/post/${id}`);
         }
-        enqueueSnackbar("پروژه با موفقیت ایجاد شد.", { variant: "success" });
-        navigate(`/post/${id}`);
+        uploadPostDetails();
+        // for (let index = 0; index < post.sections.length; index++) {
+        //   const section = post.sections[index];
+        //   createPostDetail(
+        //     section.imageFile,
+        //     section.title,
+        //     section.text,
+        //     index + 1,
+        //     id.toString()
+        //   )
+        //     .then(() => {
+        //       console.log("Post detail added. order: ", index + 1);
+        //     })
+        //     .catch((error) => console.error("Post detail add failed:", error));
+        // }
       })
-      .catch((error) => console.error("CreatePost failed:", error));
+      .catch((error) => {
+        setCreating(false);
+        enqueueSnackbar("خطا در ایجاد پروژه", { variant: "error" });
+        console.error("CreatePost failed:", error);
+      });
   };
 
   return (
@@ -181,6 +207,7 @@ const CreatePost = () => {
               onFundChange={handleFundChange}
               onDateChange={handleDateChange}
               onSubmit={handleSubmit}
+              creating={creating}
             />
           </Stack>
         </SimpleLayout>
