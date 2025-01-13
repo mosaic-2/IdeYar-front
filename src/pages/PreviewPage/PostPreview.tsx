@@ -169,7 +169,11 @@ const PostPreview: React.FC<PostPreviewProps> = ({
       {/* Post image */}
       <CardMedia
         component="img"
-        image={`https://back.ideyar-app.ir/api/image/${image}`}
+        image={
+          image
+            ? `https://back.ideyar-app.ir/api/image/${image}`
+            : "https://via.placeholder.com/400x200"
+        }
         alt={title}
         sx={{
           width: "400px",

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import PostPreview from "../../pages/PreviewPage/PostPreview";
@@ -59,7 +59,7 @@ const SearchPage = () => {
       display="flex"
       flexDirection="row"
       py={5}
-      gap={20}
+      gap={searchedPosts.length > 0 ? 20 : 10}
       justifyContent="center"
     >
       <Box
@@ -89,19 +89,30 @@ const SearchPage = () => {
 
         <PrimaryButton height="40px" width="260px" text="اعمال فیلترها" />
       </Box>
-      <Box display="flex" flexDirection="column" gap={2}>
-        {searchedPosts.map((_, index) => (
-          <PostPreview
-            username={searchedPosts[index].username}
-            description={searchedPosts[index].description}
-            title={searchedPosts[index].title}
-            image={searchedPosts[index].image}
-            minimumFund="10000"
-            fundRaised="100"
-            key={index}
-          />
-        ))}
-      </Box>
+      {searchedPosts.length > 0 ? (
+        <Box display="flex" flexDirection="column" gap={2}>
+          {searchedPosts.map((_, index) => (
+            <PostPreview
+              username={searchedPosts[index].username}
+              description={searchedPosts[index].description}
+              title={searchedPosts[index].title}
+              image={searchedPosts[index].image}
+              minimumFund="10000"
+              fundRaised="100"
+              key={index}
+            />
+          ))}
+        </Box>
+      ) : (
+        <Box
+          width="980px"
+          justifyContent="center"
+          alignItems="center"
+          display="flex"
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </Box>
   );
 };

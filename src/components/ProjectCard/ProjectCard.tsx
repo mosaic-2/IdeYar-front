@@ -37,7 +37,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+        // boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         borderRadius: 2,
         alignContent: "center",
         alignItems: "center",
