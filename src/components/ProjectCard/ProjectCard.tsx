@@ -3,13 +3,14 @@ import {
   CardMedia,
   CardContent,
   Typography,
-  CardActions,
   LinearProgress,
   Box,
 } from "@mui/material";
 import PrimaryButton from "../buttons/PrimaryButton";
+import React from "react";
 
 interface ProjectCardProps {
+  id: string | number;
   title: string;
   description: string;
   imageUrl?: string;
@@ -19,6 +20,7 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
+  id,
   title,
   description,
   imageUrl = "https://via.placeholder.com/400x200",
@@ -28,8 +30,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   const progress = Math.min((amountPaid / amountGoal) * 100, 100);
 
+  const handleCardClick = () => {
+    window.location.href = `http://localhost:3000/post/${id}`;
+  };
+
   return (
     <Card
+      onClick={handleCardClick}
       sx={{
         pb: 2,
         minWidth: "300px",
@@ -37,17 +44,21 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        // boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         borderRadius: 2,
-        alignContent: "center",
         alignItems: "center",
         bgcolor: "bg.primary",
+        // Add a pointer cursor and a smooth box-shadow transition
+        cursor: "pointer",
+        transition: "box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          boxShadow: 6, // e.g., theme.shadows[6] or a custom shadow
+        },
       }}
     >
       <CardMedia
         dir="rtl"
         component="img"
-        sx={{ minHeight: "180px" }}
+        sx={{ minHeight: "180px", maxHeight: "100px" }}
         image={
           imageUrl
             ? `https://back.ideyar-app.ir/api/image/${imageUrl}`
@@ -71,9 +82,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           color="text.secondary"
           sx={{
             marginBottom: 2,
-
             mt: 1,
-            textAlign: "justify start",
+            textAlign: "justify",
           }}
         >
           {userName}
