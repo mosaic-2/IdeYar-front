@@ -13,11 +13,10 @@ interface Props {
 
 const ProjectBoard = ({ post, postDetails, sectionRefs }: Props) => {
   const updateTime = post
-    ? toPersianDigits(
-        format(post.createdAt, "HH:mm:ss , dd MMMM yyyy", {
-          locale: faIR,
-        })
-      )
+    ? new Intl.DateTimeFormat("fa-IR", {
+        dateStyle: "full",
+        timeStyle: "short",
+      }).format(new Date(post.createdAt))
     : "";
 
   return (

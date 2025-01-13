@@ -8,9 +8,15 @@ interface Props {
   onFundChange?: (fund: string) => void;
   onDateChange?: (fund: string) => void;
   onSubmit?: () => void;
+  creating: boolean;
 }
 
-const DetailsPart = ({ onFundChange, onDateChange, onSubmit }: Props) => {
+const DetailsPart = ({
+  onFundChange,
+  onDateChange,
+  onSubmit,
+  creating,
+}: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -39,7 +45,7 @@ const DetailsPart = ({ onFundChange, onDateChange, onSubmit }: Props) => {
         <DateInput onChange={onDateChange} />
         <PrimaryButton
           onClick={onSubmit}
-          text={t("createPost.submit")}
+          text={creating ? "..." : t("createPost.submit")}
           width="300px"
           height="50px"
         />
