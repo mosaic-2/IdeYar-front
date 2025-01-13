@@ -1,9 +1,10 @@
-import React from "react";
 import { Container, Box, Typography } from "@mui/material";
 import ProjectsSlider from "./ProjectSlider";
 import LandingImage1 from "../../assets/landing_1.svg?react";
+import AutoSlider from "../AutoSlider/AutoSlider";
+import { Posts } from "../landingPage/LandingPage";
 
-const IdeaYarSection: React.FC = () => {
+const IdeaYarSection = () => {
   return (
     <Box
       sx={{
@@ -22,9 +23,9 @@ const IdeaYarSection: React.FC = () => {
       <Box
         sx={{
           my: 6,
-          width: "60%", // Half of the container width
-          textAlign: "right", // Align text to the right
-          p: 4, // Padding for the text section
+          width: "60%",
+          textAlign: "right",
+          p: 4,
         }}
       >
         <Typography variant="h3" sx={{ mb: 4, textAlign: "center" }}>
@@ -42,7 +43,7 @@ const IdeaYarSection: React.FC = () => {
   );
 };
 
-const HomePage: React.FC = () => {
+const HomePage = ({ posts }: { posts: Posts }) => {
   return (
     <Container sx={{ mt: 4, mb: 4 }}>
       <IdeaYarSection />
@@ -50,7 +51,22 @@ const HomePage: React.FC = () => {
         <Typography variant="h4" align="center" gutterBottom sx={{ mb: 3 }}>
           بهترین پروژه‌ها
         </Typography>
-        <ProjectsSlider />
+        <Box
+          display="flex"
+          flexDirection="row"
+          width="100%"
+          px={10}
+          justifyContent="space-between"
+        >
+          <AutoSlider posts={posts} />
+          <Box alignSelf="center">
+            <img
+              src={"src/assets/top_projects.png"}
+              alt="Selected"
+              style={{ maxWidth: "400px", maxHeight: "300px" }}
+            />
+          </Box>
+        </Box>
       </Box>
     </Container>
   );
