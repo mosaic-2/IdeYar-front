@@ -1,5 +1,3 @@
-// src/components/ProjectCard/ProjectCard.tsx
-import React from "react";
 import {
   Card,
   CardMedia,
@@ -23,7 +21,7 @@ interface ProjectCardProps {
 const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
   description,
-  imageUrl = "https://via.placeholder.com/400x200", // Default Image
+  imageUrl = "https://via.placeholder.com/400x200",
   amountPaid,
   amountGoal,
   userName,
@@ -43,6 +41,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         borderRadius: 2,
         alignContent: "center",
         alignItems: "center",
+        bgcolor: "bg.primary",
       }}
     >
       <CardMedia
@@ -62,7 +61,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           component="div"
           gutterBottom
           sx={{
-            marginBottom: 1, // Add consistent bottom margin
+            marginBottom: 1,
           }}
         >
           {title}
@@ -71,7 +70,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           variant="body2"
           color="text.secondary"
           sx={{
-            marginBottom: 2, // Add consistent bottom margin
+            marginBottom: 2,
 
             mt: 1,
             textAlign: "justify start",
@@ -84,7 +83,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             variant="body2"
             color="text.primary"
             sx={{
-              marginBottom: 1, // Add consistent bottom margin
+              marginBottom: 1,
             }}
           >
             مبلغ پرداخت شده: {amountPaid.toLocaleString()} تومان
@@ -93,7 +92,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             variant="body2"
             color="text.primary"
             sx={{
-              marginBottom: 1, // Add consistent bottom margin
+              marginBottom: 1,
             }}
           >
             مبلغ هدف: {amountGoal.toLocaleString()} تومان

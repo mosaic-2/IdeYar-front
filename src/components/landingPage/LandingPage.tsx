@@ -30,7 +30,7 @@ const LandingPage = () => {
         const postsWithRandomIds = res.data.posts.map(
           (post: Post, index: number) => ({
             ...post,
-            id: (index + 1).toString(), // Assign sequential IDs
+            id: (index + 1).toString(),
           })
         );
         setLandingPosts(postsWithRandomIds);

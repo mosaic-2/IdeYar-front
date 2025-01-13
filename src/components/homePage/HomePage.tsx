@@ -51,7 +51,22 @@ const HomePage = ({ posts }: { posts: Posts }) => {
         <Typography variant="h4" align="center" gutterBottom sx={{ mb: 3 }}>
           بهترین پروژه‌ها
         </Typography>
-        <AutoSlider posts={posts} />
+        <Box
+          display="flex"
+          flexDirection="row"
+          width="100%"
+          px={10}
+          justifyContent="space-between"
+        >
+          <AutoSlider posts={posts} />
+          <Box alignSelf="center">
+            <img
+              src={"src/assets/top_projects.png"}
+              alt="Selected"
+              style={{ maxWidth: "400px", maxHeight: "300px" }}
+            />
+          </Box>
+        </Box>
       </Box>
     </Container>
   );
