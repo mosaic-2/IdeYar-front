@@ -50,6 +50,7 @@ const ProjectsBox = () => {
     try {
       const { posts } = await getUserProjects();
       setProjects(posts);
+      console.log(posts);
     } catch (error) {
       console.error("Error fetching projects:", error);
     } finally {

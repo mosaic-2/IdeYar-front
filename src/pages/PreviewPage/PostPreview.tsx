@@ -9,6 +9,7 @@ import {
 import Bookmark from "../../assets/bookmark.svg?react";
 
 interface PostPreviewProps {
+  id: string | number; // <-- Add a prop to identify the post
   title: string;
   description: string;
   username: string;
@@ -19,6 +20,7 @@ interface PostPreviewProps {
 }
 
 const PostPreview: React.FC<PostPreviewProps> = ({
+  id,
   title,
   description,
   username,
@@ -31,20 +33,12 @@ const PostPreview: React.FC<PostPreviewProps> = ({
   const [vertical, setVertical] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
-  // const progress = Math.min(
-  //   (Number(fundRaised) / Number(minimumFund)) * 100,
-  //   100
-  // );
-  const mf = Math.floor(Math.random() * 1000000);
-  const fr = Math.floor(Math.random() * 1000000);
+  const progress = Math.min(
+    (Number(fundRaised) / Number(minimumFund)) * 100,
+    100
+  );
 
-  const progress =
-    mf >= fr
-      ? Math.min((Number(fr) / Number(mf)) * 100, 100)
-      : fr > mf
-      ? Math.min((Number(mf) / Number(fr)) * 100, 100)
-      : 0;
-
+  // Detect screen size
   useEffect(() => {
     const handleResize = () => {
       if (window.outerWidth <= 425) {
@@ -59,8 +53,16 @@ const PostPreview: React.FC<PostPreviewProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Navigate to specific post
+  const handleCardClick = () => {
+    // You can also use React Router's useNavigate if you prefer
+    // e.g. navigate(`/post/${id}`);
+    window.location.href = `http://localhost:3000/post/${id}`;
+  };
+
   return (
     <Box
+      onClick={handleCardClick}
       width={vertical ? "400px" : "900px"}
       height={vertical ? "550px" : "300px"}
       display="flex"
@@ -70,7 +72,16 @@ const PostPreview: React.FC<PostPreviewProps> = ({
       bgcolor="white"
       border="1px solid"
       borderColor="button.tGrayFG"
+      sx={{
+        // Make the entire box clickable
+        cursor: "pointer",
+        transition: "box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          boxShadow: 4, // or any shadow level you prefer
+        },
+      }}
     >
+      {/* Left/Text Section */}
       <Box
         width={vertical ? "400px" : "500px"}
         height="300px"
@@ -100,7 +111,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
           order={vertical ? 2 : 1}
           position="relative"
         >
-          {/* Project title */}
+          {/* Project Title/Info */}
           <Box
             width="100%"
             height="30%"
@@ -129,7 +140,6 @@ const PostPreview: React.FC<PostPreviewProps> = ({
                   bgcolor="#D9D9D9"
                 />
               )}
-
               <Box
                 display="flex"
                 flexDirection="column"
@@ -138,7 +148,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
                 <Typography variant="body2" fontWeight="bold">
                   {title}
                 </Typography>
-                <Typography variant="body3">{username}</Typography>
+                <Typography variant="body2">{username}</Typography>
               </Box>
             </Box>
           </Box>
@@ -148,7 +158,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
             order={vertical ? 2 : 1}
             sx={{ direction: "rtl" }}
           >
-            <Typography variant="body3" fontWeight="bold">
+            <Typography variant="body2" fontWeight="bold">
               {description}
             </Typography>
           </Box>
@@ -160,13 +170,18 @@ const PostPreview: React.FC<PostPreviewProps> = ({
               top: vertical ? "" : 20,
               bottom: vertical ? -20 : "",
             }}
-            onClick={() => setIsClicked(!isClicked)}
+            onClick={(e) => {
+              // Prevent card click from firing
+              e.stopPropagation();
+              setIsClicked(!isClicked);
+            }}
           >
             <Bookmark />
           </IconButton>
         </Box>
       </Box>
-      {/* Post image */}
+
+      {/* Post Image */}
       <CardMedia
         component="img"
         image={
