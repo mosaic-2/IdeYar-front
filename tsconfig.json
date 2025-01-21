@@ -2,12 +2,16 @@
   "compilerOptions": {
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "noEmit": false,
+    "typeRoots": ["./node_modules/@types", "./**/*.d.ts", "src/@types"],
     // test
     "jsx": "react-jsx",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "types": ["jest", "@testing-library/jest-dom"]
+    "types": ["node", "jest", "@testing-library/jest-dom"]
   },
   "files": [],
   "references": [
@@ -18,5 +22,4 @@
       "path": "./tsconfig.node.json"
     }
   ]
-  // "include": ["src/**/*"]
 }
