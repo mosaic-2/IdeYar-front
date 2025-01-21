@@ -143,7 +143,7 @@ const ProjectsBox = () => {
             funds.map((fund, index) => (
               <PostPreview
                 key={index}
-                {...fund.clearpost}
+                {...fund.post}
                 fundRaised={fund.amount}
               />
             ))
