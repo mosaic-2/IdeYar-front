@@ -1,0 +1,10 @@
+import { jsx as _jsx } from "react/jsx-runtime";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { PersistGate } from "redux-persist/lib/integration/react";
+import { SnackbarProvider } from "notistack";
+import App from "./App.js";
+import { persistor, store } from "./store/store.js";
+ReactDOM.createRoot(document.getElementById("root")).render(_jsx(React.StrictMode, { children: _jsx(Provider, { store: store, children: _jsx(SnackbarProvider, { maxSnack: 3, children: _jsx(PersistGate, { loading: null, persistor: persistor, children: _jsx(BrowserRouter, { children: _jsx(App, {}) }) }) }) }) }));

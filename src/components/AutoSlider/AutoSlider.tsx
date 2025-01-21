@@ -77,6 +77,7 @@ const AutoSlider = ({ posts }: AutoSliderProps) => {
             }}
           >
             <ProjectCard
+              id={1}
               title={post.title}
               description={post.description}
               imageUrl={post.image}
