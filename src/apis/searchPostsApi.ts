@@ -12,6 +12,8 @@ export interface SearchPostsResponse {
     title: string;
     description: string;
     createdAt: string;
+    username: string;
+    image: string;
     // Add other post fields if present in the response
   }>;
   total: number;
@@ -30,8 +32,10 @@ export interface SearchPostsResponse {
 //     page,
 //   });
 
-export const searchPostsApi = (
+export const searchPostsApi = async (
   title: string,
   page: number
-): Promise<SearchPostsResponse> =>
-  apiClient.post("/api/search-post", { title, page });
+): Promise<SearchPostsResponse> => {
+  const response = await apiClient.post("/api/search-post", { title, page });
+  return response.data;
+};

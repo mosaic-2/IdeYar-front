@@ -5,7 +5,7 @@ import PostPreview from "../../pages/PreviewPage/PostPreview";
 import SecondaryButton from "../buttons/SecondaryButton";
 import PrimaryButton from "../buttons/PrimaryButton";
 import { enqueueSnackbar } from "notistack";
-import { searchPostsApi } from "../../apis/searchPostsApi";
+import { searchPostsApi, SearchPostsResponse } from "../../apis/searchPostsApi";
 import MultipleTextField from "../textField/multipleTextField";
 import SingleTextField from "../textField/singleTextField";
 import MultipleSelectChip from "../textField/multipleTextField";
@@ -33,7 +33,8 @@ const SearchPage = () => {
     setSelectedCategories(categories);
   };
 
-  const [searchedPosts, setSearchedPosts] = useState([]);
+  const [searchedPosts, setSearchedPosts] =
+    useState<SearchPostsResponse | null>(null);
   const searchObject = useParams().object;
 
   useEffect(() => {
@@ -44,9 +45,9 @@ const SearchPage = () => {
         .then((response) => {
           console.log("here");
           console.log("API Response:", response);
-          if (response.data) {
-            console.log("Posts:", response.data.postOverview);
-            setSearchedPosts(response.data.postOverview);
+          if (response) {
+            console.log("Posts:", response);
+            setSearchedPosts(response);
           }
         })
         .catch((err) => {
@@ -59,7 +60,7 @@ const SearchPage = () => {
       display="flex"
       flexDirection="row"
       py={5}
-      gap={searchedPosts.length > 0 ? 20 : 10}
+      gap={searchedPosts?.posts.length || 0 > 0 ? 20 : 10}
       justifyContent="center"
     >
       <Box
@@ -89,14 +90,15 @@ const SearchPage = () => {
 
         <PrimaryButton height="40px" width="260px" text="اعمال فیلترها" />
       </Box>
-      {searchedPosts.length > 0 ? (
+      {searchedPosts ? (
         <Box display="flex" flexDirection="column" gap={2}>
-          {searchedPosts.map((_, index) => (
+          {searchedPosts.posts.map((post, index) => (
             <PostPreview
-              username={searchedPosts[index].username}
-              description={searchedPosts[index].description}
-              title={searchedPosts[index].title}
-              image={searchedPosts[index].image}
+              id={1}
+              username={post.username}
+              description={post.description}
+              title={post.title}
+              image={post.image}
               minimumFund="10000"
               fundRaised="100"
               key={index}
