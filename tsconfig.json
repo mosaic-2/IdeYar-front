@@ -17,6 +17,6 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ],
-  "include": ["src/**/*"]
+  ]
+  // "include": ["src/**/*"]
 }
