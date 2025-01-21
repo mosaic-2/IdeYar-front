@@ -4,6 +4,7 @@ import ArtsIcon from "@mui/icons-material/Brush";
 import VideoIcon from "@mui/icons-material/Videocam";
 import ProjectIcon from "@mui/icons-material/Star";
 import DesignIcon from "@mui/icons-material/DesignServices";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   { icon: <ArtsIcon />, label: "هنر" },
@@ -18,18 +19,17 @@ const categories = [
 ];
 
 const CategoryGrid: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (category: string) => {
+    navigate("/search", { state: { selectedCategory: category } });
+  };
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        padding: 2,
-      }}
-    >
+    <Box display="flex" flexWrap="wrap" justifyContent="center" gap={4}>
       {categories.map((category, index) => (
         <Box
           key={index}
+          onClick={() => handleCategoryClick(category.label)}
           sx={{
             width: 90,
             height: 90,

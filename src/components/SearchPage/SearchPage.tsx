@@ -1,6 +1,6 @@
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import PostPreview from "../../pages/PreviewPage/PostPreview";
 import SecondaryButton from "../buttons/SecondaryButton";
 import PrimaryButton from "../buttons/PrimaryButton";
@@ -8,22 +8,33 @@ import { enqueueSnackbar } from "notistack";
 import { searchPostsApi } from "../../apis/searchPostsApi";
 import MultipleTextField from "../textField/multipleTextField";
 import SingleTextField from "../textField/singleTextField";
+import MultipleSelectChip from "../textField/multipleTextField";
+
+// type Post = {
+//   description: string;
+//   id: string;
+//   image: string;
+//   profileImageUrl: string;
+//   title: string;
+//   userId: string;
+//   username: string;
+// };
 
 const SearchPage = () => {
+  const location = useLocation();
+  const selectedCategoryFromNav = location.state?.selectedCategory || null;
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    selectedCategoryFromNav ? [selectedCategoryFromNav] : []
+  );
+
+  const handleCategoriesChange = (categories: string[]) => {
+    console.log("Selected Categories:", categories);
+    setSelectedCategories(categories);
+  };
+
+  const [searchedPosts, setSearchedPosts] = useState([]);
   const searchObject = useParams().object;
-
-  const categories: string[] = [
-    "محبوب ترین",
-    "تکنولوژی",
-    "هنر",
-    "ویدیو",
-    "زمان ایجاد",
-    "همه زمان ها",
-    "مکان پروژه",
-    "همه مکان ها",
-  ];
-
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   useEffect(() => {
     if (searchObject) {
@@ -35,6 +46,7 @@ const SearchPage = () => {
           console.log("API Response:", response);
           if (response.data) {
             console.log("Posts:", response.data.postOverview);
+            setSearchedPosts(response.data.postOverview);
           }
         })
         .catch((err) => {
@@ -42,21 +54,12 @@ const SearchPage = () => {
         });
     }
   }, [searchObject]);
-
-  const toggleCategory = (category: string) => {
-    setSelectedCategories((prevSelected) =>
-      prevSelected.includes(category)
-        ? prevSelected.filter((c) => c !== category)
-        : [...prevSelected, category]
-    );
-  };
-
   return (
     <Box
       display="flex"
       flexDirection="row"
       py={5}
-      gap={20}
+      gap={searchedPosts.length > 0 ? 20 : 10}
       justifyContent="center"
     >
       <Box
@@ -74,67 +77,42 @@ const SearchPage = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        {/* <Box
-          width="260px"
-          height="36px"
-          justifyItems="center"
-          bgcolor="bg.tertiary"
-          sx={{
-            border: "1px solid",
-            borderRadius: "6px",
-            borderColor: "button.tGrayFg",
-          }}
-        >
-          <Typography>مرتب سازی</Typography>
-        </Box> */}
-
-        {/* {categories.map((category: string) => (
-          <Box
-            key={category}
-            width="260px"
-            height="36px"
-            justifyItems="center"
-            bgcolor={selectedCategories.includes(category) ? "bg.tertiary" : ""}
-            sx={{
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: selectedCategories.includes(category) ? "1px solid" : "",
-              borderRadius: "6px",
-              borderColor: "button.tGrayFg",
-            }}
-            onClick={() => toggleCategory(category)}
-          >
-            <Typography>{category}</Typography>
-          </Box>
-        ))} */}
         <Box display="flex" flexDirection="column" gap={2}>
           <SingleTextField
             selects={["محبوب ترین", "جدیدترین", "قدیمی ترین", "پر بازدیدترین"]}
           />
-          <MultipleTextField
-            categories={[
-              "هنر",
-              "ویدیو",
-              "پروژه ها",
-              "طراحی",
-              "سرامیک",
-              "هنر مفهومی",
-              "هنر دیجیتال",
-              "تصویرسازی",
-              "نصب",
-            ]}
-          ></MultipleTextField>
+          <MultipleSelectChip
+            categories={selectedCategories}
+            onCategoriesChange={handleCategoriesChange}
+          />
         </Box>
 
         <PrimaryButton height="40px" width="260px" text="اعمال فیلترها" />
       </Box>
-      <Box display="flex" flexDirection="column" gap={2}>
-        {[...Array(5)].map((_, index) => (
-          <PostPreview key={index} />
-        ))}
-      </Box>
+      {searchedPosts.length > 0 ? (
+        <Box display="flex" flexDirection="column" gap={2}>
+          {searchedPosts.map((_, index) => (
+            <PostPreview
+              username={searchedPosts[index].username}
+              description={searchedPosts[index].description}
+              title={searchedPosts[index].title}
+              image={searchedPosts[index].image}
+              minimumFund="10000"
+              fundRaised="100"
+              key={index}
+            />
+          ))}
+        </Box>
+      ) : (
+        <Box
+          width="980px"
+          justifyContent="center"
+          alignItems="center"
+          display="flex"
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </Box>
   );
 };

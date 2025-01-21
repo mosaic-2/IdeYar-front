@@ -9,8 +9,10 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import SectionPart from "./SectionPart";
 import { useImmer } from "use-immer";
-import { createPost, uploadPostImage } from "../../apis/createPostApi";
+import { createPost, createPostDetail } from "../../apis/createPostApi";
 import { ChangeEvent } from "react";
+import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 interface PostInfo {
   title: string | null;
@@ -40,6 +42,10 @@ const CreatePost = () => {
     imagePreview: null,
     sections: [],
   });
+  const [creating, setCreating] = useImmer(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -93,10 +99,19 @@ const CreatePost = () => {
   };
 
   const handleSubmit = () => {
+    if (!post.imageFile) {
+      enqueueSnackbar("باید برای پروژه عکس اصلی انتخاب شود", {
+        variant: "success",
+      });
+      return;
+    }
+    if (!post.title) {
+      enqueueSnackbar("عنوان پروژه نمیتواند خالی باشد", {
+        variant: "success",
+      });
+      return;
+    }
     const request = {
-      title: post.title !== null ? post.title : "",
-      deadline_date: post.date !== null ? post.date : "",
-      minimum_fund: post.fund !== null ? post.fund : "",
       post_details: post.sections.map((section, index) => {
         return {
           title: section.title !== null ? section.title : "",
@@ -105,29 +120,58 @@ const CreatePost = () => {
         };
       }),
     };
-    createPost(request)
+    enqueueSnackbar("در حال ایجاد پروژه", { variant: "info" });
+    setCreating(true);
+    createPost(
+      post.imageFile,
+      post.title,
+      post.text || "",
+      post.fund || "",
+      post.date || ""
+    )
       .then(({ id }) => {
         console.log("Post created. id: {}", id);
-        if (post.imageFile)
-          uploadPostImage(post.imageFile, 0, id)
-            .then(() => {
-              console.log("Post image uploaded. order: {}", 0);
-            })
-            .catch((error) => console.error("UploadPostImage failed:", error));
-        for (let index = 0; index < post.sections.length; index++) {
-          const section = post.sections[index];
-          if (section.imageFile) {
-            uploadPostImage(section.imageFile, index + 1, id)
-              .then(() => {
-                console.log("Post image uploaded. order: {}", index + 1);
-              })
-              .catch((error) =>
-                console.error("UploadPostImage failed:", error)
+        async function uploadPostDetails() {
+          for (let index = 0; index < post.sections.length; index++) {
+            const section = post.sections[index];
+            try {
+              await createPostDetail(
+                section.imageFile,
+                section.title,
+                section.text,
+                index + 1,
+                id.toString()
               );
+              console.log("Post detail added. order: ", index + 1);
+            } catch (error) {
+              console.error("Post detail add failed:", error);
+            }
           }
+          setCreating(false);
+          enqueueSnackbar("پروژه با موفقیت ایجاد شد.", { variant: "success" });
+          navigate(`/post/${id}`);
         }
+        uploadPostDetails();
+        // for (let index = 0; index < post.sections.length; index++) {
+        //   const section = post.sections[index];
+        //   createPostDetail(
+        //     section.imageFile,
+        //     section.title,
+        //     section.text,
+        //     index + 1,
+        //     id.toString()
+        //   )
+        //     .then(() => {
+        //       console.log("Post detail added. order: ", index + 1);
+        //     })
+        //     .catch((error) => console.error("Post detail add failed:", error));
+        // }
       })
-      .catch((error) => console.error("CreatePost failed:", error));
+      .catch((error) => {
+        setCreating(false);
+        enqueueSnackbar("خطا در ایجاد پروژه", { variant: "error" });
+        console.error("CreatePost failed:", error);
+      });
   };
 
   return (
@@ -163,6 +207,7 @@ const CreatePost = () => {
               onFundChange={handleFundChange}
               onDateChange={handleDateChange}
               onSubmit={handleSubmit}
+              creating={creating}
             />
           </Stack>
         </SimpleLayout>

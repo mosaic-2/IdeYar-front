@@ -11,7 +11,7 @@ import HelloWorldStickyLeft from "./components/HelloWorldStickyLeft";
 import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
 import CodeVerification from "./components/codeVerfication/CodeVerfication";
-import RegisterPage from "./components/registerPage/RegisterPage";
+import RegisterPage from "./components/RegisterPage/RegisterPage";
 import PostPreview from "./pages/PreviewPage/PostPreview";
 import ChangePassword from "./components/changePass/ChangePassword";
 import ChangeEmail from "./components/changeEmail/ChangeEmail";
@@ -21,6 +21,7 @@ import CreatePost from "./components/createPostPage/CreatePost";
 import ChangeEmailConfirm from "./components/changEmailVerification/ChangeEmailVerification";
 import ForgotChangePassword from "./components/forgotPassNewPass/ForgotPasswordNewPass";
 import FundPage from "./components/fund/FundPage";
+import AutoSlider from "./components/AutoSlider/AutoSlider";
 
 function App() {
   const theme = getTheme();
@@ -61,7 +62,7 @@ function App() {
           }
         />
         <Route
-          path="/post"
+          path="/post/:id"
           element={
             <PageLayout>
               <PostPage />
@@ -76,8 +77,8 @@ function App() {
             </PageLayout>
           }
         />
+
         <Route path="/hello" element={<HelloWorldStickyLeft />} />
-        <Route path="/preview-post" element={<PostPreview />} />
         <Route
           path="/code-verification/:signUpToken/:code"
           element={
@@ -119,13 +120,14 @@ function App() {
           }
         />
         <Route
-          path="/search/:object"
+          path="/search/:object?"
           element={
             <PageLayout>
               <SearchPage />
             </PageLayout>
           }
         />
+
         <Route
           path="/forget-password/:token"
           element={

@@ -13,7 +13,6 @@ apiClient.interceptors.request.use(
   (config) => {
     const state = store.getState();
     const jwt = state.session.jwtToken;
-    console.log("jwt: ", jwt);
     if (jwt) {
       config.headers.Authorization = `Bearer ${jwt}`;
     }
