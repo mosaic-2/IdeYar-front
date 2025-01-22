@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { codeVerificationApi } from "../../apis/codeVerficationApi.ts"; // Ensure the correct path and filename
 import { useSnackbar } from "notistack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import { codeVerificationApi } from "../../apis/codeVerficationApi";
 
 const CodeVerification = () => {
   const { signUpToken, code } = useParams();

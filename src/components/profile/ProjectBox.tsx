@@ -8,7 +8,7 @@ import {
   useMediaQuery,
   CircularProgress,
 } from "@mui/material";
-import { getUserFunds } from "../../apis/userFundsApi.ts";
+import { FundOverview, getUserFunds } from "../../apis/userFundsApi.ts";
 import { getUserProjects } from "../../apis/userProjectsApi";
 import PostPreview from "../../pages/PreviewPage/PostPreview";
 
@@ -42,7 +42,7 @@ const CustomTab = ({ label, selected, ...props }) => {
 const ProjectsBox = () => {
   const [tabValue, setTabValue] = useState(0);
   const [projects, setProjects] = useState([]);
-  const [funds, setFunds] = useState([]);
+  const [funds, setFunds] = useState<FundOverview[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchProjects = async () => {
