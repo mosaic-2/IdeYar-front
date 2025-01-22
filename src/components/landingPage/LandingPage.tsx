@@ -27,12 +27,9 @@ const LandingPage = () => {
     getLandingPostsApi()
       .then((res) => {
         console.log("getLandingPostsApi response:", res.data.posts);
-        const postsWithRandomIds = res.data.posts.map(
-          (post: Post, index: number) => ({
-            ...post,
-            id: (index + 1).toString(),
-          })
-        );
+        const postsWithRandomIds = res.data.posts.map((post: Post) => ({
+          ...post,
+        }));
         setLandingPosts(postsWithRandomIds);
       })
       .catch((err) => {
