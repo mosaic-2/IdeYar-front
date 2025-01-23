@@ -82,14 +82,14 @@ const SectionPart = ({ index, section, onChangeSection }: Prob) => {
             handleTextChange(e);
           }}
           multiline
-          rows={10}
+          rows={8}
         />
         {section.imagePreview && (
           <Box textAlign="center">
             <img
               src={section.imagePreview}
               alt="Selected"
-              style={{ maxWidth: "100%", maxHeight: "500px", borderRadius: 20 }}
+              style={{ maxWidth: "100%", maxHeight: "700px", borderRadius: 20 }}
             />
           </Box>
         )}

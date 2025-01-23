@@ -19,6 +19,7 @@ interface PostInfo {
   text: string | null;
   fund: string | null;
   date: string | null;
+  category: string | null;
   imageFile: File | null;
   imagePreview: string | null;
   sections: PostSection[];
@@ -38,6 +39,7 @@ const CreatePost = () => {
     text: null,
     fund: null,
     date: null,
+    category: null,
     imageFile: null,
     imagePreview: null,
     sections: [],
@@ -55,6 +57,12 @@ const CreatePost = () => {
   const handleTitleChange = (t: string) => {
     updatePost((draft: PostInfo) => {
       draft.title = t;
+    });
+  };
+
+  const handleTextChange = (t: string) => {
+    updatePost((draft: PostInfo) => {
+      draft.text = t;
     });
   };
 
@@ -77,6 +85,12 @@ const CreatePost = () => {
   const handleDateChange = (d: string) => {
     updatePost((draft: PostInfo) => {
       draft.date = d;
+    });
+  };
+
+  const handleCategoryChange = (s: string) => {
+    updatePost((draft: PostInfo) => {
+      draft.category = s;
     });
   };
 
@@ -127,7 +141,8 @@ const CreatePost = () => {
       post.title,
       post.text || "",
       post.fund || "",
-      post.date || ""
+      post.date || "",
+      post.category
     )
       .then(({ id }) => {
         console.log("Post created. id: {}", id);
@@ -152,20 +167,6 @@ const CreatePost = () => {
           navigate(`/post/${id}`);
         }
         uploadPostDetails();
-        // for (let index = 0; index < post.sections.length; index++) {
-        //   const section = post.sections[index];
-        //   createPostDetail(
-        //     section.imageFile,
-        //     section.title,
-        //     section.text,
-        //     index + 1,
-        //     id.toString()
-        //   )
-        //     .then(() => {
-        //       console.log("Post detail added. order: ", index + 1);
-        //     })
-        //     .catch((error) => console.error("Post detail add failed:", error));
-        // }
       })
       .catch((error) => {
         setCreating(false);
@@ -182,7 +183,7 @@ const CreatePost = () => {
             direction="column"
             spacing={2}
             sx={{
-              paddingX: "8%",
+              paddingX: "20%",
               mt: 2,
               width: "100%",
               justifyContent: "flex-start",
@@ -193,6 +194,7 @@ const CreatePost = () => {
               imagePreview={post.imagePreview}
               onImageChange={handleImageChange}
               onTitleChange={handleTitleChange}
+              onTextChange={handleTextChange}
             />
             {post.sections.map((section: PostSection, i: number) => (
               <SectionPart
@@ -206,6 +208,7 @@ const CreatePost = () => {
             <DetailsPart
               onFundChange={handleFundChange}
               onDateChange={handleDateChange}
+              onCategoryChange={handleCategoryChange}
               onSubmit={handleSubmit}
               creating={creating}
             />

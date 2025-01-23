@@ -7,11 +7,13 @@ interface Props {
   imagePreview: string | null;
   onImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onTitleChange?: (title: string) => void;
+  onTextChange?: (title: string) => void;
 }
 const MainTitlePart = ({
   imagePreview,
   onImageChange,
   onTitleChange,
+  onTextChange,
 }: Props) => {
   const { t } = useTranslation();
 
@@ -39,6 +41,9 @@ const MainTitlePart = ({
         label={t("field.subTitle")}
         variant="outlined"
         size="small"
+        onChange={(e) => {
+          onTextChange?.(e.target.value);
+        }}
       />
     </Stack>
   );

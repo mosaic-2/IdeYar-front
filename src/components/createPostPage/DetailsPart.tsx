@@ -3,10 +3,12 @@ import { useTranslation } from "react-i18next";
 import MonyInput from "./MonyInput";
 import DateInput from "./DateInput";
 import PrimaryButton from "../buttons/PrimaryButton";
+import CategoryInput from "./CategoryInput";
 
 interface Props {
-  onFundChange?: (fund: string) => void;
-  onDateChange?: (fund: string) => void;
+  onFundChange?: (s: string) => void;
+  onDateChange?: (s: string) => void;
+  onCategoryChange?: (s: string) => void;
   onSubmit?: () => void;
   creating: boolean;
 }
@@ -14,6 +16,7 @@ interface Props {
 const DetailsPart = ({
   onFundChange,
   onDateChange,
+  onCategoryChange,
   onSubmit,
   creating,
 }: Props) => {
@@ -35,7 +38,11 @@ const DetailsPart = ({
       </Typography>
       <Stack
         spacing={2}
-        sx={{ px: 40, justifyContent: "flex-start", alignItems: "center" }}
+        sx={{
+          width: "100%",
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
       >
         <MonyInput
           onChange={(e) => {
@@ -43,6 +50,11 @@ const DetailsPart = ({
           }}
         />
         <DateInput onChange={onDateChange} />
+        <CategoryInput
+          onChange={(s) => {
+            onCategoryChange?.(s);
+          }}
+        />
         <PrimaryButton
           onClick={onSubmit}
           text={creating ? "..." : t("createPost.submit")}

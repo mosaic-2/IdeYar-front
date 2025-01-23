@@ -15,7 +15,8 @@ export const createPost = async (
   title: string,
   description: string,
   minimumFund: string,
-  deadline: string
+  deadline: string,
+  category: string | null
 ): Promise<CreatePostResponse> => {
   const formData = new FormData();
   formData.append("image", image);
@@ -23,6 +24,7 @@ export const createPost = async (
   formData.append("description", description);
   formData.append("minimumFund", minimumFund);
   formData.append("deadline", deadline);
+  if (category !== null) formData.append("category", category);
   const response = await apiClient.post("/api/post", formData);
   return response.data;
 };
