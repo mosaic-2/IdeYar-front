@@ -32,7 +32,7 @@ export interface GetProfileInfoResponse {
   phone: string;
   bio: string;
   birthday: string;
-  profile_image_url: string;
+  profileImageUrl: string;
   email: string;
 }
 
