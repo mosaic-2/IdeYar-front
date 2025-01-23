@@ -16,7 +16,7 @@ const ImageUploadPart = ({ imagePreview, onChange }: Props) => {
             <img
               src={imagePreview}
               alt="Selected"
-              style={{ maxWidth: "100%", maxHeight: "500px", borderRadius: 20 }}
+              style={{ maxWidth: "100%", maxHeight: "700px", borderRadius: 20 }}
             />
           </Box>
           <Stack
@@ -35,7 +35,6 @@ const ImageUploadPart = ({ imagePreview, onChange }: Props) => {
           bgcolor="bg.secondary"
           sx={{
             height: "500px",
-            mx: "10%",
             borderRadius: 4,
             border: 2,
             borderColor: "border.sGray",

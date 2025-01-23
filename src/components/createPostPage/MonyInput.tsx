@@ -13,7 +13,8 @@ const MonyInput = ({ onChange }: Props) => {
       inputProps={{ min: 0 }}
       label={"هزینه اولیه"}
       variant="outlined"
-      sx={{ width: 500 }}
+      size="small"
+      sx={{ width: "100%" }}
       onChange={onChange}
     />
   );
