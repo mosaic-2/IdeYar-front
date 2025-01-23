@@ -1,21 +1,17 @@
 // src/apis/userFundsApi.ts
 import apiClient from "../services/api-client";
+import { Project } from "./userProjectsApi";
 
+/**
+ * We assume your /api/user-funds returns an object with
+ * fundOverviews: FundOverview[]
+ * Each FundOverview has:
+ *   - post: Project
+ *   - amount: string (since your error messages suggest it's a string)
+ */
 export interface FundOverview {
-  post: {
-    id: string;
-    userId: string;
-    username: string;
-    profileImageUrl: string;
-    title: string;
-    description: string;
-    minimumFund: string;
-    fundRaised: string;
-    deadlineDate: string;
-    image: string;
-    createdAt: string;
-  };
-  amount: string;
+  post: Project;
+  amount: string; // keep as string to match API (avoid type errors)
 }
 
 export interface UserFundsResponse {
