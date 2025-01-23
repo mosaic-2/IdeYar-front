@@ -1,15 +1,20 @@
-import { Box } from "@mui/material";
-import StickyLeftLayout from "../layouts/StickyLeftLayout";
+import { Box, Grid } from "@mui/material";
 import ProfileBox from "./ProfileBox";
 import ProjectBox from "./ProjectBox";
 
 const Profile = () => {
   return (
-    <StickyLeftLayout leftFrame={<ProfileBox />}>
-      <Box width="100%" height="auto" sx={{ p: 2 }}>
+    <Box width="100%" height="auto" sx={{ display: "flex", p: 2 }}>
+      {/* Left side: ProfileBox */}
+      <Box sx={{ flex: 1, p: 2 }}>
+        <ProfileBox />
+      </Box>
+
+      {/* Right side: ProjectBox */}
+      <Box sx={{ flex: 2, p: 2 }}>
         <ProjectBox />
       </Box>
-    </StickyLeftLayout>
+    </Box>
   );
 };
 

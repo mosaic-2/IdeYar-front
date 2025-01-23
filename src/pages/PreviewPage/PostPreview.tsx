@@ -1,3 +1,4 @@
+// src/pages/PreviewPage/PostPreview.tsx
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -8,17 +9,25 @@ import {
 } from "@mui/material";
 import Bookmark from "../../assets/bookmark.svg?react";
 
-interface PostPreviewProps {
-  id: string | number; // <-- Add a prop to identify the post
+/**
+ * PostPreviewProps must match all fields that we spread in from Project (or FundOverview.post).
+ * Note that if your code sometimes passes `fundRaised` from "fund.amount",
+ * that will also be a string.
+ */
+export interface PostPreviewProps {
+  id: string; // or number, but must match your Project interface
   title: string;
   description: string;
   username: string;
   profileImageUrl?: string;
-  minimumFund: string;
-  fundRaised: string;
-  image: string;
+  minimumFund: string; // from your Project interface
+  fundRaised: string; // from your Project interface (or replaced by fund.amount)
+  image?: string;
 }
 
+/**
+ * This component displays a card for a single post/project.
+ */
 const PostPreview: React.FC<PostPreviewProps> = ({
   id,
   title,
@@ -33,10 +42,13 @@ const PostPreview: React.FC<PostPreviewProps> = ({
   const [vertical, setVertical] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
-  const progress = Math.min(
-    (Number(fundRaised) / Number(minimumFund)) * 100,
-    100
-  );
+  // Calculate the progress. We parse strings to numbers to avoid NaN
+  const progress = (() => {
+    const minF = parseFloat(minimumFund) || 0;
+    const raised = parseFloat(fundRaised) || 0;
+    if (minF <= 0) return 0;
+    return Math.min((raised / minF) * 100, 100);
+  })();
 
   // Detect screen size
   useEffect(() => {
@@ -48,15 +60,12 @@ const PostPreview: React.FC<PostPreviewProps> = ({
       }
     };
     window.addEventListener("resize", handleResize);
-    handleResize(); // Set the initial state based on the current window size
-
+    handleResize(); // Set the initial state
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Navigate to specific post
+  // On card click, navigate or open the post detail
   const handleCardClick = () => {
-    // You can also use React Router's useNavigate if you prefer
-    // e.g. navigate(`/post/${id}`);
     window.location.href = `http://localhost:3000/post/${id}`;
   };
 
@@ -73,7 +82,6 @@ const PostPreview: React.FC<PostPreviewProps> = ({
       border="1px solid"
       borderColor="button.tGrayFG"
       sx={{
-        // Make the entire box clickable
         cursor: "pointer",
         transition: "box-shadow 0.3s ease-in-out",
         "&:hover": {
@@ -81,7 +89,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
         },
       }}
     >
-      {/* Left/Text Section */}
+      {/* Left / Text Section */}
       <Box
         width={vertical ? "400px" : "500px"}
         height="300px"
@@ -111,7 +119,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
           order={vertical ? 2 : 1}
           position="relative"
         >
-          {/* Project Title/Info */}
+          {/* Project Title / Info */}
           <Box
             width="100%"
             height="30%"
@@ -171,8 +179,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
               bottom: vertical ? -20 : "",
             }}
             onClick={(e) => {
-              // Prevent card click from firing
-              e.stopPropagation();
+              e.stopPropagation(); // Prevent card click
               setIsClicked(!isClicked);
             }}
           >
