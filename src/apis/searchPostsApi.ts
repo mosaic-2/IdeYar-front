@@ -1,36 +1,18 @@
 import apiClient from "../services/api-client";
 
-// SearchPosts API
-export interface SearchPostsRequest {
+export interface postOverview {
+  id: string;
+  userId: string;
+  username: string;
+  profileImageUrl: string;
   title: string;
-  page: number;
+  description: string;
+  image: string;
 }
 
 export interface SearchPostsResponse {
-  posts: Array<{
-    id: string;
-    title: string;
-    description: string;
-    createdAt: string;
-    username: string;
-    image: string;
-    // Add other post fields if present in the response
-  }>;
-  total: number;
-  page: number;
+  postOverview: postOverview[];
 }
-
-// export const searchPostsApi = (title: string, page: number) =>
-//   apiClient.post<SearchPostsResponse>("/api/search-post", {
-//     title,
-//     page,
-//   });
-
-// export const searchPostsApi = (title: string, page: number) =>
-//   apiClient.post<SearchPostsResponse>("/api/search-post", {
-//     title,
-//     page,
-//   });
 
 export const searchPostsApi = async (
   title: string,

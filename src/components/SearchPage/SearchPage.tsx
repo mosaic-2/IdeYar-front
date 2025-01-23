@@ -1,24 +1,11 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import PostPreview from "../../pages/PreviewPage/PostPreview";
-import SecondaryButton from "../buttons/SecondaryButton";
 import PrimaryButton from "../buttons/PrimaryButton";
-import { enqueueSnackbar } from "notistack";
-import { searchPostsApi, SearchPostsResponse } from "../../apis/searchPostsApi";
-import MultipleTextField from "../textField/multipleTextField";
+import { postOverview, searchPostsApi } from "../../apis/searchPostsApi";
 import SingleTextField from "../textField/singleTextField";
 import MultipleSelectChip from "../textField/multipleTextField";
-
-// type Post = {
-//   description: string;
-//   id: string;
-//   image: string;
-//   profileImageUrl: string;
-//   title: string;
-//   userId: string;
-//   username: string;
-// };
 
 const SearchPage = () => {
   const location = useLocation();
@@ -33,8 +20,7 @@ const SearchPage = () => {
     setSelectedCategories(categories);
   };
 
-  const [searchedPosts, setSearchedPosts] =
-    useState<SearchPostsResponse | null>(null);
+  const [searchedPosts, setSearchedPosts] = useState<postOverview[]>([]);
   const searchObject = useParams().object;
 
   useEffect(() => {
@@ -43,11 +29,9 @@ const SearchPage = () => {
 
       searchPostsApi(searchObject, 0)
         .then((response) => {
-          console.log("here");
-          console.log("API Response:", response);
           if (response) {
             console.log("Posts:", response);
-            setSearchedPosts(response);
+            setSearchedPosts(response.postOverview);
           }
         })
         .catch((err) => {
@@ -60,7 +44,7 @@ const SearchPage = () => {
       display="flex"
       flexDirection="row"
       py={5}
-      gap={searchedPosts?.posts.length || 0 > 0 ? 20 : 10}
+      gap={searchedPosts.length > 0 ? 20 : 10}
       justifyContent="center"
     >
       <Box
@@ -92,7 +76,7 @@ const SearchPage = () => {
       </Box>
       {searchedPosts ? (
         <Box display="flex" flexDirection="column" gap={2}>
-          {searchedPosts.posts.map((post, index) => (
+          {searchedPosts.map((post, index) => (
             <PostPreview
               id={1}
               username={post.username}
