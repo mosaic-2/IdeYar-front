@@ -1,5 +1,4 @@
-import * as React from "react";
-import { Theme, useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -11,7 +10,6 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider, ThemeProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import { useEffect, useState } from "react";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -42,21 +40,16 @@ const allCategories = [
 ];
 const MultipleSelectChip = ({ categories, onCategoriesChange }: Props) => {
   const theme = useTheme();
-  const [categoryName, setCategoryName] = useState<string[]>(categories);
 
-  const handleChange = (event: SelectChangeEvent<typeof categoryName>) => {
-    const {
-      target: { value },
-    } = event;
-    setCategoryName(typeof value === "string" ? value.split(",") : value);
+  const handleChange = (event: SelectChangeEvent<typeof categories>) => {
+    const value = event.target.value;
+    onCategoriesChange(typeof value === "string" ? [value] : value);
   };
 
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
   });
-
-  onCategoriesChange(categoryName);
 
   return (
     <div>
@@ -68,7 +61,7 @@ const MultipleSelectChip = ({ categories, onCategoriesChange }: Props) => {
               labelId="demo-multiple-chip-label"
               id="demo-multiple-chip"
               multiple
-              value={categoryName}
+              value={categories}
               onChange={handleChange}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               renderValue={(selected) => (
