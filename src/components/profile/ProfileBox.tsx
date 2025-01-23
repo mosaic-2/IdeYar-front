@@ -15,7 +15,9 @@ import {
   updateProfileInfoApi,
   getProfileInfoApi,
 } from "../../apis/profileBoxApi";
-import { uploadUserImageApi } from "../../apis/uploadImageApi.ts";
+// Removed the .ts extension here:
+import { uploadUserImageApi } from "../../apis/uploadImageApi";
+
 import { useSnackbar } from "notistack";
 
 // Import date picker components
@@ -26,8 +28,18 @@ import jMoment from "moment-jalaali";
 
 import { useNavigate } from "react-router-dom";
 import PrimaryGrayButton from "../buttons/PrimaryGrayButton";
+import PrimaryButton from "../buttons/PrimaryButton";
 
+// If no type definitions exist for `moment-jalaali`, you can do one of:
+//  1) npm install --save-dev @types/moment-jalaali (if available)
+//  2) Create global.d.ts (or any .d.ts in src/) with `declare module 'moment-jalaali';`
 jMoment.loadPersian({ dialect: "persian-modern", usePersianDigits: true });
+
+/** Simple validator for "YYYY-MM-DD" format. Adjust as needed. */
+function isValidDateFormat(dateStr: string | undefined): boolean {
+  if (!dateStr) return false;
+  return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+}
 
 const ProfileBox = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -70,6 +82,7 @@ const ProfileBox = () => {
 
         console.log("Fetched profile data:", data);
 
+        // Fix property name: from data.profileImageUrl to data.profile_image_url
         const fullProfileImageUrl = data.profileImageUrl
           ? `https://back.ideyar-app.ir/api/image/${data.profileImageUrl}`
           : "/path/to/default-profile-image.jpg";
@@ -77,9 +90,16 @@ const ProfileBox = () => {
         setUsername(data.username || "");
         setPhone(data.phone || "");
         setBio(data.bio || "");
-        setBirthday(
-          data.birthday ? jMoment(data.birthday, "YYYY-MM-DD") : null
-        );
+
+        // Check date format or convert
+        if (isValidDateFormat(data.birthday)) {
+          // data.birthday is already "YYYY-MM-DD" – we can parse it with jMoment
+          setBirthday(jMoment(data.birthday, "YYYY-MM-DD"));
+        } else {
+          // not a valid format or empty
+          setBirthday(null);
+        }
+
         setProfileImage(fullProfileImageUrl);
         setInitialProfileImage(fullProfileImageUrl);
 
@@ -129,6 +149,7 @@ const ProfileBox = () => {
             initialBirthday &&
             !birthday.isSame(initialBirthday, "day"))
         ) {
+          // Convert from jMoment to Gregorian
           const gregorianDate = birthday
             ? birthday.locale("en").format("YYYY-MM-DD")
             : "";
@@ -137,7 +158,8 @@ const ProfileBox = () => {
         }
 
         if (profileInfoChanged) {
-          const updatedProfile = await updateProfileInfoApi(
+          // We get an AxiosResponse, so we want the .data from it
+          const updatedProfileResponse = await updateProfileInfoApi(
             updateProfileData.username ?? initialUsername,
             updateProfileData.phone ?? initialPhone,
             updateProfileData.bio ?? initialBio,
@@ -145,6 +167,8 @@ const ProfileBox = () => {
               initialBirthday?.locale("en").format("YYYY-MM-DD") ??
               ""
           );
+
+          const updatedProfile = updatedProfileResponse.data;
 
           enqueueSnackbar("اطلاعات پروفایل با موفقیت به‌روزرسانی شد", {
             variant: "success",
@@ -383,7 +407,7 @@ const ProfileBox = () => {
             )}
           </Box>
 
-          {/* Birthday Field */}
+          {/* Birthday Field using new slotProps API */}
           <Box
             display="flex"
             alignItems="center"
@@ -398,12 +422,12 @@ const ProfileBox = () => {
                 onChange={(newValue) => {
                   setBirthday(newValue);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    size="small"
-                    variant="outlined"
-                    sx={{
+                // MUI v6+ uses slotProps instead of renderInput
+                slotProps={{
+                  textField: {
+                    size: "small",
+                    variant: "outlined",
+                    sx: {
                       flexGrow: 1,
                       width: "100%",
                       maxWidth: 250,
@@ -411,22 +435,16 @@ const ProfileBox = () => {
                       "& .MuiInputBase-input": {
                         textAlign: "center",
                       },
-                    }}
-                  />
-                )}
-                PaperProps={{
-                  sx: {
-                    width: 200,
-                    margin: "0 auto",
+                    },
                   },
-                }}
-                PopperProps={{
-                  sx: {
-                    "& .MuiPaper-root": {
-                      width: 250,
-                      margin: "0 auto",
-                      left: "50% !important",
-                      transform: "translateX(-50%) !important",
+                  popper: {
+                    sx: {
+                      "& .MuiPaper-root": {
+                        width: 250,
+                        margin: "0 auto",
+                        left: "50% !important",
+                        transform: "translateX(-50%) !important",
+                      },
                     },
                   },
                 }}
@@ -502,90 +520,91 @@ const ProfileBox = () => {
             )}
           </Box>
 
-          {/* Single Edit/Save Button at the Bottom */}
-          <Box display="flex" justifyContent="flex-end" width="100%" mt={2}>
-            <IconButton
-              size="small"
-              onClick={handleToggleEdit}
-              sx={{ color: "gray" }}
-            >
-              {isEditing ? (
-                <CheckIcon fontSize="small" />
-              ) : (
-                <EditIcon fontSize="small" />
-              )}
-            </IconButton>
-          </Box>
-        </Box>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          width="100%"
-          py={3}
-          sx={{
-            direction: "rtl",
-          }}
-        >
-          {/* Email Field (Not Editable) */}
-          <Box
-            display="flex"
-            alignItems="center"
-            width="100%"
-            justifyContent="center"
-            mb={2}
-            sx={{
-              border: "1px solid #ddd",
-              borderRadius: "16px",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-              width: "100%",
+          <Divider sx={{ width: "100%", mb: 2 }} />
 
-              maxWidth: 350,
-              minHeight: 50,
-              direction: "rtl",
-              bgcolor: "background.paper",
-            }}
-          >
-            <Typography
-              variant="body1"
-              sx={{
-                flexGrow: 1,
-                width: "100%",
-                maxWidth: 250,
-                height: 40,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {email || "ایمیل تعریف نشده"}{" "}
-              {/* Add a fallback for undefined or empty email */}
-            </Typography>
-          </Box>
-
+          {/* Email + Buttons Box */}
           <Box
             display="flex"
             flexDirection="column"
             alignItems="center"
-            gap={2}
             width="100%"
-            maxWidth={350} // Matches the width of the profile box
-            mt={2} // Adds spacing from the profile box
+            py={1}
+            sx={{
+              direction: "rtl",
+            }}
           >
-            <PrimaryGrayButton
-              text="تغییر ایمیل"
-              onClick={() => {
-                navigate("/change-email");
+            {/* Email Field (Not Editable) */}
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              mb={2}
+              sx={{
+                border: "1px solid #ddd",
+                borderRadius: "16px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                width: "100%",
+                maxWidth: 350,
+                minHeight: 50,
+                bgcolor: "background.paper",
               }}
-              width="300px"
-            />
-            <PrimaryGrayButton
-              text="تغییر رمز عبور"
-              onClick={() => {
-                navigate("/change-pass");
-              }}
-              width="300px"
-            />
+            >
+              <Typography
+                variant="body1"
+                sx={{
+                  flexGrow: 1,
+                  width: "100%",
+                  maxWidth: 250,
+                  height: 40,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {email || "ایمیل تعریف نشده"}
+              </Typography>
+            </Box>
+
+            {/* Action Buttons */}
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              gap={2}
+              width="100%"
+              maxWidth={350}
+              mt={2}
+            >
+              <PrimaryButton
+                text="تغییر ایمیل"
+                onClick={() => {
+                  navigate("/change-email");
+                }}
+                width="300px"
+              />
+              <PrimaryButton
+                text="تغییر رمز عبور"
+                onClick={() => {
+                  navigate("/change-pass");
+                }}
+                width="300px"
+              />
+            </Box>
+
+            {/* Single Edit/Save Button at the Bottom */}
+            <Box display="flex" justifyContent="flex-end" width="100%" mt={2}>
+              <IconButton
+                size="small"
+                onClick={handleToggleEdit}
+                sx={{ color: "gray" }}
+              >
+                {isEditing ? (
+                  <CheckIcon fontSize="small" />
+                ) : (
+                  <EditIcon fontSize="small" />
+                )}
+              </IconButton>
+            </Box>
           </Box>
         </Box>
       </Stack>
