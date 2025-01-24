@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Slider } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ProjectCard from "../ProjectCard/ProjectCard";
+import ProjectCard from "../projectCards/ProjectCard";
 
 // Updated project data with required properties
 const projects = [

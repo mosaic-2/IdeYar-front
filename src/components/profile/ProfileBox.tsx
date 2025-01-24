@@ -27,7 +27,6 @@ import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 import jMoment from "moment-jalaali";
 
 import { useNavigate } from "react-router-dom";
-import PrimaryGrayButton from "../buttons/PrimaryGrayButton";
 import PrimaryButton from "../buttons/PrimaryButton";
 
 // If no type definitions exist for `moment-jalaali`, you can do one of:
