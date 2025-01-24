@@ -8,6 +8,7 @@ import {
   IconButton,
 } from "@mui/material";
 import Bookmark from "../../assets/bookmark.svg?react";
+import { useNavigate } from "react-router-dom";
 
 /**
  * PostPreviewProps must match all fields that we spread in from Project (or FundOverview.post).
@@ -41,6 +42,8 @@ const PostPreview: React.FC<PostPreviewProps> = ({
   const [screen, setScreen] = useState<string>("desktop");
   const [vertical, setVertical] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
+  const navigate = useNavigate();
+  console.log("profileImageUrl:", profileImageUrl);
 
   // Calculate the progress. We parse strings to numbers to avoid NaN
   const progress = (() => {
@@ -66,7 +69,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
 
   // On card click, navigate or open the post detail
   const handleCardClick = () => {
-    window.location.href = `http://localhost:3000/post/${id}`;
+    navigate(`/post/${id}`);
   };
 
   return (
@@ -132,7 +135,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
               {profileImageUrl ? (
                 <CardMedia
                   component="img"
-                  image={`https://back.ideyar-app.ir/api/image/${profileImageUrl}`}
+                  image={`https://back.ideyar-app.ir/api/image/${image}`}
                   alt={`${username}'s profile`}
                   sx={{
                     borderRadius: "50%",

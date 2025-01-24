@@ -39,18 +39,14 @@ const SingleTextField = ({ selects }: Props) => {
     <div>
       <CacheProvider value={cacheRtl}>
         <ThemeProvider theme={theme}>
-          <FormControl sx={{ minWidth: "260px" }}>
-            <InputLabel id="demo-controlled-open-select-label">
-              مرتب سازی بر اساس
-            </InputLabel>
+          <FormControl fullWidth>
+            <InputLabel>مرتب سازی بر اساس</InputLabel>
             <Select
-              labelId="demo-controlled-open-select-label"
-              id="demo-controlled-open-select"
+              label={"مرتب سازی بر اساس"}
               open={open}
               onClose={handleClose}
               onOpen={handleOpen}
               value={age}
-              label="Age"
               onChange={handleChange}
             >
               <MenuItem dir="rtl" value="">

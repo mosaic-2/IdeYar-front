@@ -52,7 +52,7 @@ const SearchPage = () => {
     <StickyLeftLayout
       leftFrame={
         <Box
-          py={2}
+          p={2}
           display="flex"
           flexDirection="column"
           sx={{
@@ -66,7 +66,12 @@ const SearchPage = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Box display="flex" flexDirection="column" gap={2}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={2}
+            sx={{ width: "100%" }}
+          >
             <SingleTextField
               selects={[
                 "محبوب ترین",
@@ -101,7 +106,7 @@ const SearchPage = () => {
           <Box display="flex" flexDirection="column" gap={2}>
             {searchedPosts.map((post, index) => (
               <PostPreview
-                id={1}
+                id={post.id}
                 username={post.username}
                 description={post.description}
                 title={post.title}

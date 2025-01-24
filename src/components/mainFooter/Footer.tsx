@@ -25,6 +25,7 @@ const Footer: React.FC = () => {
         direction: "rtl",
         py: 6,
         px: 2,
+        width: "100%",
         mt: "auto",
         bgcolor: "bg.primaryBrand",
         color: "text.secondary",
