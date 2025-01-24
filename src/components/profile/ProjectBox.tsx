@@ -41,7 +41,7 @@ const CustomTab = ({ label, selected, ...props }: CustomTabProps) => (
         variant="body1"
         sx={{
           fontWeight: selected ? "bold" : "normal",
-          color: selected ? "black" : "gray",
+          color: selected ? "text.primary" : "text.tertiary",
           fontSize: "16px",
           textTransform: "none",
         }}
