@@ -81,7 +81,11 @@ const Header: React.FC = () => {
                 }}
               >
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <SecondaryButton text="کاوش" rightIcon={ExploreIcon} />
+                  <SecondaryButton
+                    text="کاوش"
+                    rightIcon={ExploreIcon}
+                    onClick={() => navigate("/search")}
+                  />
                   <SecondaryButton
                     text="شروع پروژه"
                     rightIcon={AddCircleIcon}
