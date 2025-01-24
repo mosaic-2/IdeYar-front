@@ -1,18 +1,30 @@
+// src/components/codeVerification/CodeVerification.tsx
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import { codeVerificationApi } from "../../apis/codeVerficationApi";
+import { codeVerificationApi } from "../../apis/codeVerficationApi"; // Corrected import path
 
 const CodeVerification = () => {
-  const { signUpToken, code } = useParams();
+  const { signUpToken, code } = useParams<{
+    signUpToken: string;
+    code: string;
+  }>();
   const navigate = useNavigate(); // Initialize navigation
   const { enqueueSnackbar } = useSnackbar(); // Snackbar for showing notifications
   const [loading, setLoading] = useState(true); // Loading state
   const hasVerifiedRef = useRef(false); // Ref to track if verification has been done
 
   const handleCodeVerification = async () => {
+    // Ensure signUpToken and code are defined
+    if (!signUpToken || !code) {
+      enqueueSnackbar("لینک تایید نامعتبر است.", { variant: "error" });
+      setLoading(false);
+      navigate("/");
+      return;
+    }
+
     try {
       const response = await codeVerificationApi({ signUpToken, code });
       setLoading(false);

@@ -17,7 +17,8 @@ import { emailPattern } from "../../assets/regex/regexPatterns";
 import ChangeEmailImage from "../../assets/signup.svg?react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import { changeEmailApi } from "../../apis/changeEmailApi.ts";
+import { changeEmailApi, ChangeEmailRequest } from "../../apis/changeEmailApi";
+
 const ChangeEmail = () => {
   const [email, setEmail] = useState<string>("");
   const [emailErr, setEmailErr] = useState<boolean>(false);

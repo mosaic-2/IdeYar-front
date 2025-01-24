@@ -1,3 +1,4 @@
+// src/components/forgotPass/ForgotPassword.tsx
 import {
   Box,
   FormControl,
@@ -17,7 +18,11 @@ import { emailPattern } from "../../assets/regex/regexPatterns";
 import ChangeEmailImage from "../../assets/signup.svg?react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import { ForgotPassApi } from "../../apis/ForgotPassApi.ts";
+import {
+  forgetPasswordApi,
+  ForgetPasswordRequest,
+} from "../../apis/forgotPassApi"; // Correct Import
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
   const [emailErr, setEmailErr] = useState<boolean>(false);
@@ -40,7 +45,7 @@ const ForgotPassword = () => {
 
   const validateInputs = async () => {
     try {
-      email;
+      validateEmail(email); // Ensure validation is performed
 
       if (emailErr) {
         console.log("Validation errors");
@@ -48,17 +53,19 @@ const ForgotPassword = () => {
         return;
       }
 
-      // Create request payload using the ChangeEmailRequest interface
-      const requestPayload: ChangeEmailRequest = { email };
+      // Create request payload using the ForgetPasswordRequest interface
+      const requestPayload: ForgetPasswordRequest = { email };
 
       // Call the API
-      await ForgotPassApi(requestPayload);
+      const response = await forgetPasswordApi(requestPayload);
 
       // Show success message
-      enqueueSnackbar(t("برای ادامه درخواست به ایمیل مراجعه کنید"), { variant: "success" });
+      enqueueSnackbar(t("برای ادامه درخواست به ایمیل مراجعه کنید"), {
+        variant: "success",
+      });
       navigate("/");
     } catch (error) {
-      console.error("Failed to change email:", error);
+      console.error("Failed to initiate forgot password:", error);
       enqueueSnackbar(t("درخواست شما با خطا مواجه شد"), { variant: "error" });
     }
   };
@@ -94,7 +101,6 @@ const ForgotPassword = () => {
                 textAlign="center"
                 pb={2}
               >
-                {/* {t("changeEmail")} */}
                 فراموشی رمز عبور
               </Typography>
               <CacheProvider value={cacheRtl}>
@@ -105,7 +111,7 @@ const ForgotPassword = () => {
                     </InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-email"
-                      type="text"
+                      type="email" // Changed to 'email' type for better validation
                       label="Email"
                       value={email}
                       onChange={(e) => {
@@ -116,7 +122,7 @@ const ForgotPassword = () => {
                   </FormControl>
                   {emailErr && (
                     <Typography
-                      variant="body4"
+                      variant="body2" // Changed to a valid variant
                       fontWeight="bold"
                       mt={-2}
                       ml={1}
@@ -130,12 +136,9 @@ const ForgotPassword = () => {
               </CacheProvider>
 
               <PrimaryButton
-                // text={t("confirm")}
                 text={"ثبت"}
-                onClick={() => {
-                  validateInputs();
-                }}
-              ></PrimaryButton>
+                onClick={validateInputs} // Simplified onClick handler
+              />
             </Box>
           </Box>
         </Box>

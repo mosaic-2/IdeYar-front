@@ -23,7 +23,7 @@ import { passwordPattern } from "../../assets/regex/regexPatterns";
 import ChangePassImage from "../../assets/signup.svg?react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import { changePasswordApi } from "../../apis/changePass.ts";
+import { changePasswordApi } from "../../apis/changePass";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState<string>("");
@@ -80,7 +80,9 @@ const ChangePassword = () => {
       await changePasswordApi(requestData);
 
       // Show success notification
-      enqueueSnackbar(t("رمز عبور با موفقیت تغییر یافت"), { variant: "success" });
+      enqueueSnackbar(t("رمز عبور با موفقیت تغییر یافت"), {
+        variant: "success",
+      });
 
       // Navigate to the desired page
       navigate("/");
@@ -89,7 +91,9 @@ const ChangePassword = () => {
       console.error("Error changing password:", error);
 
       // Display an error notification to the user
-      enqueueSnackbar(t("تغییر رمز عبور با خطا مواجه شد"), { variant: "error" });
+      enqueueSnackbar(t("تغییر رمز عبور با خطا مواجه شد"), {
+        variant: "error",
+      });
     }
   };
 

@@ -12,17 +12,17 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSnackbar } from "notistack";
-import { fundPostApi } from "../../apis/fundPostApi.ts";
+import { fundPostApi } from "../../apis/fundPostApi";
 
 interface FundModalProps {
   open: boolean;
   handleClose: () => void;
-  id: number; // Add the 'id' prop
+  id: number; // 'id' is now required
 }
 
 const FundModal: React.FC<FundModalProps> = ({ open, handleClose, id }) => {
   const [amount, setAmount] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false); // State for loading
+  const [loading, setLoading] = useState<boolean>(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const handleFund = async () => {
@@ -45,7 +45,7 @@ const FundModal: React.FC<FundModalProps> = ({ open, handleClose, id }) => {
       setAmount("");
       handleClose();
     } catch (error: any) {
-      // Handle errors (you can customize this based on your error structure)
+      // Handle errors
       const errorMessage =
         error.response?.data?.message ||
         "خطایی رخ داد. لطفاً دوباره تلاش کنید.";
@@ -73,7 +73,7 @@ const FundModal: React.FC<FundModalProps> = ({ open, handleClose, id }) => {
         borderRadius="10px"
         boxShadow={24}
         p={4}
-        dir="rtl" // Enables right-to-left alignment
+        dir="rtl"
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography id="fund-modal-title" variant="h6" component="h2">
@@ -89,11 +89,11 @@ const FundModal: React.FC<FundModalProps> = ({ open, handleClose, id }) => {
           display="flex"
           flexDirection="row-reverse"
           alignItems="center"
-          gap={2} // Adds spacing between label and input
+          gap={2}
         >
           <Typography
             variant="body1"
-            sx={{ whiteSpace: "nowrap", fontWeight: "bold" }} // Keeps the label aligned properly
+            sx={{ whiteSpace: "nowrap", fontWeight: "bold" }}
           >
             مبلغ (تومان)
           </Typography>
@@ -103,8 +103,8 @@ const FundModal: React.FC<FundModalProps> = ({ open, handleClose, id }) => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             type="number"
-            inputProps={{ style: { textAlign: "right" } }} // Align text inside the input field to the right
-            disabled={loading} // Disable input while loading
+            inputProps={{ style: { textAlign: "right" } }}
+            disabled={loading}
           />
         </Box>
 
@@ -113,8 +113,8 @@ const FundModal: React.FC<FundModalProps> = ({ open, handleClose, id }) => {
             variant="contained"
             color="primary"
             onClick={handleFund}
-            disabled={!amount || loading} // Disable button if no amount or loading
-            startIcon={loading ? <CircularProgress size={20} /> : null} // Show loading spinner
+            disabled={!amount || loading}
+            startIcon={loading ? <CircularProgress size={20} /> : null}
           >
             {loading ? "در حال انجام..." : "تأمین مالی"}
           </Button>

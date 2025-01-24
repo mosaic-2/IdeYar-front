@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { changeEmailConfirmApi } from "../../apis/changeEmailVerificationApi.ts"; // Ensure the correct path and filename
+import { changeEmailConfirmApi } from "../../apis/changeEmailVerificationApi"; // Ensure the correct path and filename
 import { useSnackbar } from "notistack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";

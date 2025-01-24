@@ -5,6 +5,7 @@ import FundModal from "./FundModal";
 
 const FundPage: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const projectId = 1; // Example static ID
 
   const handleOpen = () => {
     setOpen(true);
@@ -41,7 +42,7 @@ const FundPage: React.FC = () => {
         </Button>
       </Box>
 
-      <FundModal open={open} handleClose={handleClose} />
+      <FundModal open={open} handleClose={handleClose} id={projectId} />
     </Container>
   );
 };

@@ -20,7 +20,7 @@ import { passwordPattern } from "../../assets/regex/regexPatterns";
 import ChangePassImage from "../../assets/signup.svg?react";
 import { useSnackbar } from "notistack";
 import { useNavigate, useParams } from "react-router-dom";
-import { forgetPasswordFinalizeApi } from "../../apis/forgetPasswordFinalizeApi.ts";
+import { forgetPasswordFinalizeApi } from "../../apis/forgetPasswordFinalizeApi";
 
 const ForgotChangePassword = () => {
   const { token } = useParams<{ token: string }>(); // Get the token from the path
