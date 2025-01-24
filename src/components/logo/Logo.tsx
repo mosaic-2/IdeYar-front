@@ -16,6 +16,7 @@ const Logo = () => {
     <LogoSvg
       height="40px"
       onClick={handleClick}
+      cursor="pointer"
       style={
         {
           cursor: "pointer",
