@@ -18,6 +18,7 @@ const Logo = () => {
       onClick={handleClick}
       style={
         {
+          cursor: "pointer",
           "--text-color": isDarkMode ? white : grayLightMode[700],
           "--logo-color": isDarkMode ? brand[400] : brand[600],
         } as React.CSSProperties

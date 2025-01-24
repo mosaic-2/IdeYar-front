@@ -54,7 +54,7 @@ const AutoSlider = ({ posts }: AutoSliderProps) => {
         width: "400px",
         height: "500px",
         justifyContent: "space-between",
-        border: "1px solid  hsl(0, 0%, 80%)",
+
         borderRadius: "15px",
       }}
     >

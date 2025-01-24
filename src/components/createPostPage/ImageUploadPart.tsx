@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import UploadImageButton from "../buttons/UploadImageButton";
 import { ChangeEvent } from "react";
 
@@ -9,46 +9,49 @@ interface Props {
 
 const ImageUploadPart = ({ imagePreview, onChange }: Props) => {
   return (
-    <Box>
+    <Box width="700px" height="450px">
       {imagePreview && (
         <>
-          <Box textAlign="center">
+          <Box textAlign="center" display="flex" flexDirection="column">
             <img
               src={imagePreview}
+              width="700px"
+              height="400px"
               alt="Selected"
-              style={{ maxWidth: "100%", maxHeight: "700px", borderRadius: 20 }}
+              style={{
+                borderRadius: 20,
+              }}
             />
           </Box>
-          <Stack
-            sx={{
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <UploadImageButton onChange={onChange} />
-          </Stack>
+
+          <UploadImageButton onChange={onChange} />
         </>
       )}
       {!imagePreview && (
-        <Box
-          bgcolor="bg.secondary"
-          sx={{
-            height: "500px",
-            borderRadius: 4,
-            border: 2,
-            borderColor: "border.sGray",
-          }}
-        >
-          <Stack
+        <Box gap={2} display="flex" flexDirection="column">
+          {" "}
+          <Box
+            bgcolor="bg.secondary"
+            sx={{
+              height: "400px",
+              borderRadius: 4,
+            }}
+          >
+            {/* <Stack
             sx={{
               height: "100%",
               justifyContent: "center",
               alignItems: "center",
             }}
+          ></Stack> */}
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
           >
             <UploadImageButton onChange={onChange} />
-          </Stack>
+          </Box>
         </Box>
       )}
     </Box>

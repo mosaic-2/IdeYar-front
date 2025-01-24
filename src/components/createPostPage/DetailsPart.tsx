@@ -32,14 +32,13 @@ const DetailsPart = ({
         alignItems: "stretch",
       }}
     >
-      <Box bgcolor="border.sGray" sx={{ height: 2, width: "100%" }} />
+      <Box bgcolor="border.sGray" sx={{ height: 2 }} />
       <Typography variant="h6" color="text.tertiary">
         {t("createPost.info")}
       </Typography>
       <Stack
         spacing={2}
         sx={{
-          width: "100%",
           justifyContent: "flex-start",
           alignItems: "center",
         }}
@@ -58,7 +57,6 @@ const DetailsPart = ({
         <PrimaryButton
           onClick={onSubmit}
           text={creating ? "..." : t("createPost.submit")}
-          width="300px"
           height="50px"
         />
       </Stack>

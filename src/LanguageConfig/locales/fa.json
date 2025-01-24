@@ -21,6 +21,7 @@
   "filled": "تکمیل شده %",
   "button": {
     "uploadImage": "آپلود عکس",
+    "not-uploaded": "",
     "AddNewSection": "افزودن بخش جدید"
   },
   "field": {

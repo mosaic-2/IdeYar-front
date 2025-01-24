@@ -17,7 +17,7 @@ const AddNewSectionPart = ({ onAdd }: Prop) => {
         alignItems: "center",
       }}
     >
-      <Box bgcolor="border.sGray" sx={{ height: 2, width: "100%" }} />
+      <Box bgcolor="border.sGray" sx={{ height: 2 }} />
       <PrimaryGrayButton text={t("button.AddNewSection")} onClick={onAdd} />
     </Stack>
   );

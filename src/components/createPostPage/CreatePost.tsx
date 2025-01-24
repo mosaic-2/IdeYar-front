@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import SimpleLayout from "../layouts/SimpleLayout";
 import DetailsPart from "./DetailsPart";
 import MainTitlePart from "./MainTitlePart";
@@ -10,7 +10,7 @@ import createCache from "@emotion/cache";
 import SectionPart from "./SectionPart";
 import { useImmer } from "use-immer";
 import { createPost, createPostDetail } from "../../apis/createPostApi";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 
@@ -65,7 +65,9 @@ const CreatePost = () => {
       draft.text = t;
     });
   };
-
+  const [imageStatus, setImageStatus] = useState<"uploaded" | "not-uploaded">(
+    "not-uploaded"
+  );
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -73,6 +75,9 @@ const CreatePost = () => {
         draft.imageFile = file;
         draft.imagePreview = URL.createObjectURL(file);
       });
+      setImageStatus("uploaded");
+    } else {
+      setImageStatus("not-uploaded");
     }
   };
 
@@ -179,40 +184,63 @@ const CreatePost = () => {
     <div dir="rtl">
       <CacheProvider value={cacheRtl}>
         <SimpleLayout>
-          <Stack
-            direction="column"
-            spacing={2}
-            sx={{
-              paddingX: "20%",
-              mt: 2,
-              width: "100%",
-              justifyContent: "flex-start",
-              alignItems: "stretch",
-            }}
+          <Box
+            display="flex"
+            flexDirection="row"
+            py={5}
+            gap={10}
+            justifyContent="center"
           >
-            <MainTitlePart
-              imagePreview={post.imagePreview}
-              onImageChange={handleImageChange}
-              onTitleChange={handleTitleChange}
-              onTextChange={handleTextChange}
-            />
-            {post.sections.map((section: PostSection, i: number) => (
-              <SectionPart
-                key={i}
-                index={i}
-                section={section}
-                onChangeSection={handleSectionChange}
+            <Stack
+              direction="column"
+              spacing={2}
+              display="flex"
+              sx={{
+                width: "100%",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <MainTitlePart
+                imagePreview={post.imagePreview}
+                onImageChange={handleImageChange}
+                onTitleChange={handleTitleChange}
+                onTextChange={handleTextChange}
+                status={imageStatus}
               />
-            ))}
-            <AddNewSectionPart onAdd={handleAddSection} />
-            <DetailsPart
-              onFundChange={handleFundChange}
-              onDateChange={handleDateChange}
-              onCategoryChange={handleCategoryChange}
-              onSubmit={handleSubmit}
-              creating={creating}
+              {post.sections.map((section: PostSection, i: number) => (
+                <SectionPart
+                  key={i}
+                  index={i}
+                  section={section}
+                  onChangeSection={handleSectionChange}
+                />
+              ))}
+              <AddNewSectionPart onAdd={handleAddSection} />
+              <DetailsPart
+                onFundChange={handleFundChange}
+                onDateChange={handleDateChange}
+                onCategoryChange={handleCategoryChange}
+                onSubmit={handleSubmit}
+                creating={creating}
+              />
+            </Stack>
+
+            <Box
+              display="flex"
+              flexDirection="column"
+              sx={{
+                direction: "rtl",
+                mt: "45px",
+                border: "2px solid",
+                borderRadius: "20px",
+                borderColor: "border.sGray",
+              }}
+              width="500px"
+              justifyContent="space-between"
+              alignItems="center"
             />
-          </Stack>
+          </Box>
         </SimpleLayout>
       </CacheProvider>
     </div>
