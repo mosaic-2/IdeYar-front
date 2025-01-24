@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Box, Button } from "@mui/material";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
-import ProjectCard from "../ProjectCard/ProjectCard";
+import ProjectCard from "../projectCards/ProjectCard";
 import { Posts } from "../landingPage/LandingPage";
 
 interface AutoSliderProps {

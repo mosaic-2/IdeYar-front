@@ -31,7 +31,7 @@ const SectionPart = ({ index, section, onChangeSection }: Prob) => {
   };
 
   const handleTextChange = debounce(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       onChangeSection(index, { ...section, text: event.target.value });
     },
     300
