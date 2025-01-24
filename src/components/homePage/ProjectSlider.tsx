@@ -5,9 +5,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProjectCard from "../ProjectCard/ProjectCard";
 
-// Sample project data
+// Updated project data with required properties
 const projects = [
   {
+    id: 1,
+    userName: "کاربر نمونه ۱",
     title: "پروژه هنری ۱",
     description: "حمایت از پروژه‌های هنری منحصر به فرد از هنرمندان نوپا.",
     imageUrl: "https://via.placeholder.com/400x200",
@@ -15,6 +17,8 @@ const projects = [
     amountGoal: 10000000,
   },
   {
+    id: 2,
+    userName: "کاربر نمونه ۲",
     title: "نوآوری‌های تکنولوژی",
     description:
       "پشتیبانی از پروژه‌های تکنولوژیک پیشرو که آینده را شکل می‌دهند.",
@@ -23,6 +27,8 @@ const projects = [
     amountGoal: 15000000,
   },
   {
+    id: 3,
+    userName: "کاربر نمونه ۳",
     title: "صنایع دستی خلاقانه",
     description: "کشف و حمایت از صنایع دستی و طراحی‌های دست‌ساز.",
     imageUrl: "https://via.placeholder.com/400x200",
@@ -30,6 +36,8 @@ const projects = [
     amountGoal: 5000000,
   },
   {
+    id: 4,
+    userName: "کاربر نمونه ۴",
     title: "فیلم و ویدیو",
     description: "کمک به بهبود فیلم‌ها و ویدیوهای مستقل.",
     imageUrl: "https://via.placeholder.com/400x200",
@@ -38,6 +46,7 @@ const projects = [
   },
 ];
 
+// Rest of the component remains the same
 const ProjectsSlider: React.FC = () => {
   const settings = {
     dots: true,
@@ -49,19 +58,19 @@ const ProjectsSlider: React.FC = () => {
     autoplaySpeed: 3000,
     responsive: [
       {
-        breakpoint: 960, // Medium devices
+        breakpoint: 960,
         settings: { slidesToShow: 2 },
       },
       {
-        breakpoint: 600, // Small devices
+        breakpoint: 600,
         settings: {
           slidesToShow: 1,
-          centerMode: true, // Enable centered mode
-          centerPadding: "40px", // Padding on the sides
+          centerMode: true,
+          centerPadding: "40px",
         },
       },
     ],
-    rtl: true, // Enable RTL
+    rtl: true,
   };
 
   return (
@@ -72,10 +81,10 @@ const ProjectsSlider: React.FC = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center", // Center vertically if needed
+            alignItems: "center",
             px: 2,
             mb: 2,
-            height: "100%", // Ensure full height for centering
+            height: "100%",
           }}
         >
           <ProjectCard {...project} />

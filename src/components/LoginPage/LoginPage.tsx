@@ -20,7 +20,7 @@ import CheckBox from "../buttons/CheckBox";
 import GrayLink from "../buttons/GrayLink";
 import { useTranslation } from "react-i18next";
 import LoginImage from "../../assets/login.svg?react";
-import { loginApi } from "../../apis/loginApi.ts";
+import { loginApi } from "../../apis/loginApi";
 import { useDispatch } from "react-redux";
 import { setSession } from "../../store/sessionSlice";
 import { useSnackbar } from "notistack";

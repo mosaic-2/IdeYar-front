@@ -25,7 +25,7 @@ import {
   usernamePattern,
 } from "../../assets/regex/regexPatterns";
 import SignupImage from "../../assets/signup.svg?react";
-import { signupInitializeApi } from "../../apis/signUp.ts";
+import { signupInitializeApi } from "../../apis/signUp";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 

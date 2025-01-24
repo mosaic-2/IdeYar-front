@@ -15,7 +15,7 @@ import Bookmark from "../../assets/bookmark.svg?react";
  * that will also be a string.
  */
 export interface PostPreviewProps {
-  id: string; // or number, but must match your Project interface
+  id: string | number; // Match the type with the expected type from your Project interface
   title: string;
   description: string;
   username: string;
