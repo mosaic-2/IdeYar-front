@@ -33,7 +33,7 @@ const CategoryInput = ({ onChange }: Props) => {
       <InputLabel>دسته بندی</InputLabel>
       <Select label={"دسته بندی"} onChange={handleChange} size="small">
         {allCategories.map((option, index) => (
-          <MenuItem key={index} value={option}>
+          <MenuItem dir="rtl" key={index} value={option}>
             {option}
           </MenuItem>
         ))}
