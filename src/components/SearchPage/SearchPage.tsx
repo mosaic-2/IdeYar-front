@@ -58,16 +58,16 @@ const PostPreview = ({
   description,
   title,
   image,
-  profile_image_url,
-  minimum_fund,
-  fund_raised,
+  profileImageUrl,
+  minimumFund,
+  fundRaised,
 }: Post) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   const progress = Math.min(
-    (Number(fund_raised || 0) / Number(minimum_fund || 1)) * 100,
+    (Number(fundRaised || 0) / Number(minimumFund || 1)) * 100,
     100
   );
 
@@ -113,10 +113,10 @@ const PostPreview = ({
         </IconButton>
 
         <ProfileBadge>
-          {profile_image_url ? (
+          {profileImageUrl ? (
             <CardMedia
               component="img"
-              image={profile_image_url}
+              image={profileImageUrl}
               alt={username}
               sx={{ width: 50, height: 50, borderRadius: "50%" }}
             />
@@ -200,10 +200,10 @@ const PostPreview = ({
             color="text.secondary"
           >
             <Typography variant="caption">
-              جمع‌آوری شده: {Number(fund_raised).toLocaleString()}
+              جمع‌آوری شده: {Number(fundRaised).toLocaleString()}
             </Typography>
             <Typography variant="caption">
-              هدف: {Number(minimum_fund).toLocaleString()} (
+              هدف: {Number(minimumFund).toLocaleString()} (
               {Math.round(progress)}%)
             </Typography>
           </Box>
@@ -318,7 +318,7 @@ const SearchPage = () => {
         {searchedPosts.length > 0 ? (
           searchedPosts.map((post) => <PostPreview key={post.id} {...post} />)
         ) : (
-          <Box textAlign="center" gridColumn="1 / -1" py={10} height={600}>
+          <Box textAlign="center" gridColumn="1 / -1" py={10}>
             <Typography variant="h6" color="text.secondary">
               پروژه ای با فیلترهای انتخابی شما یافت نشد
             </Typography>

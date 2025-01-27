@@ -2,16 +2,16 @@ import apiClient from "../services/api-client";
 
 export interface Post {
   id: string;
-  user_id: string;
+  userId: string;
   username: string;
-  profile_image_url: string;
+  profileImageUrl: string;
   title: string;
   description: string;
-  minimum_fund: string;
-  fund_raised: string;
+  minimumFund: string;
+  fundRaised: string;
   deadline_date: string;
   image: string;
-  created_at: string;
+  createdAt: string;
 }
 
 export interface SearchPostsResponse {
