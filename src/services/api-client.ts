@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
 import { store } from "../store/store";
 
 const apiClient = axios.create({
@@ -33,12 +31,9 @@ apiClient.interceptors.response.use(
     if (error.response && error.response.status === 401 && !isRedirecting) {
       isRedirecting = true;
 
-      // Show snackbar notification
-      // enqueueSnackbar("You are unauthorized", { variant: "error" });
-
       // Redirect to the root path after a short delay to allow the snackbar to display
       setTimeout(() => {
-        window.location.href = "/";
+        window.location.href = "/?logout=true";
       }, 1);
     }
     return Promise.reject(error);
