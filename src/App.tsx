@@ -22,6 +22,8 @@ import ChangeEmailConfirm from "./components/changEmailVerification/ChangeEmailV
 import ForgotChangePassword from "./components/forgotPassNewPass/ForgotPasswordNewPass";
 import FundPage from "./components/fund/FundPage";
 import AutoSlider from "./components/AutoSlider/AutoSlider";
+import AboutUs from "./components/AboutUs/AboutUs";
+import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
 function App() {
   const theme = getTheme();
@@ -141,6 +143,22 @@ function App() {
           element={
             <PageLayout>
               <FundPage />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/about-us"
+          element={
+            <PageLayout>
+              <AboutUs />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <PageLayout>
+              <NotFoundPage />
             </PageLayout>
           }
         />
