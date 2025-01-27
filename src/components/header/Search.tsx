@@ -2,12 +2,14 @@ import { Grow, IconButton, InputAdornment, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
   const [showSearch, setShowSearch] = useState(false); // State to toggle search box visibility
   const [searchTerm, setSearchTerm] = useState(""); // State to manage search input
   const searchInputRef = useRef<HTMLInputElement>(null); // Ref to focus the search input
   const containerRef = useRef<HTMLDivElement>(null); // Ref for the entire search component
+  const navigate = useNavigate();
 
   // Handle changes in the search input
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +76,7 @@ const Search = () => {
                 <InputAdornment position="start">
                   <IconButton
                     onClick={() => {
-                      window.location.href = `http://localhost:3000/search/${searchTerm}`;
+                      navigate(`/search/${searchTerm}`);
                     }}
                     sx={{ padding: 1 }}
                   >
