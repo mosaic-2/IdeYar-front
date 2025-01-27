@@ -13,6 +13,7 @@ import { createPost, createPostDetail } from "../../apis/createPostApi";
 import { ChangeEvent } from "react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import checkLogin from "../../hooks/checkLogin";
 
 interface PostInfo {
   title: string | null;
@@ -48,6 +49,7 @@ const CreatePost = () => {
 
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  checkLogin();
 
   const cacheRtl = createCache({
     key: "muirtl",

@@ -61,7 +61,7 @@ const HomePage = ({ posts }: { posts: Posts }) => {
           <AutoSlider posts={posts} />
           <Box alignSelf="center">
             <img
-              src={"src/assets/top_projects.png"}
+              src={"/top_projects.png"}
               alt="Selected"
               style={{ maxWidth: "400px", maxHeight: "300px" }}
             />
