@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import ArtsIcon from "@mui/icons-material/Brush";
 import VideoIcon from "@mui/icons-material/Videocam";
@@ -18,14 +17,20 @@ const categories = [
   { icon: <ArtsIcon />, label: "نصب" },
 ];
 
-const CategoryGrid: React.FC = () => {
+const CategoryGrid = () => {
   const navigate = useNavigate();
 
   const handleCategoryClick = (category: string) => {
     navigate("/search", { state: { selectedCategory: category } });
   };
   return (
-    <Box display="flex" flexWrap="wrap" justifyContent="center" gap={4}>
+    <Box
+      display="flex"
+      flexWrap="wrap"
+      justifyContent="center"
+      gap={2}
+      marginTop={3}
+    >
       {categories.map((category, index) => (
         <Box
           key={index}
