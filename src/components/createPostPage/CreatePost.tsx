@@ -117,13 +117,13 @@ const CreatePost = () => {
   const handleSubmit = () => {
     if (!post.imageFile) {
       enqueueSnackbar("باید برای پروژه عکس اصلی انتخاب شود", {
-        variant: "success",
+        variant: "error",
       });
       return;
     }
     if (!post.title) {
       enqueueSnackbar("عنوان پروژه نمیتواند خالی باشد", {
-        variant: "success",
+        variant: "error",
       });
       return;
     }
