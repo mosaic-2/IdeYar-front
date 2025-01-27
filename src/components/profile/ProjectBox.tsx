@@ -6,6 +6,7 @@ import {
   Tab,
   CircularProgress,
   styled,
+  useTheme,
 } from "@mui/material";
 
 // APIs
@@ -16,15 +17,20 @@ import { getUserBookmarksApi } from "../../apis/userBookmarksApi";
 // Component
 import PostPreview from "../../pages/PreviewPage/PostPreview";
 
-// A styled Tab with pill/circular shape (optional)
+// Styled Tab component with enhanced design
 const PillTab = styled(Tab)(({ theme }) => ({
-  borderRadius: "20px",
-  minHeight: "36px",
-  // padding: theme.spacing(1, 2),
-  // margin: theme.spacing(0, 1),
+  borderRadius: "12px",
+  minHeight: "48px",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  margin: theme.spacing(0.5),
+  border: `2px solid transparent`,
+  "&.Mui-selected": {
+    backgroundColor: theme.palette.background.paper,
+    borderColor: theme.palette.primary.main,
+    boxShadow: theme.shadows[2],
+  },
   "&:hover": {
-    // Example hover color; can be changed
-    backgroundColor: "bg.primary",
+    backgroundColor: theme.palette.action.hover,
   },
 }));
 
@@ -34,26 +40,45 @@ interface CustomTabProps {
   [key: string]: any;
 }
 
-const CustomTab = ({ label, selected, ...props }: CustomTabProps) => (
-  <PillTab
-    label={
-      <Typography
-        variant="body1"
-        sx={{
-          fontWeight: selected ? "bold" : "normal",
-          color: selected ? "text.primary" : "text.tertiary",
-          fontSize: "16px",
-          textTransform: "none",
-        }}
-      >
-        {label}
-      </Typography>
-    }
-    {...props}
-  />
-);
+const CustomTab = ({ label, selected, ...props }: CustomTabProps) => {
+  const theme = useTheme();
+
+  return (
+    <PillTab
+      label={
+        <Typography
+          variant="body1"
+          sx={{
+            fontWeight: selected ? 700 : 500,
+            color: selected ? "primary.main" : "text.secondary",
+            fontSize: "15px",
+            textTransform: "none",
+            px: 2,
+            display: "flex",
+            alignItems: "center",
+            "&::before": selected
+              ? {
+                  content: '""',
+                  display: "inline-block",
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  backgroundColor: theme.palette.primary.main,
+                  marginRight: "8px",
+                }
+              : {},
+          }}
+        >
+          {label}
+        </Typography>
+      }
+      {...props}
+    />
+  );
+};
 
 const ProjectsBox: React.FC = () => {
+  const theme = useTheme();
   const [tabValue, setTabValue] = useState<number>(0);
   const [projects, setProjects] = useState<Project[]>([]);
   const [funds, setFunds] = useState<FundOverview[]>([]);
@@ -115,7 +140,7 @@ const ProjectsBox: React.FC = () => {
       p={1}
       width="100%"
     >
-      {/* Tab Navigation */}
+      {/* Enhanced Tab Navigation */}
       <Box sx={{ width: "100%", mb: 2 }}>
         <Tabs
           value={tabValue}
@@ -123,10 +148,16 @@ const ProjectsBox: React.FC = () => {
           variant="fullWidth"
           aria-label="Projects / Funds / Bookmarks"
           sx={{
-            backgroundColor: "pg.secondary", // Change to any color you like
-            borderRadius: "30px",
-            padding: "2px",
-            "& .MuiTabs-indicator": { display: "none" },
+            backgroundColor:
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.background.default,
+            borderRadius: "16px",
+            padding: "4px",
+            border: `1px solid ${theme.palette.divider}`,
+            "& .MuiTabs-flexContainer": {
+              gap: "8px",
+            },
           }}
         >
           <CustomTab label="پروژه های من" selected={tabValue === 0} />
