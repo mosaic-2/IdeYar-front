@@ -1,5 +1,3 @@
-// src/components/Footer/Footer.tsx
-import React from "react";
 import {
   Container,
   Typography,
@@ -7,6 +5,7 @@ import {
   Grid,
   Link,
   IconButton,
+  Button,
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -16,8 +15,10 @@ import BusinessIcon from "@mui/icons-material/Business";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
+import { useNavigate } from "react-router-dom";
 
-const Footer: React.FC = () => {
+const Footer = () => {
+  const navigate = useNavigate();
   return (
     <Box
       component="footer"
@@ -66,7 +67,7 @@ const Footer: React.FC = () => {
           </Grid>
 
           {/* Contact Information Column */}
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} sx={{ pr: 10 }}>
             <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
               <ContactMailIcon sx={{ ml: 1, fontSize: 30 }} />
               {/* <EmailIcon sx={{ ml: 1, fontSize: 30 }} /> */}
@@ -121,6 +122,23 @@ const Footer: React.FC = () => {
                 </Link>
               </Typography>
             </Box>
+            <Button
+              variant="text"
+              sx={{ color: "text.primary", width: "130px", mt: 2 }}
+              onClick={() => {
+                navigate("/about-us");
+              }}
+            >
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                درباره ما
+              </Typography>
+            </Button>
           </Grid>
 
           {/* Social Media Links Column */}

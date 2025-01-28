@@ -6,9 +6,11 @@ import {
   LinearProgress,
   Typography,
   IconButton,
+  Stack,
 } from "@mui/material";
 import Bookmark from "../../assets/bookmark.svg?react";
 import { useNavigate } from "react-router-dom";
+import BookmarkButton from "../../components/buttons/BookmarkButton";
 
 /**
  * PostPreviewProps must match all fields that we spread in from Project (or FundOverview.post).
@@ -123,19 +125,21 @@ const PostPreview: React.FC<PostPreviewProps> = ({
           position="relative"
         >
           {/* Project Title / Info */}
-          <Box
+          <Stack
+            direction="row"
             width="100%"
-            height="30%"
-            order={vertical ? 2 : 1}
-            sx={{ direction: "rtl" }}
-            alignContent="center"
+            sx={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              direction: "rtl",
+            }}
           >
             <Box display="flex" flexDirection="row" gap={2}>
               {/* Profile Image */}
               {profileImageUrl ? (
                 <CardMedia
                   component="img"
-                  image={`https://back.ideyar-app.ir/api/image/${image}`}
+                  image={`https://back.ideyar-app.ir/api/image/${profileImageUrl}`}
                   alt={`${username}'s profile`}
                   sx={{
                     borderRadius: "50%",
@@ -162,7 +166,8 @@ const PostPreview: React.FC<PostPreviewProps> = ({
                 <Typography variant="body2">{username}</Typography>
               </Box>
             </Box>
-          </Box>
+            <BookmarkButton id={id.toString()} defaultValue={false} />
+          </Stack>
           <Box
             width="100%"
             height="70%"
@@ -173,21 +178,6 @@ const PostPreview: React.FC<PostPreviewProps> = ({
               {description}
             </Typography>
           </Box>
-          {/* Bookmark SVG */}
-          <IconButton
-            sx={{
-              position: "absolute",
-              left: 10,
-              top: vertical ? "" : 20,
-              bottom: vertical ? -20 : "",
-            }}
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent card click
-              setIsClicked(!isClicked);
-            }}
-          >
-            <Bookmark />
-          </IconButton>
         </Box>
       </Box>
 

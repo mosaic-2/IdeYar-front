@@ -13,30 +13,11 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import CodeIcon from "@mui/icons-material/Code";
 import StorageIcon from "@mui/icons-material/Storage";
-import { styled } from "@mui/system";
 
 const cacheRtl = createCache({
   key: "muirtl",
   stylisPlugins: [prefixer, rtlPlugin],
 });
-
-const TeamSection = styled(Box)(({ theme }) => ({
-  background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${theme.palette.action.hover} 100%)`,
-  borderRadius: "32px",
-  padding: theme.spacing(4),
-  position: "relative",
-  "&::before": {
-    content: '""',
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    // backgroundImage:
-    //   "radial-gradient(circle at 10% 10%, rgba(74, 144, 226, 0.1) 0%, transparent 10%)",
-    zIndex: 0,
-  },
-}));
 
 const AboutUs = () => {
   const theme = useTheme();
@@ -83,7 +64,7 @@ const AboutUs = () => {
   return (
     <CacheProvider value={cacheRtl}>
       <Box sx={{ py: 8, px: 4 }}>
-        <Stack spacing={6} alignItems="center">
+        <Stack spacing={6} sx={{ alignItems: "center" }}>
           {/* Header Section */}
           <Box textAlign="center" sx={{ maxWidth: "800px" }}>
             <Typography
@@ -110,7 +91,7 @@ const AboutUs = () => {
           </Box>
 
           {/* Team Section */}
-          <TeamSection>
+          <Stack spacing={6} sx={{ alignItems: "center" }}>
             <Typography
               variant="h3"
               sx={{
@@ -122,143 +103,145 @@ const AboutUs = () => {
               تیم موزاییک
             </Typography>
 
-            <Grid container spacing={4}>
+            <Grid container sx={{ width: "80%" }}>
               {teamMembers.map((member, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
-                  <Stack
-                    spacing={2}
-                    alignItems="center"
-                    justifyContent="center"
-                    sx={{
-                      padding: 4,
-                      borderRadius: "50%",
-                      aspectRatio: "1/1",
-                      width: "100%",
-                      backgroundColor: theme.palette.background.paper,
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                      position: "relative",
-                      overflow: "hidden",
-                      boxShadow: theme.shadows[2],
-                      "&:hover": {
-                        transform: "scale(1.05)",
-                        boxShadow: theme.shadows[8],
-                        "&::after": {
-                          opacity: 0.15,
+                  <Box padding={2}>
+                    <Stack
+                      spacing={2}
+                      alignItems="center"
+                      justifyContent="center"
+                      sx={{
+                        padding: 4,
+                        borderRadius: "50%",
+                        aspectRatio: "1/1",
+                        width: "100%",
+                        backgroundColor: theme.palette.background.paper,
+                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                        position: "relative",
+                        overflow: "hidden",
+                        boxShadow: theme.shadows[2],
+                        "&:hover": {
+                          transform: "scale(1.05)",
+                          boxShadow: theme.shadows[8],
+                          "&::after": {
+                            opacity: 0.15,
+                          },
                         },
-                      },
-                      "&::before": {
-                        content: '""',
-                        position: "absolute",
-                        top: "-50%",
-                        left: "-50%",
-                        width: "200%",
-                        height: "200%",
-                        background: `linear-gradient(45deg, 
+                        "&::before": {
+                          content: '""',
+                          position: "absolute",
+                          top: "-50%",
+                          left: "-50%",
+                          width: "200%",
+                          height: "200%",
+                          background: `linear-gradient(45deg, 
                 // ${theme.palette.primary.light} 0%, 
                 // ${theme.palette.secondary.light} 50%, 
                 transparent 100%)`,
-                        transform: "rotate(45deg)",
-                        opacity: 0.1,
-                        transition: "opacity 0.3s ease",
-                      },
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        inset: 0,
-                        borderRadius: "50%",
-                        border: `2px solid ${theme.palette.primary.light}`,
-                        opacity: 0,
-                        transition: "opacity 0.3s ease",
-                      },
-                    }}
-                  >
-                    {/* Animated background effect */}
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        background: `radial-gradient(circle at 50% 0%, 
-            ${theme.palette.primary.light} 0%, 
-            transparent 70%)`,
-                        opacity: 0.1,
-                        animation: "rotate 20s linear infinite",
-                        "@keyframes rotate": {
-                          "0%": { transform: "rotate(0deg)" },
-                          "100%": { transform: "rotate(360deg)" },
+                          transform: "rotate(45deg)",
+                          opacity: 0.1,
+                          transition: "opacity 0.3s ease",
+                        },
+                        "&::after": {
+                          content: '""',
+                          position: "absolute",
+                          inset: 0,
+                          borderRadius: "50%",
+                          border: `2px solid ${theme.palette.primary.light}`,
+                          opacity: 0,
+                          transition: "opacity 0.3s ease",
                         },
                       }}
-                    />
-
-                    {/* Content Container */}
-                    <Stack spacing={2} alignItems="center" sx={{ zIndex: 1 }}>
-                      <Avatar
+                    >
+                      {/* Animated background effect */}
+                      <Box
                         sx={{
-                          bgcolor: theme.palette.primary.main,
-                          width: 100,
-                          height: 100,
-                          border: `3px solid ${theme.palette.primary.contrastText}`,
-                          boxShadow: theme.shadows[4],
-                          transition: "transform 0.3s ease",
-                          "&:hover": {
-                            transform: "scale(1.1)",
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          height: "100%",
+                          background: `radial-gradient(circle at 50% 0%, 
+            ${theme.palette.primary.light} 0%, 
+            transparent 70%)`,
+                          opacity: 0.1,
+                          animation: "rotate 20s linear infinite",
+                          "@keyframes rotate": {
+                            "0%": { transform: "rotate(0deg)" },
+                            "100%": { transform: "rotate(360deg)" },
                           },
                         }}
-                      >
-                        {member.icon}
-                      </Avatar>
+                      />
 
-                      <Typography
-                        variant="h6"
-                        fontWeight="bold"
-                        sx={{
-                          textAlign: "center",
-                          color: theme.palette.text.primary,
-                        }}
-                      >
-                        {member.name}
-                      </Typography>
+                      {/* Content Container */}
+                      <Stack spacing={2} alignItems="center" sx={{ zIndex: 1 }}>
+                        <Avatar
+                          sx={{
+                            bgcolor: theme.palette.primary.main,
+                            width: 100,
+                            height: 100,
+                            border: `3px solid ${theme.palette.primary.contrastText}`,
+                            boxShadow: theme.shadows[4],
+                            transition: "transform 0.3s ease",
+                            "&:hover": {
+                              transform: "scale(1.1)",
+                            },
+                          }}
+                        >
+                          {member.icon}
+                        </Avatar>
 
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: theme.palette.text.secondary,
-                          textAlign: "center",
-                          maxWidth: "80%",
-                        }}
-                      >
-                        {member.role}
-                      </Typography>
-
-                      <Link
-                        href={`mailto:${member.email}`}
-                        color="primary"
-                        underline="hover"
-                        sx={{
-                          borderRadius: "20px",
-                          px: 2,
-                          py: 1,
-                          bgcolor: theme.palette.action.hover,
-                          transition: "all 0.3s ease",
-                          "&:hover": {
-                            bgcolor: theme.palette.primary.light,
-                            color: theme.palette.primary.contrastText,
-                            boxShadow: theme.shadows[2],
-                          },
-                        }}
-                      >
-                        <Typography variant="caption">
-                          {member.email}
+                        <Typography
+                          variant="h6"
+                          fontWeight="bold"
+                          sx={{
+                            textAlign: "center",
+                            color: theme.palette.text.primary,
+                          }}
+                        >
+                          {member.name}
                         </Typography>
-                      </Link>
+
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: theme.palette.text.secondary,
+                            textAlign: "center",
+                            maxWidth: "100%",
+                          }}
+                        >
+                          {member.role}
+                        </Typography>
+
+                        <Link
+                          href={`mailto:${member.email}`}
+                          color="primary"
+                          underline="hover"
+                          sx={{
+                            borderRadius: "20px",
+                            px: 2,
+                            py: 1,
+                            bgcolor: theme.palette.action.hover,
+                            transition: "all 0.3s ease",
+                            "&:hover": {
+                              bgcolor: theme.palette.primary.light,
+                              color: theme.palette.primary.contrastText,
+                              boxShadow: theme.shadows[2],
+                            },
+                          }}
+                        >
+                          <Typography variant="caption">
+                            {member.email}
+                          </Typography>
+                        </Link>
+                      </Stack>
                     </Stack>
-                  </Stack>
+                  </Box>
                 </Grid>
               ))}
             </Grid>
-          </TeamSection>
+          </Stack>
         </Stack>
       </Box>
     </CacheProvider>
