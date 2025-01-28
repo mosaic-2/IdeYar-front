@@ -85,7 +85,10 @@ const PostPreview = ({
           height: "250px",
           objectFit: "cover",
         }}
-        src={image || "https://via.placeholder.com/400x300"}
+        src={
+          `https://back.ideyar-app.ir/api/image/${image}` ||
+          "https://via.placeholder.com/400x300"
+        }
         alt={title}
       />
       <ProgressContainer>
