@@ -1,13 +1,12 @@
 import {
   Box,
-  CircularProgress,
   Card,
   CardMedia,
   LinearProgress,
   Typography,
-  IconButton,
   useTheme,
   styled,
+  Stack,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
@@ -16,7 +15,7 @@ import { Post, SearchFilter, searchPostsApi } from "../../apis/searchPostsApi";
 import SingleTextField from "../textField/singleTextField";
 import MultipleSelectChip from "../textField/multipleTextField";
 import StickyLeftLayout from "../layouts/StickyLeftLayout";
-import Bookmark from "../../assets/bookmark.svg?react";
+import BookmarkButton from "../buttons/BookmarkButton";
 
 // Styled Components
 const ModernCard = styled(Card)(({ theme }) => ({
@@ -64,8 +63,10 @@ const PostPreview = ({
 }: Post) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const [isBookmarked, setIsBookmarked] = useState(false);
-
+  const isDarkMode = theme.palette.mode === "dark";
+  const gradient = isDarkMode
+    ? "linear-gradient(to right, rgba(30,30,30,1) 50%, rgba(255,255,255,0))"
+    : "linear-gradient(to right, rgba(255,255,255,1) 50%, rgba(255,255,255,0))";
   const progress = Math.min(
     (Number(fundRaised || 0) / Number(minimumFund || 1)) * 100,
     100
@@ -73,11 +74,6 @@ const PostPreview = ({
 
   const handleCardClick = () => {
     navigate(`/post/${id}`);
-  };
-
-  const handleBookmarkClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsBookmarked(!isBookmarked);
   };
 
   return (
@@ -93,57 +89,40 @@ const PostPreview = ({
         alt={title}
       />
       <ProgressContainer>
-        <IconButton
-          sx={{
-            position: "absolute",
-            left: 16,
-            top: 16,
-            backgroundColor: "background.paper",
-            "&:hover": {
-              backgroundColor: "action.hover",
-            },
-          }}
-          onClick={handleBookmarkClick}
-        >
-          <Bookmark
-            fill={isBookmarked ? theme.palette.primary.main : "none"}
-            stroke={theme.palette.primary.main}
-            strokeWidth={1.5}
-          />
-        </IconButton>
-
-        <ProfileBadge>
-          {profileImageUrl ? (
-            <CardMedia
-              component="img"
-              image={profileImageUrl}
-              alt={username}
-              sx={{ width: 50, height: 50, borderRadius: "50%" }}
-            />
-          ) : (
-            <Box
-              sx={{
-                width: 50,
-                height: 50,
-                borderRadius: "50%",
-                bgcolor: "grey.300",
-              }}
-            />
-          )}
-          <Box>
-            <Typography variant="h6" fontWeight={700} textAlign="right">
-              {title}
-            </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              textAlign="right"
-            >
-              {username}
-            </Typography>
-          </Box>
-        </ProfileBadge>
-
+        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+          <ProfileBadge>
+            {profileImageUrl ? (
+              <CardMedia
+                component="img"
+                image={profileImageUrl}
+                alt={username}
+                sx={{ width: 50, height: 50, borderRadius: "50%" }}
+              />
+            ) : (
+              <Box
+                sx={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: "50%",
+                  bgcolor: "grey.300",
+                }}
+              />
+            )}
+            <Box>
+              <Typography variant="h6" fontWeight={700} textAlign="right">
+                {title}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                textAlign="right"
+              >
+                {username}
+              </Typography>
+            </Box>
+          </ProfileBadge>
+          <BookmarkButton id={id} defaultValue={false} />
+        </Stack>
         <Box
           sx={{
             height: "4.5em",
@@ -155,11 +134,10 @@ const PostPreview = ({
               content: '""',
               position: "absolute",
               bottom: 0,
-              right: 0,
+              left: 0,
               width: "40%",
               height: "1.5em",
-              background:
-                "linear-gradient(to left, rgba(255,255,255,1) 50%, rgba(255,255,255,0))",
+              background: gradient,
               pointerEvents: "none",
             },
           }}
