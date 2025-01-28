@@ -519,6 +519,21 @@ const ProfileBox = () => {
             )}
           </Box>
 
+          {/* Single Edit/Save Button at the Bottom */}
+          <Box display="flex" justifyContent="flex-end" width="100%" mb={2}>
+            <IconButton
+              size="small"
+              onClick={handleToggleEdit}
+              sx={{ color: "gray" }}
+            >
+              {isEditing ? (
+                <CheckIcon fontSize="small" />
+              ) : (
+                <EditIcon fontSize="small" />
+              )}
+            </IconButton>
+          </Box>
+
           <Divider sx={{ width: "100%", mb: 2 }} />
 
           {/* Email + Buttons Box */}
@@ -588,21 +603,6 @@ const ProfileBox = () => {
                 }}
                 width="300px"
               />
-            </Box>
-
-            {/* Single Edit/Save Button at the Bottom */}
-            <Box display="flex" justifyContent="flex-end" width="100%" mt={2}>
-              <IconButton
-                size="small"
-                onClick={handleToggleEdit}
-                sx={{ color: "gray" }}
-              >
-                {isEditing ? (
-                  <CheckIcon fontSize="small" />
-                ) : (
-                  <EditIcon fontSize="small" />
-                )}
-              </IconButton>
             </Box>
           </Box>
         </Box>

@@ -12,7 +12,6 @@ import Profile from "./components/profile/Profile";
 import PostPage from "./pages/PostPage/PostPage";
 import CodeVerification from "./components/codeVerfication/CodeVerfication";
 import RegisterPage from "./components/register/RegisterPage";
-import PostPreview from "./pages/PreviewPage/PostPreview";
 import ChangePassword from "./components/changePass/ChangePassword";
 import ChangeEmail from "./components/changeEmail/ChangeEmail";
 import ForgotPassword from "./components/forgotPass/ForgotPassword";
@@ -21,7 +20,6 @@ import CreatePost from "./components/createPostPage/CreatePost";
 import ChangeEmailConfirm from "./components/changEmailVerification/ChangeEmailVerification";
 import ForgotChangePassword from "./components/forgotPassNewPass/ForgotPasswordNewPass";
 import FundPage from "./components/fund/FundPage";
-import AutoSlider from "./components/AutoSlider/AutoSlider";
 import AboutUs from "./components/AboutUs/AboutUs";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
