@@ -17,9 +17,9 @@ const DateInput = ({ onChange }: Props) => {
         }}
         slotProps={{
           textField: {
-            size: "small",
-            sx: { width: "100%" },
-            label: "تاریخ شروع پروژه",
+            hiddenLabel: true,
+            variant: "filled",
+            size: "medium",
           },
         }}
       />

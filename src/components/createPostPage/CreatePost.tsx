@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import SimpleLayout from "../layouts/SimpleLayout";
 import DetailsPart from "./DetailsPart";
 import MainTitlePart from "./MainTitlePart";
@@ -10,9 +10,12 @@ import createCache from "@emotion/cache";
 import SectionPart from "./SectionPart";
 import { useImmer } from "use-immer";
 import { createPost, createPostDetail } from "../../apis/createPostApi";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import FeedIcon from "@mui/icons-material/Feed";
+
+import moment from "moment-jalaali";
 
 interface PostInfo {
   title: string | null;
@@ -45,7 +48,7 @@ const CreatePost = () => {
     sections: [],
   });
   const [creating, setCreating] = useImmer(false);
-
+  const todayPersianDate = moment().format("jYYYY/jMM/jDD");
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
@@ -53,6 +56,19 @@ const CreatePost = () => {
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
   });
+
+  const [activeSection, setActiveSection] = useState<string>("upload-cover");
+  const mainTitleRef = useRef<HTMLDivElement>(null);
+  const addNewSectionRef = useRef<HTMLDivElement>(null);
+  const detailsPartRef = useRef<HTMLDivElement>(null);
+
+  const scrollToSection = (
+    ref: React.RefObject<HTMLDivElement>,
+    section: string
+  ) => {
+    setActiveSection(section);
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const handleTitleChange = (t: string) => {
     updatePost((draft: PostInfo) => {
@@ -76,9 +92,15 @@ const CreatePost = () => {
         draft.imagePreview = URL.createObjectURL(file);
       });
       setImageStatus("uploaded");
-    } else {
-      setImageStatus("not-uploaded");
     }
+  };
+
+  const handleDeleteImage = () => {
+    updatePost((draft: PostInfo) => {
+      draft.imageFile = null;
+      draft.imagePreview = null;
+    });
+    setImageStatus("not-uploaded");
   };
 
   const handleFundChange = (f: string) => {
@@ -108,6 +130,14 @@ const CreatePost = () => {
         imageFile: null,
         imagePreview: null,
       });
+    });
+  };
+
+  const handleRemoveSection = () => {
+    updatePost((draft: PostInfo) => {
+      if (draft.sections.length > 0) {
+        draft.sections.pop();
+      }
     });
   };
 
@@ -188,26 +218,56 @@ const CreatePost = () => {
             display="flex"
             flexDirection="row"
             py={5}
-            gap={10}
+            gap={20}
             justifyContent="center"
           >
             <Stack
               direction="column"
-              spacing={2}
+              spacing={5}
               display="flex"
               sx={{
-                width: "100%",
+                width: "700px",
                 justifyContent: "flex-start",
                 alignItems: "center",
               }}
             >
-              <MainTitlePart
-                imagePreview={post.imagePreview}
-                onImageChange={handleImageChange}
-                onTitleChange={handleTitleChange}
-                onTextChange={handleTextChange}
-                status={imageStatus}
-              />
+              <div
+                ref={mainTitleRef}
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  flexDirection: "column",
+                }}
+              >
+                <MainTitlePart
+                  imagePreview={post.imagePreview}
+                  onImageChange={handleImageChange}
+                  onDeleteImage={handleDeleteImage}
+                  onTitleChange={handleTitleChange}
+                  onTextChange={handleTextChange}
+                  status={imageStatus}
+                />
+              </div>
+              <div
+                ref={addNewSectionRef}
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  flexDirection: "column",
+                  gap: "30px",
+                }}
+              >
+                <Box
+                  bgcolor="border.sGray"
+                  sx={{ minHeight: 2, width: "100%" }}
+                />
+
+                <Stack direction="row" gap={1}>
+                  {" "}
+                  <FeedIcon sx={{ color: "brand.400" }} />
+                  <Typography fontWeight="bold">زیربخش ها</Typography>
+                </Stack>
+              </div>
               {post.sections.map((section: PostSection, i: number) => (
                 <SectionPart
                   key={i}
@@ -216,14 +276,23 @@ const CreatePost = () => {
                   onChangeSection={handleSectionChange}
                 />
               ))}
-              <AddNewSectionPart onAdd={handleAddSection} />
-              <DetailsPart
-                onFundChange={handleFundChange}
-                onDateChange={handleDateChange}
-                onCategoryChange={handleCategoryChange}
-                onSubmit={handleSubmit}
-                creating={creating}
+              <AddNewSectionPart
+                onAdd={handleAddSection}
+                onRemove={handleRemoveSection}
+                status={post.sections.length == 0 ? false : true}
               />
+              <div
+                ref={detailsPartRef}
+                style={{ display: "flex", width: "100%" }}
+              >
+                <DetailsPart
+                  onFundChange={handleFundChange}
+                  onDateChange={handleDateChange}
+                  onCategoryChange={handleCategoryChange}
+                  onSubmit={handleSubmit}
+                  creating={creating}
+                />
+              </div>
             </Stack>
 
             <Box
@@ -232,14 +301,122 @@ const CreatePost = () => {
               sx={{
                 direction: "rtl",
                 mt: "45px",
-                border: "2px solid",
-                borderRadius: "20px",
-                borderColor: "border.sGray",
+                borderRadius: "15px",
+                bgcolor: "bg.secondary",
               }}
-              width="500px"
+              width="300px"
+              height="400px"
               justifyContent="space-between"
               alignItems="center"
-            />
+              py={3}
+            >
+              <Box
+                display="flex"
+                flexDirection="column"
+                height="200px"
+                width="100%"
+                gap={3}
+              >
+                <Box display="flex" width="100%" flexDirection="column" gap={1}>
+                  <Typography
+                    fontWeight="bolder"
+                    sx={{ textAlign: "end", px: 2, width: "100%" }}
+                  >
+                    :تاریخ ساخت پست
+                  </Typography>
+                  <Typography
+                    color="text.tertiary"
+                    sx={{ textAlign: "end", px: 2, width: "100%" }}
+                  >
+                    {todayPersianDate}
+                  </Typography>
+                </Box>
+                <Box display="flex" width="100%" flexDirection="column" gap={1}>
+                  <Typography
+                    fontWeight="bolder"
+                    sx={{ textAlign: "end", px: 2, width: "100%" }}
+                  >
+                    :وضعیت
+                  </Typography>
+                  <Typography
+                    color="text.tertiary"
+                    sx={{ textAlign: "end", px: 2, width: "100%" }}
+                  >
+                    درحال ساخت{" "}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                flexDirection="column"
+                width="100%"
+                height="200px"
+              >
+                <Box
+                  bgcolor="border.sGray"
+                  sx={{ minHeight: 2, width: "100%" }}
+                />
+                <Typography
+                  fontWeight="bolder"
+                  sx={{
+                    textAlign: "end",
+                    px: 2,
+                    width: "100%",
+                  }}
+                >
+                  اطلاعات پست
+                </Typography>
+                <Typography
+                  sx={{
+                    width: "100%",
+                    textAlign: "end",
+                    px: 2,
+                    color: activeSection === "upload-cover" ? "brand.400" : "",
+                    cursor: "pointer",
+                    borderRight:
+                      activeSection === "upload-cover"
+                        ? "3px solid #64A3F6"
+                        : "",
+                  }}
+                  onClick={() => scrollToSection(mainTitleRef, "upload-cover")}
+                >
+                  عکس اصلی پروژه
+                </Typography>
+                <Typography
+                  sx={{
+                    textAlign: "end",
+                    px: 2,
+                    width: "100%",
+
+                    color: activeSection === "sections" ? "brand.400" : "",
+
+                    borderRight:
+                      activeSection === "sections" ? "3px solid #64A3F6" : "",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => scrollToSection(addNewSectionRef, "sections")}
+                >
+                  زیربخش‌ها
+                </Typography>
+                <Typography
+                  sx={{
+                    width: "100%",
+                    textAlign: "end",
+                    px: 2,
+                    color: activeSection === "details" ? "brand.400" : "",
+                    borderRight:
+                      activeSection === "details" ? "3px solid #64A3F6" : "",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => scrollToSection(detailsPartRef, "details")}
+                >
+                  اطلاعات بیشتر
+                </Typography>
+              </Box>
+            </Box>
           </Box>
         </SimpleLayout>
       </CacheProvider>

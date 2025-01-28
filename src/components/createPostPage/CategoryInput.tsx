@@ -29,9 +29,13 @@ const CategoryInput = ({ onChange }: Props) => {
   };
 
   return (
-    <FormControl fullWidth size="small">
-      <InputLabel>دسته بندی</InputLabel>
-      <Select label={"دسته بندی"} onChange={handleChange} size="small">
+    <FormControl fullWidth size="medium">
+      <Select
+        onChange={handleChange}
+        size="medium"
+        variant="filled"
+        hiddenLabel
+      >
         {allCategories.map((option, index) => (
           <MenuItem dir="rtl" key={index} value={option}>
             {option}

@@ -1,19 +1,23 @@
-import { Box, Stack, TextField, Typography } from "@mui/material";
+import { Box, Stack, TextField, Typography, Button } from "@mui/material";
 import ImageUploadPart from "./ImageUploadPart";
 import { useTranslation } from "react-i18next";
 import { ChangeEvent } from "react";
 import { Photo } from "@mui/icons-material";
 import InfoIcon from "@mui/icons-material/Info";
+
 interface Props {
   imagePreview: string | null;
   onImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onDeleteImage: () => void;
   onTitleChange?: (title: string) => void;
   onTextChange?: (title: string) => void;
   status: "uploaded" | "not-uploaded";
 }
+
 const MainTitlePart = ({
   imagePreview,
   onImageChange,
+  onDeleteImage,
   onTitleChange,
   onTextChange,
   status,
@@ -31,11 +35,16 @@ const MainTitlePart = ({
       }}
     >
       <Stack direction="row" gap={1}>
-        <Photo sx={{ color: "Gray" }} />
+        <Photo sx={{ color: "brand.400" }} />
         <Typography fontWeight="bold">عکس پروژه</Typography>
       </Stack>
 
-      <ImageUploadPart imagePreview={imagePreview} onChange={onImageChange} />
+      <ImageUploadPart
+        imagePreview={imagePreview}
+        onChange={onImageChange}
+        onDeleteImage={onDeleteImage}
+      />
+
       <Box width="100%" bgcolor="border.sGray" height="1px"></Box>
 
       <Box justifyContent="space-between" display="flex" flexDirection="row">
@@ -59,27 +68,6 @@ const MainTitlePart = ({
           onTitleChange?.(e.target.value);
         }}
       />
-
-      {/* <TextField
-        dir="rtl"
-        label={t("field.mainTitle")}
-        variant="outlined"
-        size="small"
-        onChange={(e) => {
-          onTitleChange?.(e.target.value);
-        }}
-      />
-
-     
-      <TextField
-        dir="rtl"
-        label={t("field.subTitle")}
-        variant="outlined"
-        size="small"
-        onChange={(e) => {
-          onTextChange?.(e.target.value);
-        }}
-      /> */}
 
       <Typography fontWeight="bold">کپشن (اختیاری)</Typography>
 

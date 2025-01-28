@@ -1,17 +1,18 @@
 import { Box, Stack, Typography } from "@mui/material";
 import UploadImageButton from "../buttons/UploadImageButton";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 
 interface Props {
   imagePreview: string | null;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onDeleteImage: () => void;
 }
 
-const ImageUploadPart = ({ imagePreview, onChange }: Props) => {
+const ImageUploadPart = ({ imagePreview, onChange, onDeleteImage }: Props) => {
   return (
     <Box width="700px" height="450px">
       {imagePreview && (
-        <>
+        <Box display="flex" flexDirection="column" gap={2}>
           <Box textAlign="center" display="flex" flexDirection="column">
             <img
               src={imagePreview}
@@ -23,9 +24,18 @@ const ImageUploadPart = ({ imagePreview, onChange }: Props) => {
               }}
             />
           </Box>
-
-          <UploadImageButton onChange={onChange} />
-        </>
+          <UploadImageButton
+            imagePreview={imagePreview}
+            onChange={(e, isRemoved) => {
+              if (isRemoved) {
+                onDeleteImage();
+              } else {
+                onChange(e);
+              }
+            }}
+            status="uploaded"
+          />
+        </Box>
       )}
       {!imagePreview && (
         <Box gap={2} display="flex" flexDirection="column">
@@ -36,21 +46,21 @@ const ImageUploadPart = ({ imagePreview, onChange }: Props) => {
               height: "400px",
               borderRadius: 4,
             }}
-          >
-            {/* <Stack
-            sx={{
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          ></Stack> */}
-          </Box>
-          <Box
             display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
+            alignItems="center"
+            justifyContent="center"
           >
-            <UploadImageButton onChange={onChange} />
+            <UploadImageButton
+              imagePreview={imagePreview}
+              onChange={(e, isRemoved) => {
+                if (isRemoved) {
+                  onDeleteImage();
+                } else {
+                  onChange(e);
+                }
+              }}
+              status="not-uploaded"
+            />
           </Box>
         </Box>
       )}
