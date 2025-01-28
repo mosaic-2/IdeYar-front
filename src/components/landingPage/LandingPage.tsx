@@ -4,6 +4,7 @@ import HomePage from "../homePage/HomePage";
 import IntroductionSection from "../homePage/Introduction";
 import { getLandingPostsApi } from "../../apis/landingPostsApi";
 import axios from "axios";
+import checkLogout from "../../hooks/checkLogout";
 type Post = {
   createdAt: string;
   deadlineDate: string;
@@ -22,6 +23,7 @@ export type Posts = Post[];
 
 const LandingPage = () => {
   const [landingPosts, setLandingPosts] = useState<Posts>([]);
+  checkLogout();
 
   useEffect(() => {
     getLandingPostsApi()

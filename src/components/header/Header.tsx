@@ -1,5 +1,3 @@
-// src/components/Header/Header.tsx
-import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Box, IconButton, Stack, CssBaseline } from "@mui/material";
@@ -19,7 +17,7 @@ import { RootState } from "../../store/store";
 import UserButton from "./UserButton";
 import { clearSession } from "../../store/sessionSlice"; // <-- Import clearSession
 
-const Header: React.FC = () => {
+const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const session = useSelector((state: RootState) => state.session);

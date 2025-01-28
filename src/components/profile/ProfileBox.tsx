@@ -421,32 +421,6 @@ const ProfileBox = () => {
                 onChange={(newValue) => {
                   setBirthday(newValue);
                 }}
-                // MUI v6+ uses slotProps instead of renderInput
-                slotProps={{
-                  textField: {
-                    size: "small",
-                    variant: "outlined",
-                    sx: {
-                      flexGrow: 1,
-                      width: "100%",
-                      maxWidth: 250,
-                      height: 40,
-                      "& .MuiInputBase-input": {
-                        textAlign: "center",
-                      },
-                    },
-                  },
-                  popper: {
-                    sx: {
-                      "& .MuiPaper-root": {
-                        width: 250,
-                        margin: "0 auto",
-                        left: "50% !important",
-                        transform: "translateX(-50%) !important",
-                      },
-                    },
-                  },
-                }}
               />
             ) : (
               <Typography
@@ -519,6 +493,21 @@ const ProfileBox = () => {
             )}
           </Box>
 
+          {/* Single Edit/Save Button at the Bottom */}
+          <Box display="flex" justifyContent="flex-end" width="100%" mb={2}>
+            <IconButton
+              size="small"
+              onClick={handleToggleEdit}
+              sx={{ color: "gray" }}
+            >
+              {isEditing ? (
+                <CheckIcon fontSize="small" />
+              ) : (
+                <EditIcon fontSize="small" />
+              )}
+            </IconButton>
+          </Box>
+
           <Divider sx={{ width: "100%", mb: 2 }} />
 
           {/* Email + Buttons Box */}
@@ -588,21 +577,6 @@ const ProfileBox = () => {
                 }}
                 width="300px"
               />
-            </Box>
-
-            {/* Single Edit/Save Button at the Bottom */}
-            <Box display="flex" justifyContent="flex-end" width="100%" mt={2}>
-              <IconButton
-                size="small"
-                onClick={handleToggleEdit}
-                sx={{ color: "gray" }}
-              >
-                {isEditing ? (
-                  <CheckIcon fontSize="small" />
-                ) : (
-                  <EditIcon fontSize="small" />
-                )}
-              </IconButton>
             </Box>
           </Box>
         </Box>

@@ -1,17 +1,21 @@
 import apiClient from "../services/api-client";
 
-export interface postOverview {
+export interface Post {
   id: string;
   userId: string;
   username: string;
   profileImageUrl: string;
   title: string;
   description: string;
+  minimumFund: string;
+  fundRaised: string;
+  deadline_date: string;
   image: string;
+  createdAt: string;
 }
 
 export interface SearchPostsResponse {
-  postOverview: postOverview[];
+  posts: Post[];
 }
 
 export interface SearchFilter {
@@ -25,7 +29,6 @@ export const searchPostsApi = async (
   page: number,
   filter: SearchFilter | null
 ): Promise<SearchPostsResponse> => {
-  console.log("title: ", title, ", filter: ", filter);
   const response = await apiClient.post("/api/search-post", {
     title,
     page,

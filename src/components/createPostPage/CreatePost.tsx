@@ -13,8 +13,8 @@ import { createPost, createPostDetail } from "../../apis/createPostApi";
 import { ChangeEvent, useRef, useState } from "react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import checkLogin from "../../hooks/checkLogin";
 import FeedIcon from "@mui/icons-material/Feed";
-
 import moment from "moment-jalaali";
 
 interface PostInfo {
@@ -51,6 +51,7 @@ const CreatePost = () => {
   const todayPersianDate = moment().format("jYYYY/jMM/jDD");
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  checkLogin();
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -150,13 +151,13 @@ const CreatePost = () => {
   const handleSubmit = () => {
     if (!post.imageFile) {
       enqueueSnackbar("باید برای پروژه عکس اصلی انتخاب شود", {
-        variant: "success",
+        variant: "error",
       });
       return;
     }
     if (!post.title) {
       enqueueSnackbar("عنوان پروژه نمیتواند خالی باشد", {
-        variant: "success",
+        variant: "error",
       });
       return;
     }
