@@ -4,11 +4,12 @@ import { ReactNode } from "react";
 interface Prop {
   children: ReactNode;
   leftFrame: ReactNode;
+  paddingX?: number;
 }
 
-const StickyLeftLayout = ({ children, leftFrame }: Prop) => {
+const StickyLeftLayout = ({ children, leftFrame, paddingX }: Prop) => {
   return (
-    <Box sx={{ paddingX: 7.5 }} marginBottom={1}>
+    <Box sx={{ paddingX: paddingX || 7.5 }} marginBottom={1}>
       <Grid
         container
         spacing={1.5}

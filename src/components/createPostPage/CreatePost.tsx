@@ -1,5 +1,4 @@
 import { Box, Stack, Typography } from "@mui/material";
-import SimpleLayout from "../layouts/SimpleLayout";
 import DetailsPart from "./DetailsPart";
 import MainTitlePart from "./MainTitlePart";
 import AddNewSectionPart from "./AddNewSectionPart";
@@ -16,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import checkLogin from "../../hooks/checkLogin";
 import FeedIcon from "@mui/icons-material/Feed";
 import moment from "moment-jalaali";
+import StickyLeftLayout from "../layouts/StickyLeftLayout";
 
 interface PostInfo {
   title: string | null;
@@ -212,9 +212,133 @@ const CreatePost = () => {
   };
 
   return (
-    <div dir="rtl">
-      <CacheProvider value={cacheRtl}>
-        <SimpleLayout>
+    <CacheProvider value={cacheRtl}>
+      <StickyLeftLayout
+        paddingX={26}
+        leftFrame={
+          <Box
+            display="flex"
+            flexDirection="column"
+            sx={{
+              direction: "rtl",
+              mt: "45px",
+              borderRadius: "15px",
+              bgcolor: "bg.secondary",
+            }}
+            width="300px"
+            height="400px"
+            justifyContent="space-between"
+            alignItems="center"
+            py={3}
+          >
+            <Box
+              display="flex"
+              flexDirection="column"
+              height="200px"
+              width="100%"
+              gap={3}
+            >
+              <Box display="flex" width="100%" flexDirection="column" gap={1}>
+                <Typography
+                  fontWeight="bolder"
+                  sx={{ textAlign: "end", px: 2, width: "100%" }}
+                >
+                  :تاریخ ساخت پست
+                </Typography>
+                <Typography
+                  color="text.tertiary"
+                  sx={{ textAlign: "end", px: 2, width: "100%" }}
+                >
+                  {todayPersianDate}
+                </Typography>
+              </Box>
+              <Box display="flex" width="100%" flexDirection="column" gap={1}>
+                <Typography
+                  fontWeight="bolder"
+                  sx={{ textAlign: "end", px: 2, width: "100%" }}
+                >
+                  :وضعیت
+                </Typography>
+                <Typography
+                  color="text.tertiary"
+                  sx={{ textAlign: "end", px: 2, width: "100%" }}
+                >
+                  درحال ساخت{" "}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              flexDirection="column"
+              width="100%"
+              height="200px"
+            >
+              <Box
+                bgcolor="border.sGray"
+                sx={{ minHeight: 2, width: "100%" }}
+              />
+              <Typography
+                fontWeight="bolder"
+                sx={{
+                  textAlign: "end",
+                  px: 2,
+                  width: "100%",
+                }}
+              >
+                اطلاعات پست
+              </Typography>
+              <Typography
+                sx={{
+                  width: "100%",
+                  textAlign: "end",
+                  px: 2,
+                  color: activeSection === "upload-cover" ? "brand.400" : "",
+                  cursor: "pointer",
+                  borderRight:
+                    activeSection === "upload-cover" ? "3px solid #64A3F6" : "",
+                }}
+                onClick={() => scrollToSection(mainTitleRef, "upload-cover")}
+              >
+                عکس اصلی پروژه
+              </Typography>
+              <Typography
+                sx={{
+                  textAlign: "end",
+                  px: 2,
+                  width: "100%",
+
+                  color: activeSection === "sections" ? "brand.400" : "",
+
+                  borderRight:
+                    activeSection === "sections" ? "3px solid #64A3F6" : "",
+                  cursor: "pointer",
+                }}
+                onClick={() => scrollToSection(addNewSectionRef, "sections")}
+              >
+                زیربخش‌ها
+              </Typography>
+              <Typography
+                sx={{
+                  width: "100%",
+                  textAlign: "end",
+                  px: 2,
+                  color: activeSection === "details" ? "brand.400" : "",
+                  borderRight:
+                    activeSection === "details" ? "3px solid #64A3F6" : "",
+                  cursor: "pointer",
+                }}
+                onClick={() => scrollToSection(detailsPartRef, "details")}
+              >
+                اطلاعات بیشتر
+              </Typography>
+            </Box>
+          </Box>
+        }
+      >
+        <div dir="rtl">
           <Box
             display="flex"
             flexDirection="row"
@@ -295,133 +419,10 @@ const CreatePost = () => {
                 />
               </div>
             </Stack>
-
-            <Box
-              display="flex"
-              flexDirection="column"
-              sx={{
-                direction: "rtl",
-                mt: "45px",
-                borderRadius: "15px",
-                bgcolor: "bg.secondary",
-              }}
-              width="300px"
-              height="400px"
-              justifyContent="space-between"
-              alignItems="center"
-              py={3}
-            >
-              <Box
-                display="flex"
-                flexDirection="column"
-                height="200px"
-                width="100%"
-                gap={3}
-              >
-                <Box display="flex" width="100%" flexDirection="column" gap={1}>
-                  <Typography
-                    fontWeight="bolder"
-                    sx={{ textAlign: "end", px: 2, width: "100%" }}
-                  >
-                    :تاریخ ساخت پست
-                  </Typography>
-                  <Typography
-                    color="text.tertiary"
-                    sx={{ textAlign: "end", px: 2, width: "100%" }}
-                  >
-                    {todayPersianDate}
-                  </Typography>
-                </Box>
-                <Box display="flex" width="100%" flexDirection="column" gap={1}>
-                  <Typography
-                    fontWeight="bolder"
-                    sx={{ textAlign: "end", px: 2, width: "100%" }}
-                  >
-                    :وضعیت
-                  </Typography>
-                  <Typography
-                    color="text.tertiary"
-                    sx={{ textAlign: "end", px: 2, width: "100%" }}
-                  >
-                    درحال ساخت{" "}
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                flexDirection="column"
-                width="100%"
-                height="200px"
-              >
-                <Box
-                  bgcolor="border.sGray"
-                  sx={{ minHeight: 2, width: "100%" }}
-                />
-                <Typography
-                  fontWeight="bolder"
-                  sx={{
-                    textAlign: "end",
-                    px: 2,
-                    width: "100%",
-                  }}
-                >
-                  اطلاعات پست
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "100%",
-                    textAlign: "end",
-                    px: 2,
-                    color: activeSection === "upload-cover" ? "brand.400" : "",
-                    cursor: "pointer",
-                    borderRight:
-                      activeSection === "upload-cover"
-                        ? "3px solid #64A3F6"
-                        : "",
-                  }}
-                  onClick={() => scrollToSection(mainTitleRef, "upload-cover")}
-                >
-                  عکس اصلی پروژه
-                </Typography>
-                <Typography
-                  sx={{
-                    textAlign: "end",
-                    px: 2,
-                    width: "100%",
-
-                    color: activeSection === "sections" ? "brand.400" : "",
-
-                    borderRight:
-                      activeSection === "sections" ? "3px solid #64A3F6" : "",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => scrollToSection(addNewSectionRef, "sections")}
-                >
-                  زیربخش‌ها
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "100%",
-                    textAlign: "end",
-                    px: 2,
-                    color: activeSection === "details" ? "brand.400" : "",
-                    borderRight:
-                      activeSection === "details" ? "3px solid #64A3F6" : "",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => scrollToSection(detailsPartRef, "details")}
-                >
-                  اطلاعات بیشتر
-                </Typography>
-              </Box>
-            </Box>
           </Box>
-        </SimpleLayout>
-      </CacheProvider>
-    </div>
+        </div>
+      </StickyLeftLayout>
+    </CacheProvider>
   );
 };
 
