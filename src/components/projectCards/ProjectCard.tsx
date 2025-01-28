@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import PrimaryButton from "../buttons/PrimaryButton";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectCardProps {
   id: string | number;
@@ -29,9 +30,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   userName,
 }) => {
   const progress = Math.min((amountPaid / amountGoal) * 100, 100);
+  const navigate = useNavigate();
 
   const handleCardClick = () => {
-    window.location.href = `http://localhost:3000/post/${id}`;
+    navigate(`/post/${id}`);
   };
 
   return (

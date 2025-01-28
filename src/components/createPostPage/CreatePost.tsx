@@ -214,7 +214,7 @@ const CreatePost = () => {
   return (
     <CacheProvider value={cacheRtl}>
       <StickyLeftLayout
-        paddingX={26}
+        paddingX={16}
         leftFrame={
           <Box
             display="flex"
