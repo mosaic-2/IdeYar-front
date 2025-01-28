@@ -296,7 +296,7 @@ const SearchPage = () => {
         {searchedPosts.length > 0 ? (
           searchedPosts.map((post) => <PostPreview key={post.id} {...post} />)
         ) : (
-          <Box textAlign="center" gridColumn="1 / -1" py={10}>
+          <Box textAlign="center" gridColumn="1 / -1" py={10} height={500}>
             <Typography variant="h6" color="text.secondary">
               پروژه ای با فیلترهای انتخابی شما یافت نشد
             </Typography>
