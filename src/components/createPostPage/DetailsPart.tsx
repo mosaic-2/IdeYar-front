@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import MonyInput from "./MonyInput";
@@ -22,6 +23,7 @@ const DetailsPart = ({
   creating,
 }: Props) => {
   const { t } = useTranslation();
+  const [selectedCategory, setSelectedCategory] = useState<string>(""); // New: Track category state
 
   return (
     <Stack
@@ -66,10 +68,13 @@ const DetailsPart = ({
           دسته بندی
         </Typography>
         <CategoryInput
+          value={selectedCategory} // New: Controlled value
           onChange={(s) => {
+            setSelectedCategory(s); // New: Update state
             onCategoryChange?.(s);
           }}
         />
+
         <PrimaryButton
           onClick={onSubmit}
           text={creating ? "..." : t("createPost.submit")}
