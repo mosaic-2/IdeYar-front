@@ -26,6 +26,7 @@ export interface PostPreviewProps {
   fundRaised: string; // from your Project interface (or replaced by fund.amount)
   image?: string;
   yourFund?: string;
+  isBookmarked?: boolean;
 }
 
 /**
@@ -41,6 +42,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
   fundRaised,
   image,
   yourFund,
+  isBookmarked,
 }) => {
   const [screen, setScreen] = useState<string>("desktop");
   const [vertical, setVertical] = useState<boolean>(false);
@@ -167,7 +169,10 @@ const PostPreview: React.FC<PostPreviewProps> = ({
                 <Typography variant="body2">{username}</Typography>
               </Box>
             </Box>
-            <BookmarkButton id={id.toString()} defaultValue={false} />
+            <BookmarkButton
+              id={id.toString()}
+              defaultValue={isBookmarked || false}
+            />
           </Stack>
           <Box
             width="100%"
@@ -180,7 +185,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
             </Typography>
             {yourFund && (
               <Typography variant="h6" fontWeight="bold" color="brand.500">
-                شما {toPersianDigits(yourFund)} ریال حمایت کردین
+                شما {toPersianDigits(yourFund)} تومان حمایت کردین
               </Typography>
             )}
           </Box>

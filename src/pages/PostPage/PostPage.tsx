@@ -3,7 +3,7 @@ import StickyLeftLayout from "../../components/layouts/StickyLeftLayout";
 import ProjectSupport from "./ProjectSupport";
 import ProjectTitles from "./ProjectTitles";
 import ProjectBoard from "./ProjectBoard";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import usePost from "../../hooks/usePost";
 import FundModal from "../../components/fund/FundModal";
