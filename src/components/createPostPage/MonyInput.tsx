@@ -11,9 +11,9 @@ const MonyInput = ({ onChange }: Props) => {
       dir="rtl"
       type="number"
       inputProps={{ min: 0 }}
-      label={"هزینه اولیه"}
-      variant="outlined"
-      size="small"
+      hiddenLabel
+      variant="filled"
+      size="medium"
       sx={{ width: "100%" }}
       onChange={onChange}
     />

@@ -1,54 +1,67 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import UploadImageButton from "../buttons/UploadImageButton";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 
 interface Props {
   imagePreview: string | null;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onDeleteImage: () => void;
 }
 
-const ImageUploadPart = ({ imagePreview, onChange }: Props) => {
+const ImageUploadPart = ({ imagePreview, onChange, onDeleteImage }: Props) => {
   return (
-    <Box>
+    <Box width="700px" height="450px">
       {imagePreview && (
-        <>
-          <Box textAlign="center">
+        <Box display="flex" flexDirection="column" gap={2}>
+          <Box textAlign="center" display="flex" flexDirection="column">
             <img
               src={imagePreview}
+              width="700px"
+              height="400px"
               alt="Selected"
-              style={{ maxWidth: "100%", maxHeight: "700px", borderRadius: 20 }}
+              style={{
+                borderRadius: 20,
+              }}
             />
           </Box>
-          <Stack
-            sx={{
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "center",
+          <UploadImageButton
+            imagePreview={imagePreview}
+            onChange={(e, isRemoved) => {
+              if (isRemoved) {
+                onDeleteImage();
+              } else {
+                onChange(e);
+              }
             }}
-          >
-            <UploadImageButton onChange={onChange} />
-          </Stack>
-        </>
+            status="uploaded"
+          />
+        </Box>
       )}
       {!imagePreview && (
-        <Box
-          bgcolor="bg.secondary"
-          sx={{
-            height: "500px",
-            borderRadius: 4,
-            border: 2,
-            borderColor: "border.sGray",
-          }}
-        >
-          <Stack
+        <Box gap={2} display="flex" flexDirection="column">
+          {" "}
+          <Box
+            bgcolor="bg.secondary"
             sx={{
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "center",
+              height: "400px",
+              borderRadius: 4,
             }}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
           >
-            <UploadImageButton onChange={onChange} />
-          </Stack>
+            <UploadImageButton
+              imagePreview={imagePreview}
+              onChange={(e, isRemoved) => {
+                if (isRemoved) {
+                  onDeleteImage();
+                } else {
+                  onChange(e);
+                }
+              }}
+              status="not-uploaded"
+            />
+          </Box>
         </Box>
       )}
     </Box>

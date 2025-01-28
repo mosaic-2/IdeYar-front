@@ -1,6 +1,6 @@
+import { useState } from "react";
 import {
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -8,6 +8,7 @@ import {
 
 interface Props {
   onChange: (selectedValue: string) => void;
+  value?: string; // New: Pass selected category from parent
 }
 
 const allCategories = [
@@ -22,16 +23,24 @@ const allCategories = [
   "نصب",
 ];
 
-const CategoryInput = ({ onChange }: Props) => {
+const CategoryInput = ({ onChange, value }: Props) => {
+  const [selectedValue, setSelectedValue] = useState<string>(value || ""); // New: Use state for controlled input
+
   const handleChange = (event: SelectChangeEvent) => {
-    const selectedValue = event.target.value as string;
-    onChange(selectedValue);
+    const newValue = event.target.value as string;
+    setSelectedValue(newValue); // Update state
+    onChange(newValue); // Notify parent
   };
 
   return (
-    <FormControl fullWidth size="small">
-      <InputLabel>دسته بندی</InputLabel>
-      <Select label={"دسته بندی"} onChange={handleChange} size="small">
+    <FormControl fullWidth size="medium">
+      <Select
+        value={selectedValue} // New: Set controlled value
+        onChange={handleChange}
+        size="medium"
+        variant="filled"
+        hiddenLabel
+      >
         {allCategories.map((option, index) => (
           <MenuItem dir="rtl" key={index} value={option}>
             {option}
