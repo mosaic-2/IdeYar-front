@@ -85,7 +85,10 @@ const PostPreview = ({
           height: "250px",
           objectFit: "cover",
         }}
-        src={image || "https://via.placeholder.com/400x300"}
+        src={
+          `https://back.ideyar-app.ir/api/image/${image}` ||
+          "https://via.placeholder.com/400x300"
+        }
         alt={title}
       />
       <ProgressContainer>
@@ -94,7 +97,7 @@ const PostPreview = ({
             {profileImageUrl ? (
               <CardMedia
                 component="img"
-                image={profileImageUrl}
+                image={`https://back.ideyar-app.ir/api/image/${profileImageUrl}`}
                 alt={username}
                 sx={{ width: 50, height: 50, borderRadius: "50%" }}
               />
