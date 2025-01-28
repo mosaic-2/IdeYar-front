@@ -6,6 +6,7 @@ import {
   TextField,
   Divider,
   Stack,
+  InputAdornment,
 } from "@mui/material";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import EditIcon from "@mui/icons-material/Edit";
@@ -25,10 +26,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 import jMoment from "moment-jalaali";
-
+import EmailIcon from "@mui/icons-material/Email";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../buttons/PrimaryButton";
-
+import PhoneIcon from "@mui/icons-material/Phone";
+import EventIcon from "@mui/icons-material/Event";
+import PersonIcon from "@mui/icons-material/Person";
 // If no type definitions exist for `moment-jalaali`, you can do one of:
 //  1) npm install --save-dev @types/moment-jalaali (if available)
 //  2) Create global.d.ts (or any .d.ts in src/) with `declare module 'moment-jalaali';`
@@ -335,27 +338,31 @@ const ProfileBox = () => {
                 InputProps={{
                   sx: {
                     "& .MuiInputBase-input": {
-                      textAlign: "center",
+                      textAlign: "start",
                     },
                   },
                 }}
               />
             ) : (
-              <Typography
-                variant="body1"
-                sx={{
-                  flexGrow: 1,
-                  width: "100%",
-                  maxWidth: 250,
-                  height: 40,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {getDisplayValue(username, "نام کاربری")}
-              </Typography>
+              <Box display="flex" flexDirection="row" width="100%">
+                <Typography
+                  variant="body1"
+                  sx={{
+                    flexGrow: 1,
+                    width: "100%",
+                    maxWidth: 250,
+                    height: 40,
+                    mr: 3,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {getDisplayValue(username, "نام کاربری")}
+                </Typography>
+                <PersonIcon color="action" />
+              </Box>
             )}
           </Box>
 
@@ -381,28 +388,37 @@ const ProfileBox = () => {
                   height: 40,
                 }}
                 InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <PhoneIcon color="action" />
+                    </InputAdornment>
+                  ),
                   sx: {
                     "& .MuiInputBase-input": {
-                      textAlign: "center",
+                      textAlign: "start",
                     },
                   },
                 }}
               />
             ) : (
-              <Typography
-                variant="body1"
-                sx={{
-                  flexGrow: 1,
-                  width: "100%",
-                  maxWidth: 250,
-                  height: 40,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {getDisplayValue(phone, "شماره همراه")}
-              </Typography>
+              <Box display="flex" flexDirection="row" width="100%">
+                <Typography
+                  variant="body1"
+                  sx={{
+                    flexGrow: 1,
+                    width: "100%",
+                    minWidth: 250,
+                    height: 40,
+                    mr: 3,
+                    display: "flex",
+                    alignItems: "start",
+                    justifyContent: "center",
+                  }}
+                >
+                  {getDisplayValue(phone, "--")}
+                </Typography>
+                <PhoneIcon color="action" />
+              </Box>
             )}
           </Box>
 
@@ -423,23 +439,24 @@ const ProfileBox = () => {
                 }}
               />
             ) : (
-              <Typography
-                variant="body1"
-                sx={{
-                  flexGrow: 1,
-                  width: "100%",
-                  maxWidth: 250,
-                  height: 40,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  wordBreak: "break-word",
-                  overflowWrap: "break-word",
-                  padding: 1,
-                }}
-              >
-                {birthday ? birthday.format("jYYYY/jMM/jDD") : "تاریخ تولد"}
-              </Typography>
+              <Box display="flex" flexDirection="row" width="100%">
+                <Typography
+                  variant="body1"
+                  sx={{
+                    flexGrow: 1,
+                    width: "100%",
+                    minWidth: 250,
+                    height: 40,
+
+                    display: "flex",
+                    alignItems: "start",
+                    justifyContent: "center",
+                  }}
+                >
+                  {birthday ? birthday.format("jYYYY/jMM/jDD") : "تاریخ تولد"}
+                </Typography>
+                <EventIcon color="action" />
+              </Box>
             )}
           </Box>
 
@@ -451,21 +468,26 @@ const ProfileBox = () => {
             justifyContent="center"
             mb={2}
             sx={{ gap: 2 }}
+            borderRadius="10px"
+            height="200px"
+            bgcolor="bg.secondary"
           >
             {isEditing ? (
               <TextField
                 value={bio}
                 onChange={(e) => handleFieldChange(e, "bio")}
-                size="small"
+                size="medium"
                 variant="outlined"
                 multiline
-                minRows={3}
-                maxRows={10}
+                minRows={6}
+                maxRows={6}
                 sx={{
+                  border: "none",
                   flexGrow: 1,
                   width: "100%",
-                  maxWidth: 250,
+                  height: "100%",
                   "& .MuiInputBase-input": {
+                    border: "none",
                     wordBreak: "break-word",
                     overflowWrap: "break-word",
                   },
@@ -475,14 +497,13 @@ const ProfileBox = () => {
               <Typography
                 variant="body1"
                 sx={{
-                  flexGrow: 1,
                   width: "100%",
-                  maxWidth: 250,
-                  minHeight: "100px",
+
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  textAlign: "center",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  alignSelf: "flex-start",
+                  textAlign: "flex-start",
                   wordBreak: "break-word",
                   overflowWrap: "break-word",
                   padding: 1,
@@ -526,13 +547,14 @@ const ProfileBox = () => {
               display="flex"
               alignItems="center"
               justifyContent="center"
+              flexDirection="row"
+              gap={1}
               mb={2}
               sx={{
-                border: "1px solid #ddd",
-                borderRadius: "16px",
+                borderRadius: "10px",
                 boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
                 width: "100%",
-                maxWidth: 350,
+
                 minHeight: 50,
                 bgcolor: "background.paper",
               }}
@@ -541,6 +563,7 @@ const ProfileBox = () => {
                 variant="body1"
                 sx={{
                   flexGrow: 1,
+
                   width: "100%",
                   maxWidth: 250,
                   height: 40,
@@ -551,6 +574,7 @@ const ProfileBox = () => {
               >
                 {email || "ایمیل تعریف نشده"}
               </Typography>
+              <EmailIcon sx={{ color: "gray" }} />
             </Box>
 
             {/* Action Buttons */}
