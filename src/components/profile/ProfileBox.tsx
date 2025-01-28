@@ -421,32 +421,6 @@ const ProfileBox = () => {
                 onChange={(newValue) => {
                   setBirthday(newValue);
                 }}
-                // MUI v6+ uses slotProps instead of renderInput
-                slotProps={{
-                  textField: {
-                    size: "small",
-                    variant: "outlined",
-                    sx: {
-                      flexGrow: 1,
-                      width: "100%",
-                      maxWidth: 250,
-                      height: 40,
-                      "& .MuiInputBase-input": {
-                        textAlign: "center",
-                      },
-                    },
-                  },
-                  popper: {
-                    sx: {
-                      "& .MuiPaper-root": {
-                        width: 250,
-                        margin: "0 auto",
-                        left: "50% !important",
-                        transform: "translateX(-50%) !important",
-                      },
-                    },
-                  },
-                }}
               />
             ) : (
               <Typography
