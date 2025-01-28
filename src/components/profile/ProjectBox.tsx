@@ -276,7 +276,7 @@ const ProjectsBox: React.FC = () => {
                       minimumFund={post.minimumFund}
                       fundRaised={post.fundRaised}
                       image={post.image}
-                      isBookmarked={post.isBookmarked}
+                      isBookmarked={true}
                     />
                   </Box>
                 ))
