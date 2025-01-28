@@ -32,6 +32,6 @@ export const fetchPost = async (id: number): Promise<FetchPostResponse> => {
 };
 
 export const bookmarkPost = async (id: string): Promise<null> => {
-  const response = await apiClient.get(`/api/bookmark/${id}`);
+  const response = await apiClient.post(`/api/bookmark/${id}`);
   return response.data;
 };
