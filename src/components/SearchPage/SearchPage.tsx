@@ -60,6 +60,7 @@ const PostPreview = ({
   profileImageUrl,
   minimumFund,
   fundRaised,
+  isBookmarked,
 }: Post) => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -124,7 +125,7 @@ const PostPreview = ({
               </Typography>
             </Box>
           </ProfileBadge>
-          <BookmarkButton id={id} defaultValue={false} />
+          <BookmarkButton id={id} defaultValue={isBookmarked} />
         </Stack>
         <Box
           sx={{

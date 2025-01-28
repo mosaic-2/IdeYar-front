@@ -19,6 +19,7 @@ export interface Project {
   deadlineDate?: string;
   image?: string;
   createdAt?: string;
+  isBookmarked: boolean;
 }
 
 export interface UserProjectsResponse {

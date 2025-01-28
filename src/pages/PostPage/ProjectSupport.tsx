@@ -11,6 +11,7 @@ import {
 import PrimaryButton from "../../components/buttons/PrimaryButton";
 import { useTranslation } from "react-i18next";
 import { PostResponse } from "../../apis/postApi";
+import { toPersianDigits } from "../../util/persianNumberConverter";
 
 interface ProjectSupportProps {
   post: PostResponse | undefined;
@@ -91,7 +92,7 @@ const ProjectSupport = ({ post, onSupportClick }: ProjectSupportProps) => {
                 direction: "rtl",
               }}
             >
-              {post?.minimumFund.toLocaleString() + " تومان"}
+              {toPersianDigits(post?.minimumFund.toLocaleString()) + " تومان"}
             </Typography>
 
             <LinearProgress
@@ -131,7 +132,7 @@ const ProjectSupport = ({ post, onSupportClick }: ProjectSupportProps) => {
                 direction: "rtl",
               }}
             >
-              {leftTime}
+              {toPersianDigits(leftTime)}
             </Typography>
 
             <Box

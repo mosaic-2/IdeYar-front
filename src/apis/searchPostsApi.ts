@@ -12,6 +12,7 @@ export interface Post {
   deadline_date: string;
   image: string;
   createdAt: string;
+  isBookmarked: boolean;
 }
 
 export interface SearchPostsResponse {
