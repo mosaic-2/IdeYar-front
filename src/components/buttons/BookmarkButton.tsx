@@ -3,6 +3,7 @@ import Bookmark from "../../assets/bookmark-.svg?react";
 import BookmarkFill from "../../assets/bookmark-fill.svg?react";
 import { MouseEvent, useState } from "react";
 import { grayDarkMode, grayLightMode } from "../../theme/colors";
+import { bookmarkPost } from "../../apis/postApi";
 
 interface Props {
   id: string;
@@ -16,9 +17,13 @@ const BookmarkButton = ({ id, defaultValue }: Props) => {
 
   const handleBookmarkClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.stopPropagation();
-    setState((prev) => {
-      return !prev;
-    });
+    bookmarkPost(id)
+      .then(() => {
+        setState((prev) => {
+          return !prev;
+        });
+      })
+      .catch((err) => console.log("bookmarkPost error: ", err));
   };
 
   return (

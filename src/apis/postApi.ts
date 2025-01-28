@@ -30,3 +30,8 @@ export const fetchPost = async (id: number): Promise<FetchPostResponse> => {
   const response = await apiClient.get(`/api/post/${id}`);
   return response.data;
 };
+
+export const bookmarkPost = async (id: string): Promise<null> => {
+  const response = await apiClient.get(`/api/bookmark/${id}`);
+  return response.data;
+};
