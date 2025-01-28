@@ -56,7 +56,7 @@ const ChangeEmail = () => {
       await changeEmailApi(requestPayload);
 
       // Show success message
-      enqueueSnackbar(t("ایمیل شما با موفقیت تغییر یافت"), {
+      enqueueSnackbar(t("برای اعتبار سنجی به ایمیل خود مراجعه نمایید"), {
         variant: "success",
       });
       navigate("/");

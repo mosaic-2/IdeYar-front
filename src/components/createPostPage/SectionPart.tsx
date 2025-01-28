@@ -1,4 +1,11 @@
-import { Box, Collapse, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Collapse,
+  Stack,
+  TextField,
+  Typography,
+  Button,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import UploadImageButton from "../buttons/UploadImageButton";
 import { toPersianDigits } from "../../util/persianNumberConverter";
@@ -37,71 +44,139 @@ const SectionPart = ({ index, section, onChangeSection }: Prob) => {
     300
   );
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      onChangeSection(index, {
-        ...section,
-        imageFile: file,
-        imagePreview: URL.createObjectURL(file),
-      });
-    }
-  };
-
   return (
-    <Collapse in={!isNew} timeout="auto" unmountOnExit>
+    <Collapse in={!isNew} timeout="auto" unmountOnExit sx={{ width: "100%" }}>
       <Stack
         direction="column"
-        spacing={2}
+        spacing={3}
         sx={{
           justifyContent: "flex-start",
           alignItems: "stretch",
         }}
       >
-        <Box bgcolor="border.sGray" sx={{ height: 2, width: "100%" }} />
-        <Typography variant="h6" color="text.tertiary">
+        <Typography fontWeight="bold">
           {t("createPost.section")}{" "}
           {section.order == null
             ? ""
             : toPersianDigits((section.order + 1).toString())}
         </Typography>
+
+        <Box width="700px" height="450px">
+          {section.imagePreview && (
+            <Box display="flex" flexDirection="column" gap={2}>
+              <Box textAlign="center" display="flex" flexDirection="column">
+                <img
+                  src={section.imagePreview}
+                  width="700px"
+                  height="400px"
+                  alt="Selected"
+                  style={{
+                    borderRadius: 20,
+                  }}
+                />
+              </Box>
+              <UploadImageButton
+                imagePreview={section.imagePreview}
+                onChange={(e, isRemoved) => {
+                  if (isRemoved) {
+                    onChangeSection(index, {
+                      ...section,
+                      imageFile: null,
+                      imagePreview: null,
+                    });
+                  } else {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      onChangeSection(index, {
+                        ...section,
+                        imageFile: file,
+                        imagePreview: URL.createObjectURL(file),
+                      });
+                    }
+                  }
+                }}
+                status="uploaded"
+              />
+            </Box>
+          )}
+          {!section.imagePreview && (
+            <Box gap={2} display="flex" flexDirection="column">
+              {" "}
+              <Box
+                bgcolor="bg.secondary"
+                sx={{
+                  height: "400px",
+                  borderRadius: 4,
+                }}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <UploadImageButton
+                  imagePreview={section.imagePreview}
+                  onChange={(e, isRemoved) => {
+                    if (isRemoved) {
+                      onChangeSection(index, {
+                        ...section,
+                        imageFile: null,
+                        imagePreview: null,
+                      });
+                    } else {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        onChangeSection(index, {
+                          ...section,
+                          imageFile: file,
+                          imagePreview: URL.createObjectURL(file),
+                        });
+                      }
+                    }
+                  }}
+                  status="not-uploaded"
+                />
+              </Box>
+            </Box>
+          )}
+        </Box>
+
+        <Stack direction="row" gap={0.5}>
+          <Typography fontWeight="bold" color="text.tertiary">
+            {t("عنوان زیربخش")}{" "}
+            {section.order == null
+              ? ""
+              : toPersianDigits((section.order + 1).toString())}
+          </Typography>
+        </Stack>
         <TextField
           dir="rtl"
-          label={t("field.title")}
-          variant="outlined"
-          size="small"
+          placeholder="عنوان"
+          hiddenLabel
+          variant="filled"
+          size="medium"
           onChange={handleTitleChange}
         />
+
+        <Stack direction="row" gap={0.5}>
+          <Typography fontWeight="bold" color="text.tertiary">
+            {t("کپشن زیربخش")}{" "}
+            {section.order == null
+              ? ""
+              : toPersianDigits((section.order + 1).toString())}
+          </Typography>
+        </Stack>
         <TextField
           dir="rtl"
-          label={t("field.text")}
-          variant="outlined"
-          size="small"
+          hiddenLabel
+          placeholder={t("field.text")}
+          variant="filled"
+          size="medium"
           onChange={(e) => {
             e.persist();
             handleTextChange(e);
           }}
           multiline
-          rows={8}
+          rows={5}
         />
-        {section.imagePreview && (
-          <Box textAlign="center">
-            <img
-              src={section.imagePreview}
-              alt="Selected"
-              style={{ maxWidth: "100%", maxHeight: "700px", borderRadius: 20 }}
-            />
-          </Box>
-        )}
-        <Stack
-          sx={{
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <UploadImageButton onChange={handleImageChange} />
-        </Stack>
       </Stack>
     </Collapse>
   );

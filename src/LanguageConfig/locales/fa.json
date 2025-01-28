@@ -21,7 +21,10 @@
   "filled": "تکمیل شده %",
   "button": {
     "uploadImage": "آپلود عکس",
-    "AddNewSection": "افزودن بخش جدید"
+    "not-uploaded": "",
+    "AddNewSection": "افزودن بخش جدید",
+    "changeImage": "تعویض عکس",
+    "removeLastSection": "حذف بخش قبل"
   },
   "field": {
     "mainTitle": "عنوان اصلی",
@@ -31,7 +34,7 @@
   },
   "createPost": {
     "section": "بخش",
-    "info": "اطلاعات",
+    "info": "اطلاعات بیشتر",
     "submit": "تایید"
   }
 }
