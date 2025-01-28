@@ -94,7 +94,7 @@ const PostPreview = ({
             {profileImageUrl ? (
               <CardMedia
                 component="img"
-                image={profileImageUrl}
+                image={`https://back.ideyar-app.ir/api/image/${profileImageUrl}`}
                 alt={username}
                 sx={{ width: 50, height: 50, borderRadius: "50%" }}
               />
