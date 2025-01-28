@@ -5,12 +5,11 @@ import {
   CardMedia,
   LinearProgress,
   Typography,
-  IconButton,
   Stack,
 } from "@mui/material";
-import Bookmark from "../../assets/bookmark.svg?react";
 import { useNavigate } from "react-router-dom";
 import BookmarkButton from "../../components/buttons/BookmarkButton";
+import { toPersianDigits } from "../../util/persianNumberConverter";
 
 /**
  * PostPreviewProps must match all fields that we spread in from Project (or FundOverview.post).
@@ -26,6 +25,7 @@ export interface PostPreviewProps {
   minimumFund: string; // from your Project interface
   fundRaised: string; // from your Project interface (or replaced by fund.amount)
   image?: string;
+  yourFund?: string;
 }
 
 /**
@@ -40,6 +40,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
   minimumFund,
   fundRaised,
   image,
+  yourFund,
 }) => {
   const [screen, setScreen] = useState<string>("desktop");
   const [vertical, setVertical] = useState<boolean>(false);
@@ -174,9 +175,14 @@ const PostPreview: React.FC<PostPreviewProps> = ({
             order={vertical ? 2 : 1}
             sx={{ direction: "rtl" }}
           >
-            <Typography variant="body2" fontWeight="bold">
+            <Typography variant="body2" fontWeight="bold" height="100%">
               {description}
             </Typography>
+            {yourFund && (
+              <Typography variant="h6" fontWeight="bold" color="brand.500">
+                شما {toPersianDigits(yourFund)} ریال حمایت کردین
+              </Typography>
+            )}
           </Box>
         </Box>
       </Box>
