@@ -208,12 +208,26 @@ const SearchPage = () => {
 
   const [searchedPosts, setSearchedPosts] = useState<Post[]>([]);
 
+  const handleSortChange = (
+    sort: "SORT_BY_UNSPECIFIED" | "CREATED_TIME" | "DEADLINE" | null,
+    ascending: boolean
+  ) => {
+    setFilter((prev) => {
+      return {
+        ...prev,
+        sort_by: sort,
+        ascending: ascending,
+      };
+    });
+  };
+
   const handleCategoriesChange = (categories: string[]) => {
     setFilter((prev) => ({ ...prev, categories }));
   };
 
   const handleSearch = async () => {
     try {
+      console.log("filters: ", filter);
       setLoading(true);
       const response = await searchPostsApi(object || null, 0, filter);
       if (response) {
@@ -249,14 +263,7 @@ const SearchPage = () => {
           }}
         >
           <Box display="flex" flexDirection="column" gap={2}>
-            <SingleTextField
-              selects={[
-                "محبوب ترین",
-                "جدیدترین",
-                "قدیمی ترین",
-                "پر بازدیدترین",
-              ]}
-            />
+            <SingleTextField onChange={handleSortChange} />
             <MultipleSelectChip
               categories={filter.categories}
               onCategoriesChange={handleCategoriesChange}
