@@ -237,6 +237,7 @@ const ProjectsBox: React.FC = () => {
                       minimumFund={fund.post.minimumFund}
                       fundRaised={fund.amount} // or fund.post.fundRaised
                       image={fund.post.image}
+                      yourFund={fund.amount}
                     />
                   </Box>
                 ))
